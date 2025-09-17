@@ -27,8 +27,8 @@ export default function NavBar() {
             <div className="flex-none flex items-center gap-2 cursor-pointer">
               <Image
                 src={require("../.././../public/images/logo192.png")}
-                width={48}
-                height={48}
+                width={192}
+                height={192}
                 className="h-12 w-12"
                 alt="logo"
               />

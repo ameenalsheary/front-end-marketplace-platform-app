@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 
 import FavoriteButton from "../ui/FavoriteButton/FavoriteButton";
 
@@ -22,7 +22,16 @@ export default function ProductCard(props) {
   return (
     <div className="bg-background rounded-lg shadow-md h-fit cursor-pointer hover-lift overflow-hidden group">
       <div className="relative p-2.5">
-        <img className="rounded-t-lg w-full" src={imageCover} alt="product" />
+        <Image
+          width={500}
+          height={690}
+          src={imageCover}
+          alt="product"
+          className="rounded-t-lg w-full bg-background-tertiary"
+          onError={(e) => {
+            e.target.src = "/images/product-placeholder.png";
+          }}
+        />
         <FavoriteButton />
       </div>
       <div className="px-4 pb-4 flex flex-col gap-1.5">

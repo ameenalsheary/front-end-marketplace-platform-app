@@ -1,3 +1,5 @@
+"use client";
+
 import Pagination from "@mui/material/Pagination";
 
 import BrandCart from "./BrandCart";
@@ -29,9 +31,11 @@ export default function BrandGrid() {
         <div className="container">
           <h1 className="text-text text-3xl pb-3 font-medium">{"Brads"}</h1>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 md:gap-3">
-            {Array(12).fill(0).map((item, i) => {
-              return <BrandCartSkeleton brand={item} key={i} />;
-            })}
+            {Array(12)
+              .fill(0)
+              .map((item, i) => {
+                return <BrandCartSkeleton brand={item} key={i} />;
+              })}
           </div>
         </div>
       </div>
