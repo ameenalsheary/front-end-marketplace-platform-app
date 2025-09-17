@@ -1,5 +1,3 @@
-"use client";
-
 import Pagination from "@mui/material/Pagination";
 
 import ProductCard from "./ProductCard";
