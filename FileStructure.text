@@ -1,0 +1,78 @@
+ecommerce-app/
+│── .env.local                  # Environment variables (API keys, DB, etc.)
+│── next.config.js              # Next.js configuration
+│── package.json
+│── tailwind.config.js          # Tailwind config
+│── tsconfig.json / jsconfig.json
+│
+├── public/                     # Static assets (images, fonts, icons)
+│   ├── images/
+│   └── logos/
+│
+├── src/
+│   ├── app/                    # Next.js App Router (pages, layouts, routes)
+│   │   ├── layout.tsx          # Root layout (Navbar, Footer, Providers)
+│   │   ├── page.tsx            # Home page
+│   │   │
+│   │   ├── products/
+│   │   │   ├── page.tsx        # Products listing page
+│   │   │   └── [id]/page.tsx   # Dynamic product detail page
+│   │   │
+│   │   ├── categories/
+│   │   │   └── [slug]/page.tsx # Category page
+│   │   │
+│   │   ├── cart/page.tsx       # Cart page
+│   │   ├── checkout/page.tsx   # Checkout page
+│   │   ├── orders/
+│   │   │   ├── page.tsx        # User orders
+│   │   │   └── [id]/page.tsx   # Order detail
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── login/page.tsx
+│   │   │   ├── register/page.tsx
+│   │   │   └── forgot-password/page.tsx
+│   │   │
+│   │   ├── admin/              # Admin dashboard (optional)
+│   │   │   ├── page.tsx
+│   │   │   ├── products/
+│   │   │   └── orders/
+│   │   │
+│   │   └── api/                # Next.js API routes (if backend in same project)
+│   │       ├── products/
+│   │       ├── users/
+│   │       └── orders/
+│   │
+│   ├── components/             # Reusable UI components
+│   │   ├── ui/                 # Buttons, Inputs, Modals, etc.
+│   │   ├── layout/             # Navbar, Footer, Sidebar
+│   │   ├── product/            # ProductCard, ProductGrid, etc.
+│   │   └── cart/               # CartItem, CartSummary
+│   │
+│   ├── hooks/                  # Custom React hooks
+│   │   ├── useAuth.ts
+│   │   ├── useCart.ts
+│   │   └── useDarkMode.ts
+│   │
+│   ├── lib/                    # Utility functions, helpers
+│   │   ├── api.ts              # API request handler
+│   │   ├── constants.ts
+│   │   └── utils.ts
+│   │
+│   ├── store/                  # Redux Toolkit / Zustand store
+│   │   ├── index.ts
+│   │   ├── cartSlice.ts
+│   │   ├── productsSlice.ts
+│   │   └── userSlice.ts
+│   │
+│   ├── styles/                 # Global styles
+│   │   └── globals.css
+│   │
+│   └── types/                  # TypeScript types & interfaces
+│       ├── product.ts
+│       ├── user.ts
+│       └── order.ts
+│
+└── tests/                      # Unit & integration tests
+    ├── components/
+    ├── pages/
+    └── api/

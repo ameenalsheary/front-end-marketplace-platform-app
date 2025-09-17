@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root {
+  /* Light mode */
+  --color-primary: #4871d6;
+  --color-text: #2d2d2d;
+  --color-background: #ffffff;
+  --color-background-secondary: #f5f7fa;
+  --color-background-tertiary: #eaeef3;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12);
+}
+
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-background: var(--color-background);
+  --color-background-secondary: var(--color-background-secondary);
+  --color-background-tertiary: var(--color-background-tertiary);
+  --color-text: var(--color-text);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode */
+    --color-primary: #3866df;
+    --color-text: #e5e5e5;
+    --color-background: #0d0d0d;
+    --color-background-secondary: #1a1a1a;
+    --color-background-tertiary: #262626;
+
+    /* Shadows – lighter & softer in dark mode */
+    --shadow-sm: 0 1px 2px rgba(255, 255, 255, 0.05);
+    --shadow-md: 0 4px 6px rgba(255, 255, 255, 0.07);
+    --shadow-lg: 0 10px 15px rgba(255, 255, 255, 0.1);
+  }
+}
+
+@layer components {
+  .hover-lift {
+    @apply hover:-translate-y-1 hover:shadow-md transition-all duration-300;
+  }
+  .hover-scale {
+    @apply hover:scale-110 transition-transform duration-300;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background text-text;
+    font-family: "Inter", sans-serif;
+  }
+  .container {
+    @apply ml-auto mr-auto px-3;
+  }
+  .btn-t-primary {
+    @apply bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base;
+  }
+  .btn-t-secondary {
+    @apply bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base;
+  }
+  .transition-all {
+    transition: all 0.3s;
+  }
+  .skeleton {
+    @apply bg-background-tertiary text-transparent select-none animate-pulse;
+  }
+}
+
+/* start pagination */
+.MuiPagination-ul {
+  justify-content: center;
+}
+.MuiPagination-ul .MuiButtonBase-root {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid var(--color-primary);
+}
+.MuiPagination-ul .MuiPaginationItem-text {
+  color: var(--color-text);
+}
+.MuiPagination-ul .MuiButtonBase-root:hover {
+  background-color: var(--color-background);
+}
+.MuiPagination-ul .Mui-selected {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
+/* end pagination */
