@@ -1,3 +1,5 @@
+"use client";
+
 import Pagination from "@mui/material/Pagination";
 
 import BrandCart from "./BrandCart";
