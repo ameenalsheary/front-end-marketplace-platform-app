@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Image from "next/image";
 
 import FavoriteButton from "../ui/FavoriteButton/FavoriteButton";
@@ -19,18 +20,23 @@ export default function ProductCard(props) {
     ? (priceBeforeDiscount = priceBeforeDiscount.toFixed(2).replace(".", ","))
     : null;
 
+  const [productImage, setProductImage] = useState(imageCover);
+  const handleImageError = () => {
+    setProductImage("");
+  };
+
   return (
     <div className="bg-background rounded-lg shadow-md h-fit cursor-pointer hover-lift overflow-hidden group">
       <div className="relative p-2.5">
         <Image
           width={500}
           height={690}
-          src={imageCover}
+          src={
+            productImage || require("@/public/images/product-placeholder.png")
+          }
           alt="product"
           className="rounded-t-lg w-full bg-background-tertiary"
-          onError={(e) => {
-            e.target.src = "/images/product-placeholder.png";
-          }}
+          onError={handleImageError}
         />
         <FavoriteButton />
       </div>
