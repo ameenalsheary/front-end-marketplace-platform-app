@@ -46,7 +46,7 @@ export default function CategorySwiper(props) {
     <>
       <div className="bg-background-secondary py-6">
         <div className="container">
-          <h1 className="text-text text-3xl text-center pb-6 font-medium capitalize">
+          <h1 className="text-text text-2xl mds:text-3xl pb-6 font-medium capitalize">
             {title}
           </h1>
           {columnsNumber && (
@@ -108,7 +108,7 @@ export default function CategorySwiper(props) {
       </div>
       <div className="bg-background py-6">
         <div className="container">
-          <h1 className="text-text text-3xl text-center pb-6 font-medium capitalize">
+          <h1 className="text-text text-2xl mds:text-3xl pb-6 font-medium capitalize">
             {title}
           </h1>
           {columnsNumber && (

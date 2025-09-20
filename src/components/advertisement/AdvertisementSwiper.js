@@ -35,7 +35,7 @@ function AdvertisementImage(props) {
       src={img || require("@/public/images/advertisement-placeholder.svg")}
       alt=""
       onError={handleImageError}
-      className="bg-background-secondary"
+      className="bg-background-secondary w-full"
     />
   );
 }
