@@ -29,7 +29,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark mode */
-    --color-primary: #3866df;
+    --color-primary: #4871d6;
     --color-text: #e5e5e5;
     --color-background: #0d0d0d;
     --color-background-secondary: #1a1a1a;

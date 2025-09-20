@@ -84,7 +84,7 @@ export default function NavBar() {
       </nav>
       <div
         className={clsx(
-          "bg-[#0000009f] fixed z-1 left-0 w-full h-[calc(100vh-80px)]",
+          "bg-[#0000009f] fixed z-10 left-0 w-full h-[calc(100vh-80px)]",
           {
             "top-[80px] opacity-100": openMenu === true,
             "top-[-100%] opacity-0": openMenu === false,
@@ -132,7 +132,7 @@ export default function NavBar() {
               </li>
               <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
                 <ContrastIcon className="text-primary" />
-                <span className="text-text">Dark mode</span>
+                <span className="text-text">Thems</span>
               </li>
               <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500">
                 <LockIcon />
