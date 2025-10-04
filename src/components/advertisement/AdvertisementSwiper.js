@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import CustomImage from "../ui/CustomImage";
 
 // Import Swiper styles
 import "swiper/css";
@@ -18,31 +18,14 @@ const images = [
   "images/3.svg",
   "images/4.svg",
   "images/5.svg",
+  "images/6.svg",
+  "images/7.svg",
+  "images/8.svg",
 ];
-
-function AdvertisementImage(props) {
-  const image = props.image;
-
-  const [img, setImg] = useState(image);
-  const handleImageError = () => {
-    setImg("");
-  };
-
-  return (
-    <Image
-      width={1440}
-      height={250}
-      src={img || require("@/public/images/advertisement-placeholder.svg")}
-      alt=""
-      onError={handleImageError}
-      className="bg-background-secondary w-full"
-    />
-  );
-}
 
 export default function AdvertisementSwiper() {
   return (
-    <div className="hidden lg:block">
+    <div>
       <Swiper
         slidesPerView={1}
         spaceBetween={0}
@@ -60,7 +43,15 @@ export default function AdvertisementSwiper() {
         {images.map((item, i) => {
           return (
             <SwiperSlide key={i}>
-              <AdvertisementImage image={item} />
+              <CustomImage
+                src={item}
+                fallback="/images/advertisement-placeholder.svg"
+                width={1440}
+                height={250}
+                alt="Advertisement"
+                priority
+                className="bg-background-secondary w-full"
+              />
             </SwiperSlide>
           );
         })}

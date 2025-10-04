@@ -1,18 +1,20 @@
-import { useState } from "react";
-import Image from "next/image";
-
+import CustomImage from "../ui/CustomImage";
 import FavoriteButton from "../ui/FavoriteButton/FavoriteButton";
 
 export default function ProductCard(props) {
   let {
+    // _id,
     title,
-    imageCover,
     price,
     priceBeforeDiscount,
     discountPercent,
+    imageCover,
+    quantity,
+    // size,
+    sold,
     ratingsAverage,
     ratingsQuantity,
-    quantity,
+    // save,
   } = props.product;
 
   price = price.toFixed(2).replace(".", ",");
@@ -20,23 +22,17 @@ export default function ProductCard(props) {
     ? (priceBeforeDiscount = priceBeforeDiscount.toFixed(2).replace(".", ","))
     : null;
 
-  const [productImage, setProductImage] = useState(imageCover);
-  const handleImageError = () => {
-    setProductImage("");
-  };
-
   return (
     <div className="bg-background rounded-lg shadow-md h-fit cursor-pointer hover-lift overflow-hidden group">
       <div className="relative p-2.5">
-        <Image
+        <CustomImage
+          src={imageCover}
+          fallback="/images/product-placeholder.png"
           width={500}
           height={690}
-          src={
-            productImage || require("@/public/images/product-placeholder.png")
-          }
-          alt="product"
+          alt={title}
+          priority
           className="rounded-t-lg w-full bg-background-tertiary"
-          onError={handleImageError}
         />
         <FavoriteButton />
       </div>
@@ -55,11 +51,26 @@ export default function ProductCard(props) {
             <span className="text-red-500">
               <del>{priceBeforeDiscount} USD</del>
             </span>
-            <span className="font-semibold text-green-600">
-              {discountPercent}% off
-            </span>
+            <p className="text-green-600 font-semibold">
+              -{discountPercent}% off
+            </p>
           </div>
         )}
+        <div className="text-sm">
+          <p>
+            <span className="font-semibold">{sold}</span> sold in total
+          </p>
+
+          {quantity === 0 ? (
+            <p className="text-red-500">Out of stock.</p>
+          ) : quantity <= 6 ? (
+            <p className="text-orange-500">
+              Only <span className="font-semibold">{quantity}</span> left in
+              stock.
+            </p>
+          ) : null}
+        </div>
+
         <div className="flex items-center gap-1">
           {ratingsAverage}{" "}
           {Array(Math.floor(ratingsAverage))
@@ -73,15 +84,6 @@ export default function ProductCard(props) {
             })}{" "}
           ({ratingsQuantity})
         </div>
-        {quantity >= 1 && quantity <= 6 && (
-          <div className="text-sm text-red-500">
-            Only <span className="font-semibold">{quantity}</span> left in
-            stock.
-          </div>
-        )}
-        {quantity === 0 && (
-          <div className="text-sm text-red-500">Out of stock.</div>
-        )}
         <button className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-10 cursor-pointer font-medium text-base">
           Add to cart
         </button>

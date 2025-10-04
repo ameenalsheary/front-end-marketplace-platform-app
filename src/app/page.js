@@ -1,19 +1,26 @@
-import NavBar from "@/components/layout/Navbar";
+import { Suspense } from "react";
+
 import AdvertisementSwiper from "@/components/advertisement/AdvertisementSwiper";
 import CategorySwiper from "@/components/categories/CategorySwiper";
 import ProductGrid from "@/components/product/ProductGrid";
+import ProductGridSkeleton from "@/components/product/ProductGridSkeleton";
 import BrandGrid from "@/components/Brands/BrandGrid";
-import Footer from "@/components/layout/Footer";
+import BrandGridSkeleton from "@/components/Brands/BrandGridSkeleton";
 
 export default function Home() {
   return (
     <>
-      <NavBar />
       <AdvertisementSwiper />
       <CategorySwiper title={"categories"} />
-      <ProductGrid title={"Best sellers"} />
-      <BrandGrid />
-      <Footer />
+      <Suspense fallback={<ProductGridSkeleton />}>
+        <ProductGrid title={"Best sellers"} />
+      </Suspense>
+      <Suspense fallback={<BrandGridSkeleton />}>
+        <BrandGrid />
+      </Suspense>
+      <Suspense fallback={<ProductGridSkeleton />}>
+        <ProductGrid title={"Best sellers"} />
+      </Suspense>
     </>
   );
 }
