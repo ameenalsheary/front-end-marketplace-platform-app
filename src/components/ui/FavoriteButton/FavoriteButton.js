@@ -2,7 +2,7 @@ import "./FavoriteButton.css";
 
 export default function FavoriteButton() {
   return (
-    <div className="absolute top-4 right-4 bg-background p-1 rounded-full hover-scale">
+    <div className="absolute top-1.5 right-1.5 bg-background p-1 rounded-full hover-scale">
       <div className="heart-container" title="Like">
         <input type="checkbox" className="checkbox" id="Give-It-An-Id" />
         <div className="svg-container">
