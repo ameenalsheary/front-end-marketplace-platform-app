@@ -14,7 +14,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import LoginIcon from "@mui/icons-material/Login";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-const auth = true;
+const auth = false;
 
 export default function NavBar() {
   const [openMenu, setOpenMenu] = useState(false);

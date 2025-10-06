@@ -100,9 +100,15 @@ export default function ProductCard(props) {
           ({ratingsQuantity})
         </div>
 
-        <button className="bg-primary text-[#e5e5e5] p-1 rounded-lg cursor-pointer">
-          Add to cart
-        </button>
+        {quantity === 0 ? (
+          <button className="bg-background-secondary p-1 rounded-lg cursor-not-allowed">
+            Add to cart
+          </button>
+        ) : (
+          <button className="bg-primary text-[#e5e5e5] p-1 rounded-lg cursor-pointer">
+            Add to cart
+          </button>
+        )}
       </div>
     </div>
   );
