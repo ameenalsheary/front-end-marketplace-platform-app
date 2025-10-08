@@ -101,7 +101,7 @@ export default function ProductCard(props) {
         </div>
 
         {quantity === 0 ? (
-          <button className="bg-background-secondary p-1 rounded-lg cursor-not-allowed">
+          <button className="bg-button-disabled p-1 rounded-lg cursor-not-allowed">
             Add to cart
           </button>
         ) : (

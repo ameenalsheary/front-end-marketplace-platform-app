@@ -1,8 +1,27 @@
+"use client";
+
+import { useDispatch, useSelector } from "react-redux";
+import { openAuthModal } from "@/redux/slices/authModalSlice";
+
 import "./FavoriteButton.css";
 
 export default function FavoriteButton() {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.authModal);
+
+  const addProductToFavorite = () => {
+    if (!isAuthenticated) {
+      dispatch(openAuthModal());
+      return;
+    }
+    // normal add to cart code
+  };
+
   return (
-    <div className="absolute top-1.5 right-1.5 bg-background p-1 rounded-full hover-scale">
+    <div
+      className="absolute top-1.5 right-1.5 bg-background p-1 rounded-full hover-scale"
+      onClick={addProductToFavorite}
+    >
       <div className="heart-container" title="Like">
         <input type="checkbox" className="checkbox" id="Give-It-An-Id" />
         <div className="svg-container">

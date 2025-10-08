@@ -7,6 +7,9 @@
   --color-background: #ffffff;
   --color-background-secondary: #f5f7fa;
   --color-background-tertiary: #eaeef3;
+  --color-border: #d1d5db;
+  --color-button-disabled: #cbd5e1;
+  --text-button-disabled: #9ca3af;
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
@@ -16,17 +19,20 @@
 
 @theme inline {
   --color-primary: var(--color-primary);
+  --color-text: var(--color-text);
   --color-background: var(--color-background);
   --color-background-secondary: var(--color-background-secondary);
   --color-background-tertiary: var(--color-background-tertiary);
-  --color-text: var(--color-text);
+  --color-border: var(--color-border);
+  --color-button-disabled: var(--color-button-disabled);
+  --text-button-disabled: var(--text-button-disabled);
 
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: daark) {
   :root {
     /* Dark mode */
     --color-primary: #4871d6;
@@ -34,6 +40,9 @@
     --color-background: #0d0d0d;
     --color-background-secondary: #1a1a1a;
     --color-background-tertiary: #262626;
+    --color-border: #2d2d2d;
+    --color-button-disabled: #374151;
+    --text-button-disabled: #6b7280;
 
     /* Shadows – lighter & softer in dark mode */
     --shadow-sm: 0 1px 2px rgba(255, 255, 255, 0.05);
@@ -58,12 +67,6 @@
   }
   .container {
     @apply ml-auto mr-auto px-3;
-  }
-  .btn-t-primary {
-    @apply bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base;
-  }
-  .btn-t-secondary {
-    @apply bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base;
   }
   .transition-all {
     transition: all 0.3s;

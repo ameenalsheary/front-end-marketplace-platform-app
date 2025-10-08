@@ -1,5 +1,6 @@
 "use client";
 
+import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
@@ -11,13 +12,24 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ContrastIcon from "@mui/icons-material/Contrast";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import LockIcon from "@mui/icons-material/Lock";
-import LoginIcon from "@mui/icons-material/Login";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-const auth = false;
+import { openAuthModal } from "@/redux/slices/authModalSlice";
 
 export default function NavBar() {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.authModal);
+
   const [openMenu, setOpenMenu] = useState(false);
+
+  const openAuth = () => {
+    if (!isAuthenticated) {
+      dispatch(openAuthModal());
+      return;
+    }
+    // normal add to cart code
+  };
 
   return (
     <>
@@ -26,7 +38,7 @@ export default function NavBar() {
           <div className="flex items-center gap-2 py-4">
             <div className="flex-none flex items-center gap-2 cursor-pointer">
               <Image
-                src={require("../.././../public/images/logo192.png")}
+                src={"/images/logo192.png"}
                 width={192}
                 height={192}
                 className="h-12 w-12"
@@ -46,33 +58,33 @@ export default function NavBar() {
                 <SearchIcon />
               </button>
             </div>
-            {!auth ? (
+            {!isAuthenticated ? (
               <>
                 <button
-                  className="flex-none btn-t-primary hover-scale md:hidden"
-                  onClick={() => setOpenMenu(!openMenu)}
+                  className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale md:hidden"
+                  onClick={() => openAuth()}
                 >
-                  <SegmentIcon />
+                  <ExitToAppIcon />
                 </button>
-                <div className="flex-none gap-2 hidden md:flex">
-                  <button className="btn-t-secondary hover-scale">
-                    Log in
-                  </button>
-                  <button className="btn-t-primary hover-scale">Sign up</button>
-                </div>
+                <button
+                  className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale hidden md:block"
+                  onClick={() => openAuth()}
+                >
+                  Sign in <ExitToAppIcon />
+                </button>
               </>
             ) : (
               <>
                 <div className="hidden md:flex items-center gap-2">
-                  <button className="flex-none btn-t-secondary hover-scale">
+                  <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
                     <ShoppingCartIcon />
                   </button>
-                  <button className="flex-none btn-t-secondary hover-scale">
+                  <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
                     <FavoriteIcon />
                   </button>
                 </div>
                 <button
-                  className="flex-none btn-t-primary hover-scale"
+                  className="flex-none bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale"
                   onClick={() => setOpenMenu(!openMenu)}
                 >
                   <SegmentIcon />
@@ -84,7 +96,7 @@ export default function NavBar() {
       </nav>
       <div
         className={clsx(
-          "bg-[#0000009f] fixed z-10 left-0 w-full h-[calc(100vh-80px)]",
+          "bg-[#0000009f] fixed z-2 left-0 w-full h-[calc(100vh-80px)]",
           {
             "top-[80px] opacity-100": openMenu === true,
             "top-[-100%] opacity-0": openMenu === false,
@@ -92,55 +104,37 @@ export default function NavBar() {
         )}
         onClick={() => setOpenMenu(false)}
       >
-        {!auth ? (
-          <div className="container md:hidden">
-            <ul
-              className="mt-1.5 rounded-md overflow-hidden w-64 ml-auto shadow-md bg-background flex flex-col gap-0.5"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
-                <LoginIcon className="text-primary" />
-                <span className="text-text">LOg in</span>
-              </li>
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
-                <LoginIcon className="text-primary" />
-                <span className="text-text">sign up</span>
-              </li>
-            </ul>
-          </div>
-        ) : (
-          <div className="container">
-            <ul
-              className="mt-1.5 rounded-md overflow-hidden w-64 ml-auto shadow-md bg-background flex flex-col gap-0.5"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
-                <AccountBoxIcon className="text-primary" />
-                <span className="text-text">Profile</span>
-              </li>
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all md:hidden">
-                <FavoriteIcon className="text-primary" />
-                <span className="text-text">Favorites</span>
-              </li>
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all md:hidden">
-                <ShoppingCartIcon className="text-primary" />
-                <span className="text-text">Shopping cart</span>
-              </li>
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
-                <ShoppingBagIcon className="text-primary" />
-                <span className="text-text">Orders</span>
-              </li>
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
-                <ContrastIcon className="text-primary" />
-                <span className="text-text">Thems</span>
-              </li>
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500">
-                <LockIcon />
-                <span className="font-medium">Log out</span>
-              </li>
-            </ul>
-          </div>
-        )}
+        <div className="container">
+          <ul
+            className="mt-1.5 rounded-md overflow-hidden w-64 ml-auto shadow-md bg-background flex flex-col gap-0.5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+              <AccountBoxIcon className="text-primary" />
+              <span className="text-text">Profile</span>
+            </li>
+            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all md:hidden">
+              <FavoriteIcon className="text-primary" />
+              <span className="text-text">Favorites</span>
+            </li>
+            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all md:hidden">
+              <ShoppingCartIcon className="text-primary" />
+              <span className="text-text">Shopping cart</span>
+            </li>
+            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+              <ShoppingBagIcon className="text-primary" />
+              <span className="text-text">Orders</span>
+            </li>
+            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+              <ContrastIcon className="text-primary" />
+              <span className="text-text">Thems</span>
+            </li>
+            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500">
+              <LockIcon />
+              <span className="font-medium">Log out</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </>
   );
