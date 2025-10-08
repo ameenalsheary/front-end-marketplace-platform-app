@@ -43,8 +43,12 @@ export default function ProductCard(props) {
           className="rounded-t-lg w-full bg-background-tertiary"
         />
         <FavoriteButton />
+        <div className="absolute bottom-0 left-0 flex items-center gap-1 bg-background text-sm px-2 pt-0.5 rounded-tr-sm">
+          <span className="font-semibold">{ratingsAverage}</span>
+          <span className="text-yellow-400">&#9733;</span>({ratingsQuantity})
+        </div>
       </div>
-      <div className="p-2 flex flex-col gap-0.5">
+      <div className="p-2 flex flex-col gap-1">
         <h1 className="text-text font-medium text-lg line-clamp-2 group-hover:text-primary">
           {title}
         </h1>
@@ -66,7 +70,7 @@ export default function ProductCard(props) {
           </div>
         </div>
 
-        <div className="hidden sm:flex gap-1">
+        <div className="hidden sm:flex gap-1 text-sm">
           {quantity === 0 ? (
             <p className="text-red-500 text-semibold bg-red-100 px-1 rounded-sm">
               Out of stock
@@ -84,20 +88,6 @@ export default function ProductCard(props) {
           <p>
             <span className="font-semibold">{sold}</span> sold
           </p>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <span className="font-semibold">{ratingsAverage}</span>
-          {Array(Math.floor(ratingsAverage))
-            .fill(0)
-            .map((_, i) => {
-              return (
-                <span className="text-yellow-400" key={i}>
-                  &#9733;
-                </span>
-              );
-            })}{" "}
-          ({ratingsQuantity})
         </div>
 
         {quantity === 0 ? (
