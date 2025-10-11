@@ -5,12 +5,14 @@ import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { closeAuthModal } from "@/redux/slices/authModalSlice";
+import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
 
-// Validation schemas
+import {closeAuthModal, setAuthenticated } from "@/redux/slices/authModalSlice";
+import apiClient from "@/services/apiClient";
+
+// Validation
 const emailSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email format")
@@ -18,17 +20,39 @@ const emailSchema = Yup.object({
 });
 
 const verifySchema = Yup.object({
-  code: Yup.string()
-    .matches(/^[0-9]{4,6}$/, "Code must be 4–6 digits")
+  verificationCode: Yup.string()
+    .matches(/^[0-9]{4,6}$/, "Verification code must be 4–6 digits")
     .required("Verification code is required"),
 });
+
+// Small reusable overlay
+const LoadingOverlay = () => (
+  <div className="absolute inset-0 bg-background opacity-50 cursor-wait flex justify-center items-center">
+    <LoadingIcon />
+  </div>
+);
+
+// Small reusable message
+const Message = ({ type, text }) => {
+  if (!text) return null;
+  const color = type === "fail" ? "text-red-500" : "text-green-500";
+  return <p className={`${color} text-sm text-center`}>{text}</p>;
+};
 
 export default function Auth() {
   const dispatch = useDispatch();
   const { isOpen } = useSelector((state) => state.authModal);
 
   const [mode, setMode] = useState("signin");
-  const [step, setStep] = useState("email"); // 'email' or 'verify'
+  const [step, setStep] = useState("email");
+  const [signInRes, setSignInRes] = useState({});
+  const [verifySignInRes, setVerifySignInRes] = useState({});
+
+  const resetAll = () => {
+    setSignInRes({});
+    setVerifySignInRes({});
+    setStep("email");
+  };
 
   if (!isOpen) return null;
 
@@ -45,45 +69,34 @@ export default function Auth() {
           <h1 className="text-xl font-semibold">
             {mode === "signin" ? "Welcome back" : "Create your account"}
           </h1>
-          <div
+          <button
             className="text-red-500 cursor-pointer"
             onClick={() => dispatch(closeAuthModal())}
           >
             <CloseIcon />
-          </div>
+          </button>
         </div>
 
-        {/* Switch buttons */}
+        {/* Mode switch */}
         {step !== "verify" && (
           <div className="flex p-0.5 bg-primary rounded-lg">
-            <button
-              type="button"
-              onClick={() => {
-                setMode("signin");
-                setStep("email");
-              }}
-              className={`w-full p-1.5 rounded-md cursor-pointer ${
-                mode === "signin"
-                  ? "bg-background text-primary"
-                  : "bg-primary text-[#e5e5e5]"
-              }`}
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setMode("signup");
-                setStep("email");
-              }}
-              className={`w-full p-1.5 rounded-md cursor-pointer ${
-                mode === "signup"
-                  ? "bg-background text-primary"
-                  : "bg-primary text-[#e5e5e5]"
-              }`}
-            >
-              Sign Up
-            </button>
+            {["signin", "signup"].map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => {
+                  setMode(m);
+                  resetAll();
+                }}
+                className={`w-full p-1.5 rounded-md ${
+                  mode === m
+                    ? "bg-background text-primary"
+                    : "bg-primary text-[#e5e5e5]"
+                }`}
+              >
+                {m === "signin" ? "Sign In" : "Sign Up"}
+              </button>
+            ))}
           </div>
         )}
 
@@ -92,18 +105,28 @@ export default function Auth() {
           <Formik
             initialValues={{ email: "" }}
             validationSchema={emailSchema}
-            onSubmit={(values) => {
-              console.log(`${mode} email submitted:`, values.email);
-              setStep("verify");
+            onSubmit={async ({ email }) => {
+              try {
+                const res = await apiClient.post("/auth/signin", { email });
+                if (res.data.status === "Success") {
+                  setSignInRes(res.data);
+                  setStep("verify");
+                }
+              } catch (error) {
+                setSignInRes(
+                  error.response?.data || {
+                    status: "fail",
+                    message: "Something went wrong. Please try again.",
+                  }
+                );
+              }
             }}
           >
             {({ isSubmitting }) => (
-              <Form className="w-full flex flex-col gap-4 relative">
-                {isSubmitting && (
-                  <div className="absolute top-0 left-0 w-full h-full bg-background opacity-50 cursor-wait flex justify-center items-center">
-                    <LoadingIcon />
-                  </div>
-                )}
+              <Form className="w-full flex flex-col gap-4">
+                {isSubmitting && <LoadingOverlay />}
+
+                <Message type={signInRes.status} text={signInRes.message} />
 
                 <div>
                   <Field
@@ -124,7 +147,7 @@ export default function Auth() {
                   disabled={isSubmitting}
                   className="button w-full bg-primary text-[#e5e5e5] p-1.5 rounded-md cursor-pointer focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 >
-                  {"Continue"}
+                  Continue
                 </button>
               </Form>
             )}
@@ -134,29 +157,59 @@ export default function Auth() {
         {/* Verify Step */}
         {step === "verify" && (
           <Formik
-            initialValues={{ code: "" }}
+            initialValues={{ verificationCode: "" }}
             validationSchema={verifySchema}
-            onSubmit={(values) => {
-              console.log("Verification code submitted:", values.code);
+            onSubmit={async ({ verificationCode }) => {
+              try {
+                const res = await apiClient.post("/auth/verifysignin", {
+                  email: signInRes.email,
+                  verificationCode,
+                });
+
+                if (res.data.status === "Success") {
+                  dispatch(setAuthenticated(true));
+                  dispatch(closeAuthModal());
+                }
+              } catch (error) {
+                setVerifySignInRes(
+                  error.response?.data || {
+                    status: "fail",
+                    message: "Something went wrong. Please try again.",
+                  }
+                );
+              }
             }}
           >
             {({ isSubmitting }) => (
               <Form className="w-full flex flex-col gap-4">
-                {isSubmitting && (
-                  <div className="absolute top-0 left-0 w-full h-full bg-background opacity-50 cursor-wait flex justify-center items-center">
-                    <LoadingIcon />
+                {isSubmitting && <LoadingOverlay />}
+
+                {signInRes?.status === "Success" && (
+                  <div className="flex flex-col gap-0">
+                    <p className="text-center">{signInRes.message}</p>
+                    <div className="flex justify-center gap-2">
+                      <p className="font-semibold">{signInRes.email}</p>
+                      <span
+                        className="text-primary font-semibold cursor-pointer"
+                        onClick={resetAll}
+                      >
+                        change
+                      </span>
+                    </div>
                   </div>
                 )}
 
+                <Message type={verifySignInRes.status} text={verifySignInRes.message} />
+
                 <div>
                   <Field
-                    name="code"
-                    type="number"
+                    name="verificationCode"
+                    type="text"
                     placeholder="Enter your verification code"
                     className="input w-full p-1.5 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <ErrorMessage
-                    name="code"
+                    name="verificationCode"
                     component="div"
                     className="text-red-500 text-sm pt-0.5"
                   />
