@@ -3,7 +3,7 @@ import FavoriteButton from "../ui/FavoriteButton/FavoriteButton";
 
 export default function ProductCard(props) {
   let {
-    // _id,
+    _id,
     title,
     price,
     priceBeforeDiscount,
@@ -14,13 +14,13 @@ export default function ProductCard(props) {
     sold,
     ratingsAverage,
     ratingsQuantity,
-    // save,
+    isFavorite,
   } = props.product;
 
   price = price.toFixed(2).replace(".", ",");
   priceBeforeDiscount
     ? (priceBeforeDiscount = priceBeforeDiscount.toFixed(2).replace(".", ","))
-    : null;
+    : null;  
 
   return (
     <div className="bg-background rounded-lg shadow-md h-fit cursor-pointer hover-lift overflow-hidden group">
@@ -42,7 +42,7 @@ export default function ProductCard(props) {
           priority
           className="rounded-t-lg w-full bg-background-tertiary"
         />
-        <FavoriteButton />
+        <FavoriteButton productId={_id} isFavorite={isFavorite} />
         <div className="absolute bottom-0 left-0 flex items-center gap-1 bg-background text-sm px-2 pt-0.5 rounded-tr-sm">
           <span className="font-semibold">{ratingsAverage}</span>
           <span className="text-yellow-400">&#9733;</span>({ratingsQuantity})

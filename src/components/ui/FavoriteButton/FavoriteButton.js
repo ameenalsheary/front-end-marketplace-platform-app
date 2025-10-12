@@ -2,28 +2,75 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { openAuthModal } from "@/redux/slices/authModalSlice";
+import { useState, useRef } from "react";
 
 import "./FavoriteButton.css";
 
-export default function FavoriteButton() {
+import apiClient from "@/services/apiClient";
+
+export default function FavoriteButton({ productId, isFavorite }) {
+  // Get authentication state and dispatch function from Redux
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.authModal);
 
-  const addProductToFavorite = () => {
+  // State for current checked status and loading indicator
+  const [checked, setChecked] = useState(isFavorite);
+  const [loading, setLoading] = useState(false);
+
+  // Refs for timeout ID and pending checked value
+  const timeoutRef = useRef(null);
+  const pendingChecked = useRef(checked);
+
+  // Function to update favorite status on server
+  const updateFavorite = async (newChecked) => {
+    setLoading(true);
+    try {
+      if (newChecked) {
+        // Add to favorites
+        await apiClient.post("/customer/favorites", { productId });
+      } else {
+        // Remove from favorites
+        await apiClient.delete(`/customer/favorites/${productId}`);
+      }
+    } catch (err) {
+      console.error("Failed to update favorite:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle checkbox change
+  const handleChange = (e) => {
+    // Redirect to auth if user not logged in
     if (!isAuthenticated) {
       dispatch(openAuthModal());
       return;
     }
-    // normal add to cart code
+
+    const newChecked = e.target.checked;
+    setChecked(newChecked);
+    pendingChecked.current = newChecked;
+
+    // Clear any existing timeout
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    // Debounce API call - wait 300ms before updating
+    timeoutRef.current = setTimeout(() => {
+      updateFavorite(pendingChecked.current);
+      timeoutRef.current = null;
+    }, 300);
   };
 
   return (
-    <div
-      className="absolute top-1.5 right-1.5 bg-background p-1 rounded-full hover-scale"
-      onClick={addProductToFavorite}
-    >
+    <div className="absolute top-1.5 right-1.5 bg-background p-1 rounded-full hover-scale">
       <div className="heart-container" title="Like">
-        <input type="checkbox" className="checkbox" id="Give-It-An-Id" />
+        <input
+          type="checkbox"
+          className="checkbox"
+          checked={checked}
+          disabled={loading}
+          onChange={handleChange}
+        />
         <div className="svg-container">
           <svg
             viewBox="0 0 24 24"
