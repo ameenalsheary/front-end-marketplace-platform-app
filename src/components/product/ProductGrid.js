@@ -36,6 +36,8 @@ export default async function ProductGrid(props) {
     cookieHeader
   );
 
+  console.log("TOOOOKEN:::", accessToken);
+
   return (
     <div className="bg-background-secondary py-6">
       <div className="container">
