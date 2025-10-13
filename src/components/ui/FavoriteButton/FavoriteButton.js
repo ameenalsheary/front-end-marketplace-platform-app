@@ -1,35 +1,39 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openAuthModal } from "@/redux/slices/authModalSlice";
-import { useState, useRef } from "react";
+import apiClient from "@/services/apiClient";
 
 import "./FavoriteButton.css";
 
-import apiClient from "@/services/apiClient";
-
 export default function FavoriteButton({ productId, isFavorite }) {
-  // Get authentication state and dispatch function from Redux
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.authModal);
 
-  // State for current checked status and loading indicator
   const [checked, setChecked] = useState(isFavorite);
   const [loading, setLoading] = useState(false);
 
-  // Refs for timeout ID and pending checked value
   const timeoutRef = useRef(null);
-  const pendingChecked = useRef(checked);
+  const pendingChecked = useRef(isFavorite);
 
-  // Function to update favorite status on server
+  useEffect(() => {
+    setChecked(isFavorite);
+    pendingChecked.current = isFavorite;
+  }, [isFavorite]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
   const updateFavorite = async (newChecked) => {
     setLoading(true);
     try {
       if (newChecked) {
-        // Add to favorites
         await apiClient.post("/customer/favorites", { productId });
       } else {
-        // Remove from favorites
         await apiClient.delete(`/customer/favorites/${productId}`);
       }
     } catch (err) {
@@ -39,9 +43,7 @@ export default function FavoriteButton({ productId, isFavorite }) {
     }
   };
 
-  // Handle checkbox change
   const handleChange = (e) => {
-    // Redirect to auth if user not logged in
     if (!isAuthenticated) {
       dispatch(openAuthModal());
       return;
@@ -51,10 +53,8 @@ export default function FavoriteButton({ productId, isFavorite }) {
     setChecked(newChecked);
     pendingChecked.current = newChecked;
 
-    // Clear any existing timeout
+    // Debounce API call
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-    // Debounce API call - wait 300ms before updating
     timeoutRef.current = setTimeout(() => {
       updateFavorite(pendingChecked.current);
       timeoutRef.current = null;

@@ -23,7 +23,7 @@ export default function ProductCard(props) {
     : null;  
 
   return (
-    <div className="bg-background rounded-lg shadow-md h-fit cursor-pointer hover-lift overflow-hidden group">
+    <div className="bg-background rounded-lg shadow-md h-fit cursor-pointer overflow-hidden group">
       <div className="relative">
         {quantity === 0 && (
           <div className="w-full h-full bg-[#0000009f] absolute top-0 left-0 flex justify-center items-center">
