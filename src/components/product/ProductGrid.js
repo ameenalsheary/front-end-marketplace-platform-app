@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 // import Pagination from "@mui/material/Pagination";
 
 import { cookies } from "next/headers";
