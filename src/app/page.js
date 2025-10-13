@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { Suspense } from "react";
 
 import AdvertisementSwiper from "@/components/advertisement/AdvertisementSwiper";
@@ -12,17 +10,17 @@ import BrandGridSkeleton from "@/components/Brands/BrandGridSkeleton";
 export default function Home() {
   return (
     <>
-      <AdvertisementSwiper />
-      <CategorySwiper title={"categories"} />
+      {/* <AdvertisementSwiper />
+      <CategorySwiper title={"categories"} /> */}
       <Suspense fallback={<ProductGridSkeleton />}>
         <ProductGrid title={"Best sellers"} />
       </Suspense>
-      <Suspense fallback={<BrandGridSkeleton />}>
+      {/* <Suspense fallback={<BrandGridSkeleton />}>
         <BrandGrid />
       </Suspense>
       <Suspense fallback={<ProductGridSkeleton />}>
         <ProductGrid title={"Best sellers"} />
-      </Suspense>
+      </Suspense> */}
     </>
   );
 }
