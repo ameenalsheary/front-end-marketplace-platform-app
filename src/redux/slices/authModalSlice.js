@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isOpen: false,
-  isAuthenticated: false,
+  isAuthenticated: true,
 };
 
 const authModalSlice = createSlice({
