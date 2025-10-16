@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
 import CloseIcon from "@mui/icons-material/Close";
 
 import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
-
-import {closeAuthModal, setAuthenticated } from "@/redux/slices/authModalSlice";
-import apiClient from "@/services/apiClient";
+import {
+  closeAuthModal,
+  setAuthenticated,
+} from "@/redux/slices/authModalSlice";
+import authService from "@/services/auth.service";
 
 // Validation
 const emailSchema = Yup.object({
@@ -106,20 +107,9 @@ export default function Auth() {
             initialValues={{ email: "" }}
             validationSchema={emailSchema}
             onSubmit={async ({ email }) => {
-              try {
-                const res = await apiClient.post("/auth/signin", { email });
-                if (res.data.status === "Success") {
-                  setSignInRes(res.data);
-                  setStep("verify");
-                }
-              } catch (error) {
-                setSignInRes(
-                  error.response?.data || {
-                    status: "fail",
-                    message: "Something went wrong. Please try again.",
-                  }
-                );
-              }
+              const res = await authService.signIn(email);
+              setSignInRes(res);
+              if (res.status === "Success") setStep("verify");
             }}
           >
             {({ isSubmitting }) => (
@@ -160,23 +150,15 @@ export default function Auth() {
             initialValues={{ verificationCode: "" }}
             validationSchema={verifySchema}
             onSubmit={async ({ verificationCode }) => {
-              try {
-                const res = await apiClient.post("/auth/verifysignin", {
-                  email: signInRes.email,
-                  verificationCode,
-                });
-
-                if (res.data.status === "Success") {
-                  dispatch(setAuthenticated(true));
-                  dispatch(closeAuthModal());
-                }
-              } catch (error) {
-                setVerifySignInRes(
-                  error.response?.data || {
-                    status: "fail",
-                    message: "Something went wrong. Please try again.",
-                  }
-                );
+              const res = await authService.verifySignIn(
+                signInRes.email,
+                verificationCode
+              );
+              setVerifySignInRes(res);
+              if (res.status === "Success") {
+                dispatch(setAuthenticated(true));
+                dispatch(closeAuthModal());
+                resetAll();
               }
             }}
           >
@@ -199,7 +181,10 @@ export default function Auth() {
                   </div>
                 )}
 
-                <Message type={verifySignInRes.status} text={verifySignInRes.message} />
+                <Message
+                  type={verifySignInRes.status}
+                  text={verifySignInRes.message}
+                />
 
                 <div>
                   <Field

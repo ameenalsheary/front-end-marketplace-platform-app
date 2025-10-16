@@ -32,7 +32,7 @@
   --shadow-lg: var(--shadow-lg);
 }
 
-@media (prefers-color-scheme: daark) {
+@media (prefers-color-scheme: darke) {
   :root {
     /* Dark mode */
     --color-primary: #4871d6;

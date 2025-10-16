@@ -14,7 +14,7 @@ export default function FavoriteButton({ productId, isFavorite }) {
   const { isAuthenticated } = useSelector((state) => state.authModal);
 
   // State for current checked status and loading indicator
-  const [checked, setChecked] = useState(isFavorite);
+  const [checked, setChecked] = useState(Boolean(isFavorite));
   const [loading, setLoading] = useState(false);
 
   // Refs for timeout ID and pending checked value

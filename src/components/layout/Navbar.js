@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
+import { Formik, Form } from "formik";
 
 import SearchIcon from "@mui/icons-material/Search";
 import SegmentIcon from "@mui/icons-material/Segment";
@@ -15,11 +16,12 @@ import LockIcon from "@mui/icons-material/Lock";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-import { openAuthModal } from "@/redux/slices/authModalSlice";
+import { openAuthModal, setAuthenticated } from "@/redux/slices/authModalSlice";
+import authService from "@/services/auth.service";
 
 export default function NavBar() {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.authModal);
+  const { status, isAuthenticated } = useSelector((state) => state.authModal);
 
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -28,7 +30,6 @@ export default function NavBar() {
       dispatch(openAuthModal());
       return;
     }
-    // normal add to cart code
   };
 
   return (
@@ -44,10 +45,12 @@ export default function NavBar() {
                 className="h-12 w-12"
                 alt="logo"
               />
+
               <h1 className="text-3xl font-bold text-primary hidden md:block">
                 E-shop
               </h1>
             </div>
+
             <div className="flex-grow flex rounded-full overflow-hidden">
               <input
                 type="text"
@@ -58,37 +61,52 @@ export default function NavBar() {
                 <SearchIcon />
               </button>
             </div>
-            {!isAuthenticated ? (
+
+            {status === "idle" || status === "loading" ? (
               <>
-                <button
-                  className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale md:hidden"
-                  onClick={() => openAuth()}
-                >
-                  <ExitToAppIcon />
-                </button>
-                <button
-                  className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale hidden md:block"
-                  onClick={() => openAuth()}
-                >
-                  Sign in <ExitToAppIcon />
-                </button>
+                <div className="hidden md:flex items-center gap-2">
+                  <button className=" px-4 rounded-lg h-12 skeleton">Ld</button>
+                  <button className=" px-4 rounded-lg h-12 skeleton">Ld</button>
+                </div>
+                <button className=" px-4 rounded-lg h-12 skeleton">Ld</button>
               </>
             ) : (
               <>
-                <div className="hidden md:flex items-center gap-2">
-                  <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
-                    <ShoppingCartIcon />
-                  </button>
-                  <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
-                    <FavoriteIcon />
-                  </button>
-                </div>
-                <button
-                  className="flex-none bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale"
-                  onClick={() => setOpenMenu(!openMenu)}
-                >
-                  <SegmentIcon />
-                </button>
+                {!isAuthenticated ? (
+                  <>
+                    <button
+                      className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale md:hidden"
+                      onClick={() => openAuth()}
+                    >
+                      <ExitToAppIcon />
+                    </button>
+
+                    <button
+                      className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale hidden md:block"
+                      onClick={() => openAuth()}
+                    >
+                      Sign in <ExitToAppIcon />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="hidden md:flex items-center gap-2">
+                      <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
+                        <ShoppingCartIcon />
+                      </button>
+                      <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
+                        <FavoriteIcon />
+                      </button>
+                    </div>
+
+                    <button
+                      className="flex-none bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale"
+                      onClick={() => setOpenMenu(!openMenu)}
+                    >
+                      <SegmentIcon />
+                    </button>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -129,9 +147,37 @@ export default function NavBar() {
               <ContrastIcon className="text-primary" />
               <span className="text-text">Thems</span>
             </li>
-            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500">
-              <LockIcon />
-              <span className="font-medium">Log out</span>
+
+            <li>
+              <Formik
+                initialValues={{}}
+                onSubmit={async () => {
+                  const res = await authService.logOut();
+                  if (res.status === "Success") {
+                    dispatch(setAuthenticated(false));
+                    setOpenMenu(false);
+                  }
+                }}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    {isSubmitting ? (
+                      <div className="bg-background-secondary py-4 px-2">
+                        <span className="skeleton">Loading...</span>
+                      </div>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="bg-background-secondary w-full py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500"
+                        onClick={async () => {}}
+                      >
+                        <LockIcon />
+                        <span className="font-medium">Log out</span>
+                      </button>
+                    )}
+                  </Form>
+                )}
+              </Formik>
             </li>
           </ul>
         </div>
