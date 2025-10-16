@@ -156,7 +156,12 @@ export default function Auth() {
               );
               setVerifySignInRes(res);
               if (res.status === "Success") {
-                dispatch(setAuthenticated(true));
+                dispatch(
+                  setAuthenticated({
+                    isAuthenticated: true,
+                    user: { ...(res?.user || {}) },
+                  })
+                );
                 dispatch(closeAuthModal());
                 resetAll();
               }

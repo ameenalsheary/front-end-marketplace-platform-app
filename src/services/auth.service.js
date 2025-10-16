@@ -36,23 +36,18 @@ const authService = {
     try {
       const res = await apiClient.post("/auth/logout");
       return res.data;
-    } catch {
-      return (
-        error.response?.data || {
-          status: "fail",
-          message: "Something went wrong. Please try again.",
-        }
-      );
-    }
+    } catch {}
   },
 
   checkAuth: async () => {
     try {
-      await apiClient.get("/customer");
-      return true;
-    } catch {
-      return false;
-    }
+      const res = await apiClient.get("/customer", {
+        params: {
+          fields: "firstName lastName profileImage",
+        },
+      });
+      return res.data;
+    } catch {}
   },
 };
 

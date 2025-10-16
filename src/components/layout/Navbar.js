@@ -7,7 +7,6 @@ import clsx from "clsx";
 import { Formik, Form } from "formik";
 
 import SearchIcon from "@mui/icons-material/Search";
-import SegmentIcon from "@mui/icons-material/Segment";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ContrastIcon from "@mui/icons-material/Contrast";
@@ -16,12 +15,15 @@ import LockIcon from "@mui/icons-material/Lock";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
+import CustomImage from "../ui/CustomImage";
 import { openAuthModal, setAuthenticated } from "@/redux/slices/authModalSlice";
 import authService from "@/services/auth.service";
 
 export default function NavBar() {
   const dispatch = useDispatch();
-  const { status, isAuthenticated } = useSelector((state) => state.authModal);
+  const { status, isAuthenticated, user } = useSelector(
+    (state) => state.authModal
+  );
 
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -39,7 +41,7 @@ export default function NavBar() {
           <div className="flex items-center gap-2 py-4">
             <div className="flex-none flex items-center gap-2 cursor-pointer">
               <Image
-                src={"/images/logo192.png"}
+                src={"/logos/logo192.png"}
                 width={192}
                 height={192}
                 className="h-12 w-12"
@@ -68,7 +70,7 @@ export default function NavBar() {
                   <button className=" px-4 rounded-lg h-12 skeleton">Ld</button>
                   <button className=" px-4 rounded-lg h-12 skeleton">Ld</button>
                 </div>
-                <button className=" px-4 rounded-lg h-12 skeleton">Ld</button>
+                <button className=" px-4 rounded-full h-12 skeleton">Ld</button>
               </>
             ) : (
               <>
@@ -100,10 +102,18 @@ export default function NavBar() {
                     </div>
 
                     <button
-                      className="flex-none bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale"
+                      className="size-12 bg-background-secondary rounded-full cursor-pointer overflow-hidden hover-scale"
                       onClick={() => setOpenMenu(!openMenu)}
                     >
-                      <SegmentIcon />
+                      <CustomImage
+                        src={user.profileImage}
+                        fallback="/images/profile-image-placeholder.png"
+                        width={400}
+                        height={400}
+                        alt="Profile image"
+                        priority
+                        className="h-full w-full"
+                      />
                     </button>
                   </>
                 )}
