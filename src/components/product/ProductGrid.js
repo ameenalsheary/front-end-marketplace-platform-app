@@ -1,7 +1,5 @@
 // import Pagination from "@mui/material/Pagination";
 
-import { cookies } from "next/headers";
-
 import { productService } from "@/services/product.service.";
 import ProductCard from "./ProductCard";
 
@@ -22,19 +20,12 @@ const specificFields = `
 export default async function ProductGrid(props) {
   const title = props.title;
 
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-  const cookieHeader = accessToken ? `accessToken=${accessToken}` : "";
-
-  const products = await productService.getProducts(
-    {
-      page: "1",
-      limit: "10",
-      sort: "-sold",
-      fields: specificFields,
-    },
-    cookieHeader
-  );
+  const products = await productService.getProducts({
+    page: "1",
+    limit: "10",
+    sort: "-sold",
+    fields: specificFields,
+  });
 
   return (
     <div className="bg-background-secondary py-6">

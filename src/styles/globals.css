@@ -74,6 +74,9 @@
   .skeleton {
     @apply bg-background-tertiary text-transparent select-none animate-pulse;
   }
+  .h-screen-minus-header {
+    @apply h-[calc(100vh-80px)];
+  }
 }
 
 /* start pagination */

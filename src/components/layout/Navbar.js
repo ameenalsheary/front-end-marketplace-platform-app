@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
 import { Formik, Form } from "formik";
+import { useRouter } from "next/navigation";
 
 import SearchIcon from "@mui/icons-material/Search";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -26,6 +27,8 @@ export default function NavBar() {
   );
 
   const [openMenu, setOpenMenu] = useState(false);
+
+  const router = useRouter();
 
   const openAuth = () => {
     if (!isAuthenticated) {
@@ -124,7 +127,7 @@ export default function NavBar() {
       </nav>
       <div
         className={clsx(
-          "bg-[#0000009f] fixed z-2 left-0 w-full h-[calc(100vh-80px)]",
+          "bg-[#0000009f] fixed z-2 left-0 w-full h-screen-minus-header",
           {
             "top-[80px] opacity-100": openMenu === true,
             "top-[-100%] opacity-0": openMenu === false,
@@ -166,6 +169,7 @@ export default function NavBar() {
                   if (res.status === "Success") {
                     dispatch(setAuthenticated(false));
                     setOpenMenu(false);
+                    router.push("/"); // go to home without full reload
                   }
                 }}
               >

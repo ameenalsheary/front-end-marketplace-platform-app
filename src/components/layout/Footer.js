@@ -25,16 +25,16 @@ export default function Footer() {
                 About Us
               </h3>
               <ul className="text-center flex flex-col gap-2">
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   About EShop
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Careers
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Press
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Blog
                 </li>
               </ul>
@@ -45,16 +45,16 @@ export default function Footer() {
                 Customer Service
               </h3>
               <ul className="text-center flex flex-col gap-2">
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Contact Us
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Shipping Info
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Returns
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   FAQ
                 </li>
               </ul>
@@ -65,16 +65,16 @@ export default function Footer() {
                 Legal
               </h3>
               <ul className="text-center flex flex-col gap-2">
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Privacy Policy
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Terms of Service
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Cookie Policy
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Accessibility
                 </li>
               </ul>
@@ -85,16 +85,16 @@ export default function Footer() {
                 Quick Links
               </h3>
               <ul className="text-center flex flex-col gap-2">
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   My Account
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Wishlist
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Track Order
                 </li>
-                <li className="bg-background-secondary p-2 rounded-md text-tex cursor-pointer hover:text-primary hover:bg">
+                <li className="bg-background-secondary p-2 rounded-md text-text cursor-pointer hover:text-primary hover:bg">
                   Gift Cards
                 </li>
               </ul>

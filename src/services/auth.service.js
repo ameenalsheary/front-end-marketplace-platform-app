@@ -1,7 +1,7 @@
 import apiClient from "./apiClient";
 
 const authService = {
-  signIn: async (email) => {
+  async signIn(email) {
     try {
       const res = await apiClient.post("/auth/signin", { email });
       return res.data;
@@ -15,7 +15,7 @@ const authService = {
     }
   },
 
-  verifySignIn: async (email, verificationCode) => {
+  async verifySignIn(email, verificationCode) {
     try {
       const res = await apiClient.post("/auth/verifysignin", {
         email,
@@ -32,14 +32,14 @@ const authService = {
     }
   },
 
-  logOut: async () => {
+  async logOut() {
     try {
       const res = await apiClient.post("/auth/logout");
       return res.data;
     } catch {}
   },
 
-  checkAuth: async () => {
+  async checkAuth() {
     try {
       const res = await apiClient.get("/customer", {
         params: {
