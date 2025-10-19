@@ -6,7 +6,7 @@ export const verifyAuth = createAsyncThunk("auth/verifyAuth", async () => {
     const res = await authService.checkAuth();
     return {
       isAuthenticated: true,
-      user: { ...res.data },
+      user: { ...res.user },
     };
   } catch {
     return {

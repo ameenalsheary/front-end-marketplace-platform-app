@@ -6,6 +6,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import { Formik, Form } from "formik";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import SearchIcon from "@mui/icons-material/Search";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -42,19 +43,21 @@ export default function NavBar() {
       <nav className="shadow-md bg-background sticky top-0 z-2">
         <div className="container bg-background">
           <div className="flex items-center gap-2 py-4">
-            <div className="flex-none flex items-center gap-2 cursor-pointer">
-              <Image
-                src={"/logos/logo192.png"}
-                width={192}
-                height={192}
-                className="h-12 w-12"
-                alt="logo"
-              />
+            <Link href={"/"}>
+              <div className="flex-none flex items-center gap-2 cursor-pointer">
+                <Image
+                  src={"/logos/logo192.png"}
+                  width={192}
+                  height={192}
+                  className="h-12 w-12"
+                  alt="logo"
+                />
 
-              <h1 className="text-3xl font-bold text-primary hidden md:block">
-                E-shop
-              </h1>
-            </div>
+                <h1 className="text-3xl font-bold text-primary hidden md:block">
+                  E-shop
+                </h1>
+              </div>
+            </Link>
 
             <div className="flex-grow flex rounded-full overflow-hidden">
               <input
@@ -96,12 +99,22 @@ export default function NavBar() {
                 ) : (
                   <>
                     <div className="hidden md:flex items-center gap-2">
-                      <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
-                        <ShoppingCartIcon />
-                      </button>
-                      <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
-                        <FavoriteIcon />
-                      </button>
+                      <Link
+                        href={"/shopping-cart"}
+                        onClick={() => setOpenMenu(false)}
+                      >
+                        <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
+                          <ShoppingCartIcon />
+                        </button>
+                      </Link>
+                      <Link
+                        href={"/profile/favorites"}
+                        onClick={() => setOpenMenu(false)}
+                      >
+                        <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
+                          <FavoriteIcon />
+                        </button>
+                      </Link>
                     </div>
 
                     <button
@@ -140,22 +153,39 @@ export default function NavBar() {
             className="mt-1.5 rounded-md overflow-hidden w-64 ml-auto shadow-md bg-background flex flex-col gap-0.5"
             onClick={(e) => e.stopPropagation()}
           >
-            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
-              <AccountBoxIcon className="text-primary" />
-              <span className="text-text">Profile</span>
-            </li>
-            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all md:hidden">
-              <FavoriteIcon className="text-primary" />
-              <span className="text-text">Favorites</span>
-            </li>
-            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all md:hidden">
-              <ShoppingCartIcon className="text-primary" />
-              <span className="text-text">Shopping cart</span>
-            </li>
-            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
-              <ShoppingBagIcon className="text-primary" />
-              <span className="text-text">Orders</span>
-            </li>
+            <Link href={"/profile"} onClick={() => setOpenMenu(false)}>
+              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+                <AccountBoxIcon className="text-primary" />
+                <span className="text-text">Profile</span>
+              </li>
+            </Link>
+            <Link
+              href={"/profile/favorites"}
+              onClick={() => setOpenMenu(false)}
+              className="md:hidden"
+            >
+              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+                <FavoriteIcon className="text-primary" />
+                <span className="text-text">Favorites</span>
+              </li>
+            </Link>
+            <Link
+              href={"/shopping-cart"}
+              onClick={() => setOpenMenu(false)}
+              className="md:hidden"
+            >
+              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+                <ShoppingCartIcon className="text-primary" />
+                <span className="text-text">Shopping cart</span>
+              </li>
+            </Link>
+            <Link href={"/profile/orders"} onClick={() => setOpenMenu(false)}>
+              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+                <ShoppingBagIcon className="text-primary" />
+                <span className="text-text">Orders</span>
+              </li>
+            </Link>
+
             <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
               <ContrastIcon className="text-primary" />
               <span className="text-text">Thems</span>
@@ -183,7 +213,6 @@ export default function NavBar() {
                       <button
                         type="submit"
                         className="bg-background-secondary w-full py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500"
-                        onClick={async () => {}}
                       >
                         <LockIcon />
                         <span className="font-medium">Log out</span>

@@ -32,20 +32,16 @@ const authService = {
     }
   },
 
-  async logOut() {
+  async checkAuth() {
     try {
-      const res = await apiClient.post("/auth/logout");
+      const res = await apiClient.get("/auth/checkauth");
       return res.data;
     } catch {}
   },
 
-  async checkAuth() {
+  async logOut() {
     try {
-      const res = await apiClient.get("/customer", {
-        params: {
-          fields: "firstName lastName profileImage",
-        },
-      });
+      const res = await apiClient.post("/auth/logout");
       return res.data;
     } catch {}
   },

@@ -8,7 +8,7 @@ export default function Error({ error, reset }) {
   }, [error]);
 
   return (
-    <div className="bg-background w-full h-full rounded-lg shadow-sm flex flex-col justify-center items-center gap-2">
+    <div className="bg-background-secondary w-full h-screen-minus-header flex flex-col justify-center items-center gap-2">
       <h1 className="text-lg font-semibold">Something went wrong</h1>
       <p className="text-sm text-center max-w-sm">
         An unexpected error occurred while loading this page. You can try again below.
