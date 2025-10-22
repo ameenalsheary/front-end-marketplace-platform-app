@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 
 import { categoryService } from "@/services/category.service.";
 import CategorySwiperSkeleton from "./CategorySwiperSkeleton";
@@ -10,8 +10,6 @@ import CategoryCard from "./CategoryCard";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 export default function CategorySwiper(props) {
   const title = props.title;
@@ -72,7 +70,7 @@ export default function CategorySwiper(props) {
               nextEl: ".custom-next",
               prevEl: ".custom-prev",
             }}
-            modules={[Navigation, Pagination]}
+            modules={[Navigation]}
             className="mySwiper group/mySwiper"
           >
             {categories.data.map((item, i) => (
