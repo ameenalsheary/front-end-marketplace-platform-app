@@ -62,7 +62,7 @@ export default function FavoriteButton({ productId, isFavorite }) {
   };
 
   return (
-    <div className="absolute top-1.5 right-1.5 bg-background p-1 rounded-full hover-scale">
+    <div className="bg-background p-1 rounded-full hover-scale">
       <div className="heart-container" title="Like">
         <input
           type="checkbox"
