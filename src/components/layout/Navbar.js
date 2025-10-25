@@ -18,7 +18,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import CustomImage from "../ui/CustomImage";
-import { openAuthModal, setAuthenticated } from "@/redux/slices/authModalSlice";
+import { openAuthModal } from "@/redux/slices/authModalSlice";
 import authService from "@/services/auth.service";
 
 export default function NavBar() {
@@ -197,9 +197,8 @@ export default function NavBar() {
                 onSubmit={async () => {
                   const res = await authService.logOut();
                   if (res.status === "Success") {
-                    dispatch(setAuthenticated(false));
                     setOpenMenu(false);
-                    router.push("/"); // go to home without full reload
+                    window.location.reload();
                   }
                 }}
               >

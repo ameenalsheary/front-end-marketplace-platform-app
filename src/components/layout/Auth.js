@@ -7,10 +7,7 @@ import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 
 import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
-import {
-  closeAuthModal,
-  setAuthenticated,
-} from "@/redux/slices/authModalSlice";
+import { closeAuthModal } from "@/redux/slices/authModalSlice";
 import authService from "@/services/auth.service";
 
 // Validation
@@ -156,14 +153,9 @@ export default function Auth() {
               );
               setVerifySignInRes(res);
               if (res.status === "Success") {
-                dispatch(
-                  setAuthenticated({
-                    isAuthenticated: true,
-                    user: { ...(res?.user || {}) },
-                  })
-                );
                 dispatch(closeAuthModal());
                 resetAll();
+                window.location.reload();
               }
             }}
           >
