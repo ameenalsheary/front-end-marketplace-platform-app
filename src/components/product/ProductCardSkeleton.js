@@ -1,6 +1,6 @@
 export default function ProductCardSkeleton() {
   return (
-    <div className="bg-background rounded-lg shadow-md overflow-hidden">
+    <div className="bg-background rounded-lg overflow-hidden">
       <div className="relative">
         <div className="w-full h-60 rounded-t-lg skeleton"></div>
       </div>

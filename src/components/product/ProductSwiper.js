@@ -5,26 +5,26 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
 import apiClient from "@/services/apiClient";
-import CategorySwiperSkeleton from "./CategorySwiperSkeleton";
-import CategoryCard from "./CategoryCard";
+import ProductSwiperSkeleton from "./ProductSwiperSkeleton";
+import ProductCard from "./ProductCard";
 
 // Import Swiper styles
 import "swiper/css";
 
-export default function CategorySwiper({ title, path, params }) {
+export default function ProductSwiper({ title, params }) {
   const [columnsNumber, setColumnsNumber] = useState(null);
-  const [categories, setCategories] = useState({
+  const [products, setProducts] = useState({
     status: "idle",
     data: null,
   });
 
   useEffect(() => {
     const checkWindowWidth = () => {
-      if (window.innerWidth < 640) return 3;
-      if (window.innerWidth < 768) return 4;
-      if (window.innerWidth < 1024) return 5;
-      if (window.innerWidth < 1280) return 7;
-      return 9;
+      if (window.innerWidth < 640) return 1;
+      if (window.innerWidth < 768) return 2;
+      if (window.innerWidth < 1024) return 3;
+      if (window.innerWidth < 1280) return 4;
+      return 5;
     };
 
     // set on mount
@@ -43,21 +43,21 @@ export default function CategorySwiper({ title, path, params }) {
   }, []);
 
   useEffect(() => {
-    setCategories({
-      ...categories,
-      status: "loading",
-    });
+    const getProducts = async () => {
+      setProducts({
+        ...products,
+        status: "loading",
+      });
 
-    const getCategories = async () => {
       try {
-        const res = await apiClient.get(path, { params });
-        
-        setCategories({
+        const res = await apiClient.get(`/products`, { params });
+
+        setProducts({
           status: "succeeded",
           data: res.data.data,
         });
       } catch (err) {
-        setCategories({
+        setProducts({
           status: "failed",
           data: err.response?.data || {
             status: "fail",
@@ -66,15 +66,16 @@ export default function CategorySwiper({ title, path, params }) {
         });
       }
     };
-    getCategories();
+
+    getProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (categories.status === "idle" || categories.status === "loading") {
-    return <CategorySwiperSkeleton title={title} />;
+  if (products.status === "idle" || products.status === "loading") {
+    return <ProductSwiperSkeleton title={title} />;
   }
 
-  if (categories.status === "succeeded") {
+  if (products.status === "succeeded") {
     return (
       <div className="bg-background py-6">
         <div className="container">
@@ -84,7 +85,7 @@ export default function CategorySwiper({ title, path, params }) {
 
           {columnsNumber && (
             <Swiper
-              spaceBetween={0}
+              spaceBetween={8}
               slidesPerView={columnsNumber + 0.5}
               slidesPerGroup={columnsNumber}
               navigation={{
@@ -94,11 +95,9 @@ export default function CategorySwiper({ title, path, params }) {
               modules={[Navigation]}
               className="mySwiper group/mySwiper"
             >
-              {categories.data.map((item, i) => (
+              {products.data.map((item, i) => (
                 <SwiperSlide key={i}>
-                  <CategoryCard
-                    category={{ image: item.image, name: item.name }}
-                  />
+                  <ProductCard product={item} />
                 </SwiperSlide>
               ))}
 
@@ -143,7 +142,7 @@ export default function CategorySwiper({ title, path, params }) {
     );
   }
 
-  if (categories.status === "failed") {
-    throw categories;
+  if (products.status === "failed") {
+    throw products;
   }
 }

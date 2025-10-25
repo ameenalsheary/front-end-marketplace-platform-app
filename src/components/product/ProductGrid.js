@@ -1,31 +1,11 @@
 // import Pagination from "@mui/material/Pagination";
 
-import { productService } from "@/services/product.service.";
+import apiClientServer from "@/services/apiClientServer";
 import ProductCard from "./ProductCard";
 
-const specificFields = `
-  _id,
-  title,
-  price,
-  priceBeforeDiscount,
-  discountPercent,
-  imageCover,
-  quantity,
-  size,
-  sold,
-  ratingsAverage,
-  ratingsQuantity,
-`;
-
-export default async function ProductGrid(props) {
-  const title = props.title;
-
-  const products = await productService.getProducts({
-    page: "1",
-    limit: "10",
-    sort: "-sold",
-    fields: specificFields,
-  });
+export default async function ProductGrid({ title, params }) {
+  const res = await apiClientServer.get("/products", { params });
+  const products = res.data;
 
   return (
     <div className="bg-background-secondary py-6">

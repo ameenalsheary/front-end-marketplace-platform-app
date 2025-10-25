@@ -2,7 +2,7 @@ import BrandCartSkeleton from "./BrandCartSkeleton";
 
 export default function BrandGridSkeleton() {
   return (
-    <div className="bg-background py-6">
+    <div className="bg-background-secondary py-6">
       <div className="container">
         <h1 className="text-text text-2xl md:text-3xl pb-3 font-medium">
           {"Brads"}

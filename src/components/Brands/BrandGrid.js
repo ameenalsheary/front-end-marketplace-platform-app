@@ -1,22 +1,21 @@
 // import Pagination from "@mui/material/Pagination";
 
-import { brandService } from "@/services/brand.service.";
+import apiClientServer from "@/services/apiClientServer";
 import BrandCart from "./BrandCart";
 
 export default async function BrandGrid() {
-  const brands = await brandService.getBrands({
-    page: "1",
-    limit: "6",
-    fields: `
-        _id,
-        name,
-        image,
-      `,
-    sort: "createdAt",
+  const res = await apiClientServer.get("/brands", {
+    params: {
+      page: "1",
+      limit: "6",
+      fields: `_id, name, image`,
+      sort: "createdAt",
+    },
   });
+  const brands = res.data;
 
   return (
-    <div className="bg-background py-6">
+    <div className="bg-background-secondary py-6">
       <div className="container">
         <h1 className="text-text text-2xl md:text-3xl pb-3 font-medium">
           {"Brads"}
