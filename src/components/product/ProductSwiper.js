@@ -93,7 +93,7 @@ export default function ProductSwiper({ title, params }) {
                 prevEl: ".custom-prev",
               }}
               modules={[Navigation]}
-              className="mySwiper group/mySwiper"
+              className="mySwiper group/mySwiper overflow-hidden"
             >
               {products.data.map((item, i) => (
                 <SwiperSlide key={i}>
