@@ -7,20 +7,7 @@ import ProductGridSkeleton from "@/components/product/ProductGridSkeleton";
 import ProductSwiper from "@/components/product/ProductSwiper";
 import BrandGrid from "@/components/Brands/BrandGrid";
 import BrandGridSkeleton from "@/components/Brands/BrandGridSkeleton";
-
-const productSpecificFields = `
-  _id,
-  title,
-  price,
-  priceBeforeDiscount,
-  discountPercent,
-  imageCover,
-  quantity,
-  size,
-  sold,
-  ratingsAverage,
-  ratingsQuantity,
-`;
+import { productSpecificFields } from "@/lib/constants";
 
 export default function Home() {
   return (

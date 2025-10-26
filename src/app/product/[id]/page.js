@@ -18,6 +18,8 @@ import CustomImage from "@/components/ui/CustomImage";
 import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import FavoriteButton from "@/components/ui/FavoriteButton/FavoriteButton";
 import apiClient from "@/services/apiClient";
+import ProductSwiper from "@/components/product/ProductSwiper";
+import { productSpecificFields } from "@/lib/constants";
 
 function Skeleton() {
   return (
@@ -244,7 +246,7 @@ function Informations({ informations }) {
     sold,
     brand,
     color,
-    group
+    group,
   } = informations;
   const [isExpanded, setIsExpanded] = useState(false);
   const [sizesInfo, setsIzesInfo] = useState({});
@@ -252,7 +254,7 @@ function Informations({ informations }) {
   const getShortDescription = () => {
     const words = description.split(" ");
     return words.slice(0, 32).join(" ") + (words.length > 40 ? "..." : "");
-  }
+  };
 
   useState(() => {
     const sizesExist = sizes.length > 0;
@@ -500,7 +502,7 @@ function Informations({ informations }) {
 }
 
 export default function ProductPage() {
-  const { productId } = useParams();
+  const { id: productId } = useParams();
 
   const [product, setProduct] = useState({
     status: "idle",
@@ -532,7 +534,7 @@ export default function ProductPage() {
     };
 
     getProduct();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (product.status === "idle" || product.status === "loading") {
@@ -549,6 +551,7 @@ export default function ProductPage() {
 
   if (product.status === "succeeded") {
     const productImages = [product.data.imageCover, ...product.data.images];
+
     const productInformations = {
       _id: product.data._id,
       title: product.data.title,
@@ -568,6 +571,13 @@ export default function ProductPage() {
       group: product.data.group,
     };
 
+    const relations = {
+      category: product.data?.category?._id,
+      subCategories: product.data?.subCategories,
+      underSubCategories: product.data?.underSubCategories,
+      brand: product.data?.brand?._id,
+    };
+
     return (
       <div className="bg-background-secondary">
         <div className="container">
@@ -580,6 +590,16 @@ export default function ProductPage() {
             <Informations informations={productInformations} />
           </div>
         </div>
+        <ProductSwiper
+          title={"Related products"}
+          params={{
+            page: "1",
+            limit: "20",
+            sort: "-sold,-ratingsAverage",
+            fields: productSpecificFields,
+            ...relations,
+          }}
+        />
       </div>
     );
   }
