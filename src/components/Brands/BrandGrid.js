@@ -1,5 +1,3 @@
-// import Pagination from "@mui/material/Pagination";
-
 import apiClientServer from "@/services/apiClientServer";
 import BrandCart from "./BrandCart";
 
@@ -22,18 +20,10 @@ export default async function BrandGrid() {
         </h1>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 md:gap-3">
-          {brands.data.map((item, i) => {
-            return <BrandCart brand={item} key={i} />;
+          {brands.data.map((item) => {
+            return <BrandCart key={item._id} brand={item} />;
           })}
         </div>
-
-        {/* <Pagination
-          count={6}
-          // page={2}
-          siblingCount={0}
-          size="large"
-          className="pt-6"
-        /> */}
       </div>
     </div>
   );

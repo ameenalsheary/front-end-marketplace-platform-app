@@ -94,8 +94,8 @@ export default function CategorySwiper({ title, path, params }) {
               modules={[Navigation]}
               className="mySwiper group/mySwiper"
             >
-              {categories.data.map((item, i) => (
-                <SwiperSlide key={i}>
+              {categories.data.map((item) => (
+                <SwiperSlide key={item._id}>
                   <CategoryCard
                     category={{ image: item.image, name: item.name }}
                   />

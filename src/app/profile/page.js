@@ -3,7 +3,7 @@ import CustomImage from "@/components/ui/CustomImage";
 
 export default async function ProfilePage() {
   const res = await customerService.getCustomer({
-    fields: "firstName lastName email profileImage",
+    fields: "firstName lastName email profileImage role",
   });
   const customer = res.data;
 
@@ -28,6 +28,7 @@ export default async function ProfilePage() {
           <p className="text-lg font-semibold text-foreground">
             {customer.firstName} {customer.lastName}
           </p>
+          <p className="font-semibold text-primary">{customer.role}</p>
           <p className="text-sm text-muted-foreground">{maskedEmail}</p>
         </div>
       </div>

@@ -77,6 +77,9 @@
   .h-screen-minus-header {
     @apply h-[calc(100vh-80px)];
   }
+  .min-h-screen-minus-header {
+    @apply min-h-[calc(100vh-80px)];
+  }
 }
 
 /* start pagination */
