@@ -1,3 +1,5 @@
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+
 import { customerService } from "@/services/customer.service";
 import CustomImage from "@/components/ui/CustomImage";
 
@@ -9,6 +11,7 @@ export default async function ProfilePage() {
 
   const email = customer.email;
   const maskedEmail = email.replace(/(.{5}).+(@.+)/, "$1****$2");
+  const admin = customer.role === "admin";
 
   return (
     <div>
@@ -26,9 +29,16 @@ export default async function ProfilePage() {
         </div>
         <div className="flex flex-col items-center text-center select-none">
           <p className="text-lg font-semibold text-foreground">
-            {customer.firstName} {customer.lastName}
+            {customer.firstName} {customer.lastName}{" "}
+            {admin && (
+              <VerifiedUserIcon className="text-blue-500" fontSize="small" />
+            )}
           </p>
-          <p className="font-semibold text-primary">{customer.role}</p>
+          {admin && (
+            <div>
+              role: <span className="font-semibold">{customer.role}</span>
+            </div>
+          )}
           <p className="text-sm text-muted-foreground">{maskedEmail}</p>
         </div>
       </div>
