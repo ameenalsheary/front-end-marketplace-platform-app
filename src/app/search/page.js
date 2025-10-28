@@ -1,6 +1,7 @@
+import apiClientServer from "@/services/apiClientServer";
+import SearchSidebar from "@/components/ui/SearchSidebar";
 import ProductCard from "@/components/product/ProductCard";
 import PaginationSection from "@/components/ui/Pagination";
-import apiClientServer from "@/services/apiClientServer";
 
 export default async function SearchPage(props) {
   const { page, query } = await props.searchParams;
@@ -21,11 +22,7 @@ export default async function SearchPage(props) {
       <div className="bg-background-secondary py-3 lg:py-6">
         <div className="container">
           <div className="flex flex-col gap-3">
-            <div>
-              <button className="font-semibold text-sm bg-background-tertiary p-2 border border-border rounded-sm shadow-sm cursor-pointer">
-                Filter
-              </button>
-            </div>
+            <SearchSidebar />
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
               {products.map((item) => {

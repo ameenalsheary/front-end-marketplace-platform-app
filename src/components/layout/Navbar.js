@@ -30,11 +30,12 @@ function SearchBar() {
     const value = inputRef.current.value.trim();
     const params = new URLSearchParams(searchParams.toString());
 
-    params.set("page", "1");
-    if (value) params.set("query", value);
-    else params.delete("query");
-
-    router.push(`/search?${params.toString()}`);
+    if (value) {
+      params.set("page", "1");
+      params.set("query", value);
+      router.push(`/search?${params.toString()}`);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
   };
 
   return (
@@ -178,7 +179,7 @@ export default function NavBar() {
       </nav>
       <div
         className={clsx(
-          "bg-[#0000009f] fixed z-2 left-0 w-full h-screen-minus-header",
+          "bg-overlay fixed z-2 left-0 w-full h-screen-minus-header",
           {
             "top-[80px] opacity-100": openMenu === true,
             "top-[-100%] opacity-0": openMenu === false,

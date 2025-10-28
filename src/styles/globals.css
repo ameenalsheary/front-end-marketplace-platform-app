@@ -7,6 +7,7 @@
   --color-background: #ffffff;
   --color-background-secondary: #f5f7fa;
   --color-background-tertiary: #eaeef3;
+  --color-overlay: rgba(0, 0, 0, 0.6);
   --color-border: #d1d5db;
   --color-button-disabled: #cbd5e1;
   --text-button-disabled: #9ca3af;
@@ -23,6 +24,7 @@
   --color-background: var(--color-background);
   --color-background-secondary: var(--color-background-secondary);
   --color-background-tertiary: var(--color-background-tertiary);
+  --color-overlay: var(--color-overlay);
   --color-border: var(--color-border);
   --color-button-disabled: var(--color-button-disabled);
   --text-button-disabled: var(--text-button-disabled);
@@ -40,6 +42,7 @@
     --color-background: #0d0d0d;
     --color-background-secondary: #1a1a1a;
     --color-background-tertiary: #262626;
+    --color-overlay: rgba(0, 0, 0, 0.6);
     --color-border: #2d2d2d;
     --color-button-disabled: #374151;
     --text-button-disabled: #6b7280;
@@ -108,7 +111,7 @@
   display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE/Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
 }
 /* end scrollbar */

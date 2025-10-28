@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import CloseIcon from "@mui/icons-material/Close";
 
+import CloseButton from "../ui/CloseButton";
 import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
 import { closeAuthModal } from "@/redux/slices/authModalSlice";
 import authService from "@/services/auth.service";
@@ -56,7 +56,7 @@ export default function Auth() {
 
   return (
     <div
-      className="bg-[#0000009f] fixed inset-0 z-10 flex justify-center items-center px-3"
+      className="bg-overlay fixed inset-0 z-10 flex justify-center items-center px-3"
       onClick={() => dispatch(closeAuthModal())}
     >
       <div
@@ -67,12 +67,7 @@ export default function Auth() {
           <h1 className="text-xl font-semibold">
             {mode === "signin" ? "Welcome back" : "Create your account"}
           </h1>
-          <button
-            className="text-red-500 cursor-pointer"
-            onClick={() => dispatch(closeAuthModal())}
-          >
-            <CloseIcon />
-          </button>
+          <CloseButton onClick={() => dispatch(closeAuthModal())} />
         </div>
 
         {/* Mode switch */}
