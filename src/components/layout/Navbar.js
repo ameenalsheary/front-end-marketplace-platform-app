@@ -98,7 +98,13 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <Suspense>
+            {/* 
+              Next.js requires wrapping components that use `useSearchParams()` in <Suspense>.
+              This is because `useSearchParams()` depends on the browser environment and 
+              cannot be executed during server-side rendering. 
+              <Suspense> delays rendering until the client is ready, preventing build errors.
+            */}
+            <Suspense fallback={<div className="flex-grow" />}>
               <SearchBar />
             </Suspense>
 
