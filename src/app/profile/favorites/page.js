@@ -24,7 +24,7 @@ export default async function FavoritesPage(props) {
         <h1 className="text-2xl lg:text-3xl font-medium">My Favorites</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4">
-          {products.map((item, i) => {
+          {products.map((item) => {
             return <ProductCard key={item._id} product={item} />;
           })}
         </div>

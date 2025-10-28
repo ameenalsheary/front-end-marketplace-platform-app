@@ -2,10 +2,10 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import clsx from "clsx";
 import { Formik, Form } from "formik";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -21,6 +21,47 @@ import CustomImage from "../ui/CustomImage";
 import { openAuthModal } from "@/redux/slices/authModalSlice";
 import authService from "@/services/auth.service";
 
+function SearchBar() {
+  const inputRef = useRef();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const handleSearch = () => {
+    const value = inputRef.current.value.trim();
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("page", "1");
+    if (value) params.set("query", value);
+    else params.delete("query");
+
+    router.push(`/search?${params.toString()}`);
+  };
+
+  return (
+    <form
+      className="flex-grow flex rounded-full overflow-hidden"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSearch();
+      }}
+    >
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Search products..."
+        className="outline-0 min-w-0 text-text flex-grow bg-background-secondary h-12 rounded-md px-3"
+        defaultValue={searchParams.get("query") || ""}
+      />
+      <button
+        type="submit"
+        className="flex-none bg-primary text-[#e5e5e5] px-4 h-12 cursor-pointer font-medium hover-scale"
+      >
+        <SearchIcon />
+      </button>
+    </form>
+  );
+}
+
 export default function NavBar() {
   const dispatch = useDispatch();
   const { status, isAuthenticated, user } = useSelector(
@@ -28,8 +69,6 @@ export default function NavBar() {
   );
 
   const [openMenu, setOpenMenu] = useState(false);
-
-  const router = useRouter();
 
   const openAuth = () => {
     if (!isAuthenticated) {
@@ -59,16 +98,7 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <div className="flex-grow flex rounded-full overflow-hidden">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="outline-0 min-w-0 text-text flex-grow bg-background-secondary h-12 rounded-md px-3"
-              />
-              <button className="flex-none bg-primary text-[#e5e5e5] px-4 h-12 cursor-pointer font-medium hover-scale">
-                <SearchIcon />
-              </button>
-            </div>
+            <SearchBar />
 
             {status === "idle" || status === "loading" ? (
               <>
