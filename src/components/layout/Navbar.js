@@ -2,7 +2,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense } from "react";
 import clsx from "clsx";
 import { Formik, Form } from "formik";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -98,7 +98,9 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <SearchBar />
+            <Suspense>
+              <SearchBar />
+            </Suspense>
 
             {status === "idle" || status === "loading" ? (
               <>
