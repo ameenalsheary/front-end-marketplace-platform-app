@@ -4,13 +4,14 @@ import ProductCard from "@/components/product/ProductCard";
 import PaginationSection from "@/components/ui/Pagination";
 
 export default async function SearchPage(props) {
-  const { page, query } = await props.searchParams;
+  const { page, query, rating } = await props.searchParams;
 
   const res = await apiClientServer.get("products", {
     params: {
       page: Number(page) || 1,
       limit: 20,
       search: query || "",
+      "ratingsAverage[gte]": +rating || 0,
     },
   });
 
