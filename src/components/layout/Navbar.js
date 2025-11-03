@@ -28,7 +28,7 @@ function SearchBar() {
 
   const handleSearch = () => {
     const value = inputRef.current.value.trim();
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams();
 
     if (value) {
       params.set("page", "1");

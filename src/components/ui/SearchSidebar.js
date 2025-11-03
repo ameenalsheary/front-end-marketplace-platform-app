@@ -11,9 +11,16 @@ function RatingsFilter() {
   const searchParams = useSearchParams();
 
   const handleRatingChange = (rating) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
+    const currentRating = Number(searchParams.get("rating"));
+
+    if (currentRating === rating) {
+      params.delete("rating");
+    } else {
+      params.set("rating", rating);
+    }
+
     params.set("page", "1");
-    params.set("rating", rating);
     router.push(`?${params.toString()}`);
   };
 
@@ -25,23 +32,32 @@ function RatingsFilter() {
         {Array(5)
           .fill(0)
           .map((_, i) => {
+            const currentRating = Number(searchParams.get("rating"));
             const rating = 5 - i;
+
             return (
               <label
                 key={i}
-                className="bg-background-secondary p-2 flex items-center gap-1 rounded-md shadow-sm cursor-pointer"
+                onClick={() => handleRatingChange(rating)}
+                className={clsx(
+                  "bg-background-secondary p-2 flex items-center gap-1 rounded-md shadow-sm hover:bg-background-tertiary transition-all cursor-pointer",
+                  currentRating === rating &&
+                    "bg-background-tertiary border border-border"
+                )}
               >
                 <input
                   type="radio"
                   name="rating"
-                  value={rating}
-                  onChange={() => handleRatingChange(rating)}
+                  checked={currentRating === rating}
+                  readOnly
                 />
+
                 <div className="flex gap-0.5">
                   {Array(5)
                     .fill(0)
                     .map((_, j) => {
                       const active = j + 1 <= rating;
+
                       return (
                         <svg
                           key={j}
@@ -58,7 +74,8 @@ function RatingsFilter() {
                       );
                     })}
                 </div>
-                <span className="text-sm">& Up</span>
+
+                {rating < 5 && <span className="text-sm">& Up</span>}
               </label>
             );
           })}
@@ -96,7 +113,7 @@ export default function SearchSidebar() {
       {/* Sidebar */}
       <div
         className={clsx(
-          "fixed top-0 left-0 w-full md:w-[320px] h-full bg-background p-3 flex flex-col gap-3 shadow-md z-20 transform transition-all",
+          "fixed top-0 left-0 w-full overflow-auto md:w-[320px] h-full bg-background p-3 flex flex-col gap-6 shadow-md z-20 transform transition-all",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

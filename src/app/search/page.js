@@ -10,8 +10,8 @@ export default async function SearchPage(props) {
     params: {
       page: Number(page) || 1,
       limit: 20,
-      search: query || "",
-      "ratingsAverage[gte]": +rating || 0,
+      search: query || undefined,
+      "ratingsAverage[gte]": Number(rating) || undefined,
     },
   });
 
