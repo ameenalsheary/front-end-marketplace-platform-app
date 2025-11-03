@@ -4,7 +4,7 @@ import ProductCard from "@/components/product/ProductCard";
 import PaginationSection from "@/components/ui/Pagination";
 
 export default async function SearchPage(props) {
-  const { page, query, rating } = await props.searchParams;
+  const { page, query, rating, minPrice, maxPrice } = await props.searchParams;
 
   const res = await apiClientServer.get("products", {
     params: {
@@ -12,6 +12,8 @@ export default async function SearchPage(props) {
       limit: 20,
       search: query || undefined,
       "ratingsAverage[gte]": Number(rating) || undefined,
+      "price[gte]": Number(minPrice) || undefined,
+      "price[lte]": Number(maxPrice) || undefined,
     },
   });
 

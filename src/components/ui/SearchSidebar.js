@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -84,6 +84,110 @@ function RatingsFilter() {
   );
 }
 
+function PriceFilter() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentMinPrice = searchParams.get("minPrice");
+  const currentMaxPrice = searchParams.get("maxPrice");
+
+  const [priceRange, setPriceRange] = useState({
+    min: currentMinPrice || "",
+    max: currentMaxPrice || "",
+  });
+
+  // Sync with URL changes
+  useEffect(() => {
+    setPriceRange({
+      min: currentMinPrice || "",
+      max: currentMaxPrice || "",
+    });
+  }, [currentMinPrice, currentMaxPrice]);
+
+  const handlePriceChange = (field, value) => {
+    if (value !== "" && Number(value) < 0) return;
+
+    setPriceRange((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const applyPriceFilter = async () => {
+    let { min, max } = priceRange;
+
+    // Validate and swap if needed
+    if (min && max && Number(min) > Number(max)) {
+      [min, max] = [max, min];
+    }
+
+    const params = new URLSearchParams(searchParams);
+    params.set("page", "1");
+
+    min ? params.set("minPrice", min) : params.delete("minPrice");
+    max ? params.set("maxPrice", max) : params.delete("maxPrice");
+
+    router.push(`?${params.toString()}`);
+  };
+
+  const clearPriceFilter = async () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("minPrice");
+    params.delete("maxPrice");
+    params.set("page", "1");
+
+    router.push(`?${params.toString()}`);
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      <h3 className="font-medium">Price Range</h3>
+
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-1">
+          <div className="flex-1">
+            <input
+              id="minPrice"
+              type="number"
+              placeholder="Min"
+              value={priceRange.min}
+              onChange={(e) => handlePriceChange("min", e.target.value)}
+              className="bg-background text-sm w-full p-1.5 border border-border rounded-md focus:outline-none"
+              min="0"
+            />
+          </div>
+          <span className="text-text">-</span>
+          <div className="flex-1">
+            <input
+              id="maxPrice"
+              type="number"
+              placeholder="Max"
+              value={priceRange.max}
+              onChange={(e) => handlePriceChange("max", e.target.value)}
+              className="bg-background text-sm w-full p-1.5 border border-border rounded-md focus:outline-none"
+              min="0"
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-1">
+          <button
+            onClick={applyPriceFilter}
+            className="text-sm py-1.5 w-full bg-primary text-[#fff] rounded-md cursor-pointer disabled:opacity-50"
+          >
+            Apply
+          </button>
+          <button
+            onClick={clearPriceFilter}
+            className="text-sm py-1.5 w-full bg-background-tertiary text-primary border border-border rounded-md cursor-pointer disabled:opacity-50"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function SearchSidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -123,8 +227,13 @@ export default function SearchSidebar() {
           <CloseButton onClick={() => setIsOpen(false)} />
         </div>
 
-        {/* Ratings Filter */}
-        <RatingsFilter />
+        <div className="flex flex-col gap-8">
+          {/* Price Filter */}
+          <PriceFilter />
+
+          {/* Ratings Filter */}
+          <RatingsFilter />
+        </div>
       </div>
     </>
   );
