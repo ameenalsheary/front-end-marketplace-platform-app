@@ -11,7 +11,6 @@ import Link from "next/link";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import ContrastIcon from "@mui/icons-material/Contrast";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import LockIcon from "@mui/icons-material/Lock";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -157,7 +156,7 @@ export default function NavBar() {
                     </div>
 
                     <button
-                      className="size-12 min-w-12 bg-background-secondary rounded-full cursor-pointer overflow-hidden hover-scale"
+                      className="bg-background-secondary rounded-full cursor-pointer overflow-hidden hover-scale"
                       onClick={() => setOpenMenu(!openMenu)}
                     >
                       <CustomImage
@@ -167,7 +166,7 @@ export default function NavBar() {
                         height={400}
                         alt="Profile image"
                         priority
-                        className="h-full w-full"
+                        className="size-12 min-w-12"
                       />
                     </button>
                   </>
@@ -225,11 +224,6 @@ export default function NavBar() {
                 <span className="text-text">Orders</span>
               </li>
             </Link>
-
-            <li className="bg-background-secondary py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
-              <ContrastIcon className="text-primary" />
-              <span className="text-text">Thems</span>
-            </li>
 
             <li>
               <Formik

@@ -2,6 +2,7 @@ import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
 import { customerService } from "@/services/customer.service";
 import CustomImage from "@/components/ui/CustomImage";
+import ThemeSwitcher from "@/components/ui/ThemeSwitcher";
 
 export default async function ProfilePage() {
   const res = await customerService.getCustomer({
@@ -14,8 +15,8 @@ export default async function ProfilePage() {
   const admin = customer.role === "admin";
 
   return (
-    <div>
-      <div className="flex flex-col items-center gap-2 bg-background py-4 rounded-md shadow-sm">
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col items-center gap-2 bg-background py-3 rounded-md shadow-sm">
         <div className="w-20 bg-background-secondary shadow-sm rounded-full">
           <CustomImage
             src={customer.profileImage}
@@ -42,6 +43,8 @@ export default async function ProfilePage() {
           <p className="text-sm text-muted-foreground">{maskedEmail}</p>
         </div>
       </div>
+
+      <ThemeSwitcher />
     </div>
   );
 }

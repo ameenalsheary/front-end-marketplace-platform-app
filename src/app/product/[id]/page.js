@@ -537,7 +537,7 @@ export default function ProductPage() {
     return (
       <div className="bg-background-secondary">
         <div className="container">
-          <div className="py-4 md:py-6 grid grid-cols-1 md:grid-cols-[50%_auto] lg:grid-cols-[40%_auto] gap-2">
+          <div className="py-3 md:py-6 grid grid-cols-1 md:grid-cols-[50%_auto] lg:grid-cols-[40%_auto] gap-2">
             <Skeleton />
           </div>
         </div>
@@ -577,7 +577,7 @@ export default function ProductPage() {
     return (
       <div className="bg-background-secondary">
         <div className="container">
-          <div className="py-4 md:py-6 grid grid-cols-1 md:grid-cols-[50%_auto] lg:grid-cols-[40%_auto] gap-2">
+          <div className="py-3 md:py-6 grid grid-cols-1 md:grid-cols-[50%_auto] lg:grid-cols-[40%_auto] gap-2">
             <Slider
               images={productImages}
               productId={product.data._id}

@@ -32,7 +32,7 @@ export default function ProfileSidebar() {
         return (
           <Link key={i} href={href}>
             <li
-              className={`p-4 flex items-center gap-2 cursor-pointer transition-all ${
+              className={`p-3 flex items-center gap-2 cursor-pointer transition-all ${
                 isActive
                   ? "bg-background-tertiary"
                   : "bg-background hover:bg-background-tertiary"
@@ -47,7 +47,7 @@ export default function ProfileSidebar() {
       {status === "succeeded" && isAuthenticated && user?.rule === "admin" && (
         <Link href="/admin/dashboard">
           <li
-            className={`p-4 flex items-center gap-2 cursor-pointer transition-all ${
+            className={`p-3 flex items-center gap-2 cursor-pointer transition-all ${
               pathname === "/admin/dashboard"
                 ? "bg-background-tertiary"
                 : "bg-background hover:bg-background-tertiary"

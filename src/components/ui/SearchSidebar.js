@@ -63,10 +63,10 @@ function PriceFilter() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2.5">
       <h3 className="font-medium">Price Range</h3>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2.5">
         <div className="flex items-center gap-1">
           <div className="flex-1">
             <Input
@@ -138,10 +138,10 @@ function RatingsFilter() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2.5">
       <h3 className="font-medium">Customer reviews</h3>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2.5">
         {Array(4)
           .fill(0)
           .map((_, i) => {
@@ -223,7 +223,7 @@ export default function SearchSidebar() {
       {/* Sidebar */}
       <div
         className={clsx(
-          "fixed top-0 left-0 w-full overflow-auto md:w-[320px] h-full bg-background p-3 flex flex-col gap-6 shadow-md z-20 transform transition-all",
+          "fixed top-0 left-0 w-full overflow-auto md:w-[320px] h-full bg-background p-3 flex flex-col gap-5 shadow-md z-20 transform transition-all",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -233,7 +233,7 @@ export default function SearchSidebar() {
           <CloseButton onClick={() => setIsOpen(false)} />
         </div>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-5">
           {/* Price Filter */}
           <PriceFilter />
 
