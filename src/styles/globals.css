@@ -78,10 +78,10 @@
     @apply bg-background-tertiary text-transparent select-none animate-pulse;
   }
   .h-screen-minus-header {
-    @apply h-[calc(100vh-80px)];
+    @apply h-[calc(100vh-73.63px)];
   }
   .min-h-screen-minus-header {
-    @apply min-h-[calc(100vh-80px)];
+    @apply min-h-[calc(100vh-73.63px)];
   }
 }
 

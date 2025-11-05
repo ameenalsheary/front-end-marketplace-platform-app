@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import CustomImage from "../ui/CustomImage";
 import FavoriteButton from "../ui/FavoriteButton/FavoriteButton";
+import Button from "../ui/Button";
 
 export default function ProductCard(props) {
   let {
@@ -28,14 +29,6 @@ export default function ProductCard(props) {
     <div className="bg-background rounded-lg shadow-md h-fit cursor-pointer overflow-hidden group">
       <div className="relative">
         <Link href={`/product/${_id}`}>
-          {/* {quantity === 0 && (
-            <div className="w-full h-full bg-[#0000009f] absolute top-0 left-0 flex justify-center items-center">
-              <p className="bg-[#e5e5e5] text-red-500 font-semibold rounded-sm p-0.5 text-sm">
-                Out of stock
-              </p>
-            </div>
-          )} */}
-
           <CustomImage
             src={imageCover}
             fallback="/images/product-placeholder.png"
@@ -103,15 +96,9 @@ export default function ProductCard(props) {
       </Link>
 
       <div className="w-full pt-0 pr-2 pl-2 pb-2">
-        {quantity === 0 ? (
-          <button className="w-full bg-button-disabled p-1 rounded-lg cursor-not-allowed">
-            Add to cart
-          </button>
-        ) : (
-          <button className="w-full bg-primary text-[#e5e5e5] p-1 rounded-lg cursor-pointer">
-            Add to cart
-          </button>
-        )}
+        <Button disabled={quantity === 0} size="small" className="w-full">
+          Add to cart
+        </Button>
       </div>
     </div>
   );

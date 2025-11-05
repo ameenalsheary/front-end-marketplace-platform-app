@@ -50,12 +50,12 @@ function SearchBar() {
         ref={inputRef}
         type="text"
         placeholder="Search products..."
-        className="outline-0 min-w-0 text-text flex-grow bg-background-secondary h-12 rounded-md px-3"
+        className="outline-0 min-w-0 text-text flex-grow bg-background-secondary rounded-md px-3"
         defaultValue={searchParams.get("query") || ""}
       />
       <button
         type="submit"
-        className="flex-none bg-primary text-[#e5e5e5] px-4 h-12 cursor-pointer font-medium hover-scale"
+        className="flex-none bg-primary text-[#e5e5e5] p-3 cursor-pointer font-medium hover-scale"
       >
         <SearchIcon />
       </button>
@@ -82,14 +82,14 @@ export default function NavBar() {
     <>
       <nav className="shadow-md bg-background sticky top-0 z-2">
         <div className="container bg-background">
-          <div className="flex items-center gap-2 py-4">
+          <div className="flex items-center gap-2 py-3">
             <Link href={"/"}>
               <div className="flex-none flex items-center gap-2 cursor-pointer">
                 <Image
                   src={"/logos/logo192.png"}
                   width={192}
                   height={192}
-                  className="h-12 w-12"
+                  className="size-12 min-w-12"
                   alt="logo"
                 />
 
@@ -112,24 +112,24 @@ export default function NavBar() {
             {status === "idle" || status === "loading" ? (
               <>
                 <div className="hidden md:flex items-center gap-2">
-                  <button className=" px-4 rounded-lg h-12 skeleton">Ld</button>
-                  <button className=" px-4 rounded-lg h-12 skeleton">Ld</button>
+                  <button className=" p-3 rounded-lg skeleton">Ld</button>
+                  <button className=" p-3 rounded-lg skeleton">Ld</button>
                 </div>
-                <button className=" px-4 rounded-full h-12 skeleton">Ld</button>
+                <button className=" p-3 ounded-full skeleton">Ld</button>
               </>
             ) : (
               <>
                 {!isAuthenticated ? (
                   <>
                     <button
-                      className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale md:hidden"
+                      className="bg-primary text-[#e5e5e5] p-3 rounded-lg cursor-pointer font-medium text-base hover-scale md:hidden"
                       onClick={() => openAuth()}
                     >
                       <ExitToAppIcon />
                     </button>
 
                     <button
-                      className="bg-primary text-[#e5e5e5] px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale hidden md:block"
+                      className="bg-primary text-[#e5e5e5] p-3 rounded-lg cursor-pointer font-medium text-base hover-scale hidden md:block"
                       onClick={() => openAuth()}
                     >
                       Sign in <ExitToAppIcon />
@@ -142,7 +142,7 @@ export default function NavBar() {
                         href={"/shopping-cart"}
                         onClick={() => setOpenMenu(false)}
                       >
-                        <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
+                        <button className="bg-background border text-primary border-primary p-3 rounded-lg cursor-pointer font-medium text-base hover-scale">
                           <ShoppingCartIcon />
                         </button>
                       </Link>
@@ -150,14 +150,14 @@ export default function NavBar() {
                         href={"/profile/favorites"}
                         onClick={() => setOpenMenu(false)}
                       >
-                        <button className="bg-background border text-primary border-primary px-4 rounded-lg h-12 cursor-pointer font-medium text-base hover-scale">
+                        <button className="bg-background border text-primary border-primary p-3 rounded-lg cursor-pointer font-medium text-base hover-scale">
                           <FavoriteIcon />
                         </button>
                       </Link>
                     </div>
 
                     <button
-                      className="size-12 bg-background-secondary rounded-full cursor-pointer overflow-hidden hover-scale"
+                      className="size-12 min-w-12 bg-background-secondary rounded-full cursor-pointer overflow-hidden hover-scale"
                       onClick={() => setOpenMenu(!openMenu)}
                     >
                       <CustomImage
@@ -177,11 +177,12 @@ export default function NavBar() {
           </div>
         </div>
       </nav>
+
       <div
         className={clsx(
           "bg-overlay fixed z-2 left-0 w-full h-screen-minus-header",
           {
-            "top-[80px] opacity-100": openMenu === true,
+            "top-[73.63px] opacity-100": openMenu === true,
             "top-[-100%] opacity-0": openMenu === false,
           }
         )}
@@ -193,7 +194,7 @@ export default function NavBar() {
             onClick={(e) => e.stopPropagation()}
           >
             <Link href={"/profile"} onClick={() => setOpenMenu(false)}>
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+              <li className="bg-background-secondary py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
                 <AccountBoxIcon className="text-primary" />
                 <span className="text-text">Profile</span>
               </li>
@@ -203,7 +204,7 @@ export default function NavBar() {
               onClick={() => setOpenMenu(false)}
               className="md:hidden"
             >
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+              <li className="bg-background-secondary py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
                 <FavoriteIcon className="text-primary" />
                 <span className="text-text">Favorites</span>
               </li>
@@ -213,19 +214,19 @@ export default function NavBar() {
               onClick={() => setOpenMenu(false)}
               className="md:hidden"
             >
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+              <li className="bg-background-secondary py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
                 <ShoppingCartIcon className="text-primary" />
                 <span className="text-text">Shopping cart</span>
               </li>
             </Link>
             <Link href={"/profile/orders"} onClick={() => setOpenMenu(false)}>
-              <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+              <li className="bg-background-secondary py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
                 <ShoppingBagIcon className="text-primary" />
                 <span className="text-text">Orders</span>
               </li>
             </Link>
 
-            <li className="bg-background-secondary py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
+            <li className="bg-background-secondary py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all">
               <ContrastIcon className="text-primary" />
               <span className="text-text">Thems</span>
             </li>
@@ -244,13 +245,13 @@ export default function NavBar() {
                 {({ isSubmitting }) => (
                   <Form>
                     {isSubmitting ? (
-                      <div className="bg-background-secondary py-4 px-2">
+                      <div className="bg-background-secondary py-3 px-1">
                         <span className="skeleton">Loading...</span>
                       </div>
                     ) : (
                       <button
                         type="submit"
-                        className="bg-background-secondary w-full py-4 px-2 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500"
+                        className="bg-background-secondary w-full py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500"
                       >
                         <LockIcon />
                         <span className="font-medium">Log out</span>

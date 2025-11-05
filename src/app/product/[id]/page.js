@@ -20,6 +20,7 @@ import FavoriteButton from "@/components/ui/FavoriteButton/FavoriteButton";
 import apiClient from "@/services/apiClient";
 import ProductSwiper from "@/components/product/ProductSwiper";
 import { productSpecificFields } from "@/lib/constants";
+import Button from "@/components/ui/Button";
 
 function Skeleton() {
   return (
@@ -486,15 +487,10 @@ function Informations({ informations }) {
               <AddIcon fontSize="small" />
             </button>
           </div>
-          {sizesInfo.quantity === 0 ? (
-            <button className="text-center flex-grow bg-button-disabled font-semibold rounded-md shadow-md cursor-not-allowed">
-              Add to cart
-            </button>
-          ) : (
-            <button className="text-center flex-grow bg-primary text-[#e5e5e5] font-semibold rounded-md shadow-md cursor-pointer">
-              Add to cart
-            </button>
-          )}
+
+          <Button disabled={sizesInfo.quantity === 0} className="flex-grow">
+            Add to cart
+          </Button>
         </div>
       </div>
     </section>

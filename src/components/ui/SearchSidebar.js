@@ -5,84 +5,8 @@ import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import CloseButton from "./CloseButton";
-
-function RatingsFilter() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const handleRatingChange = (rating) => {
-    const params = new URLSearchParams(searchParams.toString());
-    const currentRating = Number(searchParams.get("rating"));
-
-    if (currentRating === rating) {
-      params.delete("rating");
-    } else {
-      params.set("rating", rating);
-    }
-
-    params.set("page", "1");
-    router.push(`?${params.toString()}`);
-  };
-
-  return (
-    <div className="flex flex-col gap-2">
-      <h3 className="font-medium">Customer reviews</h3>
-
-      <div className="flex flex-col gap-2">
-        {Array(5)
-          .fill(0)
-          .map((_, i) => {
-            const currentRating = Number(searchParams.get("rating"));
-            const rating = 5 - i;
-
-            return (
-              <label
-                key={i}
-                onClick={() => handleRatingChange(rating)}
-                className={clsx(
-                  "bg-background-secondary p-2 flex items-center gap-1 rounded-md shadow-sm hover:bg-background-tertiary transition-all cursor-pointer",
-                  currentRating === rating &&
-                    "bg-background-tertiary border border-border"
-                )}
-              >
-                <input
-                  type="radio"
-                  name="rating"
-                  checked={currentRating === rating}
-                  readOnly
-                />
-
-                <div className="flex gap-0.5">
-                  {Array(5)
-                    .fill(0)
-                    .map((_, j) => {
-                      const active = j + 1 <= rating;
-
-                      return (
-                        <svg
-                          key={j}
-                          className={`w-4 h-4 ${
-                            active ? "text-yellow-500" : "text-text"
-                          } ms-1`}
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 22 20"
-                        >
-                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                      );
-                    })}
-                </div>
-
-                {rating < 5 && <span className="text-sm">& Up</span>}
-              </label>
-            );
-          })}
-      </div>
-    </div>
-  );
-}
+import Input from "./Input";
+import Button from "./Button";
 
 function PriceFilter() {
   const router = useRouter();
@@ -145,44 +69,129 @@ function PriceFilter() {
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-1">
           <div className="flex-1">
-            <input
+            <Input
               id="minPrice"
               type="number"
+              size="small"
               placeholder="Min"
               value={priceRange.min}
               onChange={(e) => handlePriceChange("min", e.target.value)}
-              className="bg-background text-sm w-full p-1.5 border border-border rounded-md focus:outline-none"
               min="0"
             />
           </div>
+
           <span className="text-text">-</span>
+
           <div className="flex-1">
-            <input
+            <Input
               id="maxPrice"
               type="number"
+              size="small"
               placeholder="Max"
               value={priceRange.max}
               onChange={(e) => handlePriceChange("max", e.target.value)}
-              className="bg-background text-sm w-full p-1.5 border border-border rounded-md focus:outline-none"
               min="0"
             />
           </div>
         </div>
 
         <div className="flex gap-1">
-          <button
+          <Button
             onClick={applyPriceFilter}
-            className="text-sm py-1.5 w-full bg-primary text-[#fff] rounded-md cursor-pointer disabled:opacity-50"
+            variant="primary"
+            size="small"
+            className="w-full"
           >
             Apply
-          </button>
-          <button
+          </Button>
+
+          <Button
             onClick={clearPriceFilter}
-            className="text-sm py-1.5 w-full bg-background-tertiary text-primary border border-border rounded-md cursor-pointer disabled:opacity-50"
+            variant="secondary"
+            size="small"
+            className="w-full"
           >
             Clear
-          </button>
+          </Button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function RatingsFilter() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handleRatingChange = (rating) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const currentRating = Number(searchParams.get("rating"));
+
+    if (currentRating === rating) {
+      params.delete("rating");
+    } else {
+      params.set("rating", rating);
+    }
+
+    params.set("page", "1");
+    router.push(`?${params.toString()}`);
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      <h3 className="font-medium">Customer reviews</h3>
+
+      <div className="flex flex-col gap-2">
+        {Array(4)
+          .fill(0)
+          .map((_, i) => {
+            const currentRating = Number(searchParams.get("rating"));
+            const rating = 4 - i;
+
+            return (
+              <label
+                key={i}
+                onClick={() => handleRatingChange(rating)}
+                className={clsx(
+                  "bg-background-secondary p-1 flex items-center gap-1 rounded-md shadow-sm hover:bg-background-tertiary transition-all cursor-pointer",
+                  currentRating === rating &&
+                    "bg-background-tertiary border border-border"
+                )}
+              >
+                <input
+                  type="radio"
+                  name="rating"
+                  checked={currentRating === rating}
+                  readOnly
+                />
+
+                <div className="flex gap-0.5">
+                  {Array(5)
+                    .fill(0)
+                    .map((_, j) => {
+                      const active = j + 1 <= rating;
+
+                      return (
+                        <svg
+                          key={j}
+                          className={`w-4 h-4 ${
+                            active ? "text-yellow-500" : "text-text"
+                          } ms-1`}
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 22 20"
+                        >
+                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                      );
+                    })}
+                </div>
+
+                {rating < 5 && <span className="text-sm">& Up</span>}
+              </label>
+            );
+          })}
       </div>
     </div>
   );
@@ -195,12 +204,9 @@ export default function SearchSidebar() {
     <>
       {/* Filter Button */}
       <div>
-        <button
-          className="font-semibold text-sm bg-background-tertiary p-2 border border-border rounded-sm shadow-sm cursor-pointer"
-          onClick={() => setIsOpen(true)}
-        >
-          Filter
-        </button>
+        <Button variant="secondary" onClick={() => setIsOpen(true)}>
+          Filters
+        </Button>
       </div>
 
       {/* Overlay */}
@@ -234,6 +240,13 @@ export default function SearchSidebar() {
           {/* Ratings Filter */}
           <RatingsFilter />
         </div>
+
+        <Button
+          className="absolute bottom-3 left-3 w-[calc(100%-24px)]"
+          onClick={() => setIsOpen(false)}
+        >
+          Go
+        </Button>
       </div>
     </>
   );
