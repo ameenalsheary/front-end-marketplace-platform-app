@@ -24,7 +24,7 @@ const Button = ({
 
   const sizes = {
     small: "p-1 text-sm",
-    medium: "p-1 text-base",
+    medium: "py-1 px-3 text-base",
   };
 
   const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;

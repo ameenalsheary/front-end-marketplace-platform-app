@@ -63,23 +63,28 @@ export default async function SearchPage(props) {
         />
       )}
 
-      <div className="container">
-        <div className="flex flex-col gap-3 py-3 lg:py-6">
-          {products.length > 0 && (
-            <>
-              <SearchSidebar />
+      {products.length > 0 ? (
+        <div className="container">
+          <div className="flex flex-col gap-3 py-3 lg:py-6">
+            <SearchSidebar />
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
-                {products.map((item) => {
-                  return <ProductCard key={item._id} product={item} />;
-                })}
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
+              {products.map((item) => {
+                return <ProductCard key={item._id} product={item} />;
+              })}
+            </div>
 
-              {numberOfPages > 1 && <PaginationSection count={numberOfPages} />}
-            </>
-          )}
+            {numberOfPages > 1 && <PaginationSection count={numberOfPages} />}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="h-[50vh] flex flex-col justify-center items-center gap-1.5">
+          <h1 className="text-lg font-semibold">No result found.</h1>
+          <p className="text-sm text-center max-w-sm">
+            Try searching for something else or go back to the previous page.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
