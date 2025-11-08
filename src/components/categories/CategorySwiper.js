@@ -11,7 +11,7 @@ import CategoryCard from "./CategoryCard";
 // Import Swiper styles
 import "swiper/css";
 
-export default function CategorySwiper({ title, path, params }) {
+export default function CategorySwiper({ title, path, params, query = "category" }) {
   const [columnsNumber, setColumnsNumber] = useState(null);
   const [categories, setCategories] = useState({
     status: "idle",
@@ -51,7 +51,7 @@ export default function CategorySwiper({ title, path, params }) {
     const getCategories = async () => {
       try {
         const res = await apiClient.get(path, { params });
-        
+
         setCategories({
           status: "succeeded",
           data: res.data.data,
@@ -76,9 +76,9 @@ export default function CategorySwiper({ title, path, params }) {
 
   if (categories.status === "succeeded") {
     return (
-      <div className="bg-background py-6">
+      <div className="bg-background py-3 md:py-6">
         <div className="container">
-          <h1 className="text-text text-2xl mds:text-3xl pb-6 font-medium capitalize">
+          <h1 className="text-2xl mds:text-3xl pb-3 font-medium capitalize">
             {title}
           </h1>
 
@@ -97,7 +97,12 @@ export default function CategorySwiper({ title, path, params }) {
               {categories.data.map((item) => (
                 <SwiperSlide key={item._id}>
                   <CategoryCard
-                    category={{ image: item.image, name: item.name }}
+                    category={{
+                      id: item._id,
+                      image: item.image,
+                      name: item.name,
+                      query
+                    }}
                   />
                 </SwiperSlide>
               ))}

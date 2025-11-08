@@ -38,7 +38,7 @@ export default function CategorySwiperSkeleton(props) {
   }, []);
 
   return (
-    <div className="bg-background py-6 min-h-[258px]">
+    <div className="bg-background py-6">
       <div className="container">
         <h1 className="text-text text-2xl mds:text-3xl pb-6 font-medium capitalize">
           {title}
