@@ -11,7 +11,12 @@ import CategoryCard from "./CategoryCard";
 // Import Swiper styles
 import "swiper/css";
 
-export default function CategorySwiper({ title, path, params, query = "category" }) {
+export default function CategorySwiper({
+  title,
+  path,
+  params,
+  query = "category",
+}) {
   const [columnsNumber, setColumnsNumber] = useState(null);
   const [categories, setCategories] = useState({
     status: "idle",
@@ -74,7 +79,7 @@ export default function CategorySwiper({ title, path, params, query = "category"
     return <CategorySwiperSkeleton title={title} />;
   }
 
-  if (categories.status === "succeeded") {
+  if (categories.status === "succeeded" && categories.data.length > 0) {
     return (
       <div className="bg-background py-3 md:py-6">
         <div className="container">
@@ -101,7 +106,7 @@ export default function CategorySwiper({ title, path, params, query = "category"
                       id: item._id,
                       image: item.image,
                       name: item.name,
-                      query
+                      query,
                     }}
                   />
                 </SwiperSlide>
