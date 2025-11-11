@@ -3,6 +3,7 @@ import SearchSidebar from "@/components/ui/SearchSidebar";
 import CategorySwiper from "@/components/categories/CategorySwiper";
 import ProductCard from "@/components/product/ProductCard";
 import PaginationSection from "@/components/ui/Pagination";
+import ErrorDisplay from "@/components/ui/ErrorDisplay";
 
 export default async function SearchPage(props) {
   const {
@@ -78,11 +79,15 @@ export default async function SearchPage(props) {
           </div>
         </div>
       ) : (
-        <div className="h-[50vh] flex flex-col justify-center items-center gap-1.5">
-          <h1 className="text-lg font-semibold">No result found.</h1>
-          <p className="text-sm text-center max-w-sm">
-            Try searching for something else or go back to the previous page.
-          </p>
+        <div className="h-[50vh] flex flex-col justify-center items-center">
+          <ErrorDisplay
+            srcImage="/images/no-results.png"
+            error="No result found."
+            description="Try searching for something else or go back to the previous page."
+            buttonText="Go back"
+            ButtonVariant="primary"
+            eventHandler="GO_BACK"
+          />
         </div>
       )}
     </div>

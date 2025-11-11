@@ -135,7 +135,7 @@ export default function NavBar() {
                     </button>
                   </>
                 ) : (
-                  <>
+                  <div className="flex items-center min-w-12">
                     <div className="hidden md:flex items-center gap-2">
                       <Link
                         href={"/shopping-cart"}
@@ -166,10 +166,10 @@ export default function NavBar() {
                         height={400}
                         alt="Profile image"
                         priority
-                        className="size-12 min-w-12"
+                        className="size-12"
                       />
                     </button>
-                  </>
+                  </div>
                 )}
               </>
             )}

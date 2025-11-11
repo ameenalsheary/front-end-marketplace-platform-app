@@ -40,9 +40,13 @@ export default function CategorySwiperSkeleton(props) {
   return (
     <div className="bg-background py-3 md:py-6">
       <div className="container">
-        <h1 className="text-text text-2xl mds:text-3xl pb-6 font-medium capitalize">
-          {title}
-        </h1>
+        {
+          title && (
+            <h1 className="text-text text-2xl mds:text-3xl pb-6 font-medium capitalize">
+              {title}
+            </h1>
+          )
+        }
 
         {columnsNumber && (
           <Swiper

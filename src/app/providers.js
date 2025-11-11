@@ -9,7 +9,7 @@ export default function Providers({ children }) {
     <Provider store={store}>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="light"
         enableSystem
         disableTransitionOnChange
       >

@@ -16,8 +16,8 @@ export default async function ProfilePage() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col items-center gap-2 bg-background py-3 rounded-md shadow-sm">
-        <div className="w-20 bg-background-secondary shadow-sm rounded-full">
+      <div className="flex flex-col items-center gap-1.5 bg-background py-3 rounded-md shadow-sm">
+        <div className="w-21 bg-background-secondary shadow-sm rounded-full">
           <CustomImage
             src={customer.profileImage}
             fallback="/images/profile-image-placeholder.png"

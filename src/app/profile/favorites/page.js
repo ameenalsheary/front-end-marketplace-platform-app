@@ -1,8 +1,7 @@
-import Link from "next/link";
-
 import apiClientServer from "@/services/apiClientServer";
 import ProductCard from "@/components/product/ProductCard";
 import PaginationSection from "@/components/ui/Pagination";
+import ErrorDisplay from "@/components/ui/ErrorDisplay";
 
 export default async function FavoritesPage(props) {
   const { page } = await props.searchParams;
@@ -36,18 +35,15 @@ export default async function FavoritesPage(props) {
 
   return (
     <div className="bg-background w-full h-full px-2 rounded-lg shadow-sm flex flex-col justify-center items-center gap-2">
-      <h1 className="text-center text-lg font-semibold">
-        Oops! You haven`t saved any products yet.
-      </h1>
-      <p className="text-sm text-center max-w-sm">
-        It seems like you haven`t added any products to your favorites. Browse
-        our collection and start saving your favorite items!{" "}
-      </p>
-      <Link href="/">
-        <button className="w-fit text-sm bg-primary text-white py-2 px-4 mt-1 rounded-md shadow-md cursor-pointer">
-          Back to home page
-        </button>
-      </Link>
+      <ErrorDisplay
+        srcImage="/images/heart.png"
+        error="Oops! You haven`t saved any products yet."
+        description="It seems like you haven`t added any products to your favorites. Browse our collection and start saving your favorite items!"
+        buttonText="Back to home page"
+        ButtonVariant="primary"
+        eventHandler="GO_TO"
+        href="/"
+      />
     </div>
   );
 }
