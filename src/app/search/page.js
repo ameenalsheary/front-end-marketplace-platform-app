@@ -15,6 +15,7 @@ export default async function SearchPage(props) {
     category,
     sub_category,
     under_sub_category,
+    brand
   } = await props.searchParams;
 
   const res = await apiClientServer.get("products", {
@@ -28,6 +29,7 @@ export default async function SearchPage(props) {
       category: category || undefined,
       subCategories: sub_category || undefined,
       underSubCategories: under_sub_category || undefined,
+      brand: brand || undefined
     },
   });
 
