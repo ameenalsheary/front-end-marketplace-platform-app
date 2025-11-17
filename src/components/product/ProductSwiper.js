@@ -79,7 +79,7 @@ export default function ProductSwiper({ title, params }) {
     return (
       <div className="bg-background py-6">
         <div className="container">
-          <h1 className="text-text text-2xl mds:text-3xl pb-6 font-medium capitalize">
+          <h1 className="text-2xl pb-3 font-medium capitalize">
             {title}
           </h1>
 

@@ -15,7 +15,7 @@ export default async function BrandGrid() {
   return (
     <div className="bg-background-secondary py-6">
       <div className="container">
-        <h1 className="text-text text-2xl md:text-3xl pb-3 font-medium">
+        <h1 className="text-2xl pb-3 font-medium capitalize">
           {"Brads"}
         </h1>
 

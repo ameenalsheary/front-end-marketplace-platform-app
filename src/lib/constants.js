@@ -1,3 +1,7 @@
+export const navBarHeight = "75.63px";
+
+export const currency = "USD";
+
 export const productSpecificFields = `
   _id,
   title,

@@ -3,6 +3,7 @@ import Link from "next/link";
 import CustomImage from "../ui/CustomImage";
 import FavoriteButton from "../ui/FavoriteButton/FavoriteButton";
 import Button from "../ui/Button";
+import { currency } from "@/lib/constants";
 
 export default function ProductCard(props) {
   let {
@@ -59,14 +60,14 @@ export default function ProductCard(props) {
           <div>
             {priceBeforeDiscount && (
               <div className="text-red-500 text-sm flex gap-1.5">
-                <del>{priceBeforeDiscount} USD</del>
+                <del>{priceBeforeDiscount} {currency}</del>
                 <span className="font-semibold text-green-600">
                   {discountPercent}% off
                 </span>
               </div>
             )}
             <div className="flex items-center gap-1">
-              <span className="text-sm">USD</span>
+              <span className="text-sm">{currency}</span>
               <span className="font-semibold text-2xl text-primary">
                 {`${price}`}
               </span>

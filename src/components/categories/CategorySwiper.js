@@ -84,7 +84,7 @@ export default function CategorySwiper({
       <div className="bg-background py-3 md:py-6">
         <div className="container">
           {title && (
-            <h1 className="text-2xl mds:text-3xl pb-3 font-medium capitalize">
+            <h1 className="text-2xl pb-3 font-medium capitalize">
               {title}
             </h1>
           )}

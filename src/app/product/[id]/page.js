@@ -21,6 +21,7 @@ import apiClient from "@/services/apiClient";
 import ProductSwiper from "@/components/product/ProductSwiper";
 import { productSpecificFields } from "@/lib/constants";
 import Button from "@/components/ui/Button";
+import { navBarHeight, currency } from "@/lib/constants";
 
 function Skeleton() {
   return (
@@ -116,7 +117,7 @@ function Slider({ images, productId, isFavorite }) {
   };
 
   return (
-    <section className="relative md:sticky top-0 md:top-[calc(80px+24px)] h-fit grid grid-cols-[15%_calc(85%-8px)] gap-2">
+    <section className={`relative md:sticky top-0 md:top-[calc(${navBarHeight}+24px)] h-fit grid grid-cols-[15%_calc(85%-8px)] gap-2`}>
       <div className="absolute top-0 left-0 w-[15%] h-full">
         <Swiper
           ref={thumbsSwiperRef}
@@ -347,7 +348,7 @@ function Informations({ informations }) {
         <div className="flex items-center gap-1">
           {sizesInfo.priceBeforeDiscount && (
             <del className="text-red-500">
-              {sizesInfo.priceBeforeDiscount} USD
+              {sizesInfo.priceBeforeDiscount} {currency}
             </del>
           )}
           {sizesInfo.discountPercent && (
@@ -360,7 +361,7 @@ function Informations({ informations }) {
           <span className="text-2xl font-semibold text-primary">
             {sizesInfo.price}
           </span>
-          <span className="text-primary font-bold">USD</span>
+          <span className="text-primary font-bold">{currency}</span>
         </div>
       </div>
 

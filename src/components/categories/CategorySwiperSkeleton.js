@@ -42,7 +42,7 @@ export default function CategorySwiperSkeleton(props) {
       <div className="container">
         {
           title && (
-            <h1 className="text-text text-2xl mds:text-3xl pb-6 font-medium capitalize">
+            <h1 className="text-2xl pb-6 font-medium capitalize">
               {title}
             </h1>
           )
