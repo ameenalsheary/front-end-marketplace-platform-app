@@ -371,8 +371,79 @@ export default function ShoppingCartPage() {
   // ---------------------------
   if (shoppingCart.status === "idle" || shoppingCart.status === "loading") {
     return (
-      <div className="min-h-screen-minus-header flex justify-center items-center bg-background-secondary">
-        <LoadingIcon />
+      <div className="min-h-screen-minus-header bg-background-secondary">
+        <div className="container">
+          <div className="py-3 lg:py-6">
+            <h1 className="text-2xl pb-3 font-medium capitalize">
+              Shopping cart
+            </h1>
+
+            <div className="grid lg:grid-cols-[65%_35%] xl:grid-cols-[70%_30%] gap-3">
+              <div className="flex flex-col gap-3">
+                {
+                  Array(3).fill(0).map((_, i) => {
+                    return (
+                      <div key={i} className="grid grid-cols-[auto_1fr] bg-background rounded-md">
+                        <div className="w-[104px] h-[137.78px] md:w-[120px] md:h-[159.66px] skeleton" />
+
+                        <div className="p-1.5 flex flex-col gap-1.5">
+                          <h1 className="w-[calc(100%-24px)] skeleton">
+                            {"Loading..."}
+                          </h1>
+
+                          <p className="w-[60%] text-sm skeleton">
+                            {"Loading..."}
+                          </p>
+
+                          <p className="w-fit text-lg skeleton">
+                            {"Loading..."}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+
+              <div className={`sticky top-0 lg:top-[calc(75.63px+12px)] h-fit`}>
+                <div className="grid gap-3 p-1.5 bg-background rounded-md">
+                  <h1 className="font-semibold text-lg">
+                    ORDER SUMMARY
+                  </h1>
+
+                  <div className="grid gap-1.5">
+                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                      <span>
+                        Tax Price:
+                      </span>
+                      <span className="skeleton">
+                        {"Loading..."}
+                      </span>
+                    </div>
+
+                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                      <span>
+                        Shipping Price:
+                      </span>
+                      <span className="skeleton">
+                        {"Loading..."}
+                      </span>
+                    </div>
+
+                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                      <span>
+                        Total Price
+                      </span>
+                      <span className="skeleton">
+                        {"Loading..."}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div >
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
