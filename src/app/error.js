@@ -10,14 +10,18 @@ export default function Error({ error, reset }) {
   }, [error]);
 
   return (
-    <div className="bg-background-secondary w-full h-screen-minus-header flex flex-col justify-center items-center gap-2">
-      <ErrorDisplay
-        srcImage="/images/error.png"
-        error="Something went wrong."
-        description="An unexpected error occurred while loading this page. You can try again below."
-        buttonText="Try again"
-        onClick={() => reset()}
-      />
+    <div className="bg-background-secondary">
+      <div className="container">
+        <div className="w-full h-screen-minus-header flex flex-col justify-center items-center gap-2">
+          <ErrorDisplay
+            srcImage="/images/error.png"
+            error="Something went wrong."
+            description="An unexpected error occurred while loading this page. You can try again below."
+            buttonText="Try again"
+            onClick={() => reset()}
+          />
+        </div>
+      </div>
     </div>
   );
 }
