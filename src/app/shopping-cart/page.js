@@ -14,6 +14,7 @@ import Button from "@/components/ui/Button";
 import { currency } from "@/lib/constants";
 import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
+import SuccessConfetti from "@/components/ui/successConfetti";
 
 function ItemCard({ item, updateItemQuantity, removeItem }) {
   const {
@@ -314,7 +315,7 @@ export default function ShoppingCartPage() {
     setLoading();
     try {
       const res = await apiClient.get("/customer/shopping-cart");
-      setSuccess(res.data.data);
+      setSuccess(res.data);
     } catch (err) {
       setError(err);
     }
@@ -331,7 +332,7 @@ export default function ShoppingCartPage() {
     setLoading();
     try {
       const res = await apiClient.put("/customer/shopping-cart", data);
-      setSuccess(res.data.data);
+      setSuccess(res.data);
     } catch (err) {
       setError(err);
     }
@@ -344,7 +345,7 @@ export default function ShoppingCartPage() {
     setLoading();
     try {
       const res = await apiClient.delete("/customer/shopping-cart", { data });
-      setSuccess(res.data.data);
+      setSuccess(res.data);
     } catch (err) {
       setError(err);
     }
@@ -359,7 +360,7 @@ export default function ShoppingCartPage() {
         "/customer/shopping-cart/apply-coupon",
         data
       );
-      setSuccess(res.data.data);
+      setSuccess(res.data);
     } catch (err) {
       setError(err);
     }
@@ -381,7 +382,7 @@ export default function ShoppingCartPage() {
   // ---------------------------
   if (
     shoppingCart.status === "succeeded" &&
-    shoppingCart.data?.cartItems.length === 0
+    shoppingCart.data?.data?.cartItems.length === 0
   ) {
     return (
       <div className="bg-background-secondary">
@@ -407,9 +408,9 @@ export default function ShoppingCartPage() {
   // ---------------------------
   if (
     shoppingCart.status === "succeeded" &&
-    shoppingCart.data?.cartItems.length > 0
+    shoppingCart.data?.data?.cartItems.length > 0
   ) {
-    const cartItems = shoppingCart.data?.cartItems.map((item) => {
+    const cartItems = shoppingCart.data?.data?.cartItems.map((item) => {
       return {
         _id: item.product._id,
         title: item.product.title,
@@ -424,49 +425,55 @@ export default function ShoppingCartPage() {
     });
 
     const pricing = {
-      taxPrice: shoppingCart.data?.pricing?.taxPrice.toFixed(2).replace(".", ","),
-      shippingPrice: shoppingCart.data?.pricing?.shippingPrice.toFixed(2).replace(".", ","),
-      totalPrice: shoppingCart.data?.pricing?.totalPrice.toFixed(2).replace(".", ","),
-      totalPriceAfterDiscount: shoppingCart.data?.pricing?.totalPriceAfterDiscount ? shoppingCart.data?.pricing.totalPriceAfterDiscount.toFixed(2).replace(".", ",") : undefined
+      taxPrice: shoppingCart.data?.data?.pricing?.taxPrice.toFixed(2).replace(".", ","),
+      shippingPrice: shoppingCart.data?.data?.pricing?.shippingPrice.toFixed(2).replace(".", ","),
+      totalPrice: shoppingCart.data?.data?.pricing?.totalPrice.toFixed(2).replace(".", ","),
+      totalPriceAfterDiscount: shoppingCart.data?.data?.pricing?.totalPriceAfterDiscount ? shoppingCart.data?.data?.pricing.totalPriceAfterDiscount.toFixed(2).replace(".", ",") : undefined
     }
 
     const coupon = {
-      couponCode: shoppingCart.data?.coupon?.couponCode,
-      couponDiscount: shoppingCart.data?.coupon?.couponDiscount,
-      discountedAmount: shoppingCart.data?.coupon?.discountedAmount.toFixed(2).replace(".", ","),
+      couponCode: shoppingCart.data?.data?.coupon?.couponCode,
+      couponDiscount: shoppingCart.data?.data?.coupon?.couponDiscount,
+      discountedAmount: shoppingCart.data?.data?.coupon?.discountedAmount.toFixed(2).replace(".", ","),
     }
 
     return (
-      <div className="min-h-screen-minus-header bg-background-secondary">
-        <div className="container">
-          <div className="py-3 lg:py-6">
-            <h1 className="text-2xl pb-3 font-medium capitalize">
-              Shopping cart
-            </h1>
+      <>
+        {`${shoppingCart.data?.message}`.startsWith(
+          "Price discount applied"
+        ) && <SuccessConfetti />}
 
-            <div className="grid lg:grid-cols-[65%_35%] xl:grid-cols-[70%_30%] gap-3">
-              <div className="flex flex-col gap-3">
-                {
-                  cartItems.map((item, i) => {
-                    return (
-                      <ItemCard
-                        key={item._id + i}
-                        item={item}
-                        updateItemQuantity={updateItemQuantity}
-                        removeItem={removeItem}
-                      />
-                    )
-                  })
-                }
-              </div>
+        <div className="min-h-screen-minus-header bg-background-secondary">
+          <div className="container">
+            <div className="py-3 lg:py-6">
+              <h1 className="text-2xl pb-3 font-medium capitalize">
+                Shopping cart
+              </h1>
 
-              <div className={`sticky top-0 lg:top-[calc(75.63px+12px)] h-fit`}>
-                <OrderSummary pricing={pricing} coupon={coupon} applyCoupon={applyCoupon} />
+              <div className="grid lg:grid-cols-[65%_35%] xl:grid-cols-[70%_30%] gap-3">
+                <div className="flex flex-col gap-3">
+                  {
+                    cartItems.map((item, i) => {
+                      return (
+                        <ItemCard
+                          key={item._id + i}
+                          item={item}
+                          updateItemQuantity={updateItemQuantity}
+                          removeItem={removeItem}
+                        />
+                      )
+                    })
+                  }
+                </div>
+
+                <div className={`sticky top-0 lg:top-[calc(75.63px+12px)] h-fit`}>
+                  <OrderSummary pricing={pricing} coupon={coupon} applyCoupon={applyCoupon} />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
