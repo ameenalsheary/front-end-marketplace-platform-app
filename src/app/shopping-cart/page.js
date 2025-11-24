@@ -28,10 +28,12 @@ function ItemCard({ item, updateItemQuantity, removeItem }) {
     price,
     totalPrice
   } = item;
+  
+  const href = size ? `/product/${_id}?size=${size}` : `/product/${_id}`;
 
   const des = [
     itemQuantity !== undefined && `Quantity: ${itemQuantity}`,
-    price !== undefined && `Price: ${price}`,
+    price !== undefined && `Price: ${price.toFixed(2).replace(".", ",")}`,
     size !== undefined && `Size: ${String(size).toUpperCase()}`,
     color !== undefined && `Color: ${color}`,
   ].filter(Boolean).join(" / ");
@@ -74,21 +76,23 @@ function ItemCard({ item, updateItemQuantity, removeItem }) {
   };
 
   return (
-    <div className="relative grid grid-cols-[auto_1fr] bg-background shadow-md rounded-md overflow-hidden group">
-      <Link href={`/product/${_id}`}>
-        <CustomImage
-          src={imageCover}
-          fallback="/images/product-placeholder.png"
-          width={500}
-          height={690}
-          alt={title}
-          priority
-          className="w-26 md:w-30 p-1.5 bg-background cursor-pointer"
-        />
-      </Link>
+    <div className="relative grid grid-cols-[auto_1fr] gap-1.5 bg-background shadow-md rounded-md overflow-hidden group">
+      <div className="w-26 md:w-30">
+        <Link href={href}>
+          <CustomImage
+            src={imageCover}
+            fallback="/images/product-placeholder.png"
+            width={500}
+            height={690}
+            alt={title}
+            priority
+            className="w-full bg-background-secondary"
+          />
+        </Link>
+      </div>
 
       <div className="p-1.5 flex flex-col gap-1.5">
-        <Link href={`/product/${_id}`}>
+        <Link href={href}>
           <h1 className="w-[calc(100%-24px)] font-semibold line-clamp-1 group-hover:text-primary group-hover:underline cursor-pointer">
             {title}
           </h1>
@@ -99,7 +103,7 @@ function ItemCard({ item, updateItemQuantity, removeItem }) {
         </p>
 
         <p className="text-lg font-semibold text-primary">
-          {totalPrice} {currency}
+          {totalPrice.toFixed(2).replace(".", ",")} {currency}
         </p>
 
         <div className="mt-auto self-end flex items-center gap-0.5 w-fit p-0.5 border border-border rounded-sm">
@@ -323,6 +327,7 @@ export default function ShoppingCartPage() {
 
   useEffect(() => {
     getShoppingCart();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------
@@ -552,20 +557,6 @@ export default function ShoppingCartPage() {
   // Error
   // ---------------------------
   if (shoppingCart.status === "failed") {
-    return (
-      <div className="bg-background-secondary">
-        <div className="container">
-          <div className="w-full h-screen-minus-header flex flex-col justify-center items-center gap-2">
-            <ErrorDisplay
-              srcImage="/images/error.png"
-              error="Something went wrong."
-              description="An unexpected error occurred while loading this page. You can try again below."
-              buttonText="Try again"
-              onClick={() => getShoppingCart()}
-            />
-          </div>
-        </div>
-      </div>
-    );
+    throw shoppingCart; 
   }
 }

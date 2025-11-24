@@ -5,6 +5,7 @@ import Providers from "@/app/providers";
 import AuthChecker from "@/components/layout/AuthChecker";
 import NavBar from "@/components/layout/Navbar";
 import Auth from "@/components/layout/Auth";
+import CartItemsSidebar from "@/components/ui/CartItemsSidebar";
 import Footer from "@/components/layout/Footer";
 
 const inter = Inter({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
           <AuthChecker />
           <NavBar />
           <Auth />
+          <CartItemsSidebar />
           {children}
           <Footer />
         </Providers>

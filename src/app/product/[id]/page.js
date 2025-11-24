@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
 
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
@@ -22,6 +23,7 @@ import ProductSwiper from "@/components/product/ProductSwiper";
 import { productSpecificFields } from "@/lib/constants";
 import Button from "@/components/ui/Button";
 import { currency } from "@/lib/constants";
+import { setCartItems } from "@/redux/slices/cartItemsModalSlice";
 
 function Skeleton() {
   return (
@@ -231,6 +233,37 @@ function Slider({ images, productId, isFavorite }) {
   );
 }
 
+function ProductDescription({ description }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const words = useMemo(() => description.trim().split(/\s+/), [description]);
+
+  const shortDescription = useMemo(() => {
+    const limit = 32;
+    if (words.length <= limit) return description;
+    return words.slice(0, limit).join(" ") + "...";
+  }, [words, description]);
+
+  const shouldShowToggle = words.length > 32;
+
+  return (
+    <div>
+      <p className="text-muted-foreground">
+        {isExpanded ? description : shortDescription}
+      </p>
+
+      {shouldShowToggle && (
+        <button
+          onClick={() => setIsExpanded((prev) => !prev)}
+          className="text-primary font-medium cursor-pointer hover:underline self-start"
+        >
+          {isExpanded ? "Show Less" : "Learn More"}
+        </button>
+      )}
+    </div>
+  );
+}
+
 function Informations({ informations }) {
   const {
     _id,
@@ -250,45 +283,110 @@ function Informations({ informations }) {
     color,
     group,
   } = informations;
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [sizesInfo, setsIzesInfo] = useState({});
 
-  const getShortDescription = () => {
-    const words = description.split(" ");
-    return words.slice(0, 32).join(" ") + (words.length > 40 ? "..." : "");
-  };
+  const dispatch = useDispatch();
 
-  useState(() => {
-    const sizesExist = sizes.length > 0;
+  const [sizesList, setSizesList] = useState(sizes || []);
+  const [sizesInfo, setSizesInfo] = useState({});
+  const [qty, setQty] = useState(1);
 
-    if (!sizesExist) {
-      setsIzesInfo({
+  const [shoppingCart, setShoppinCart] = useState({
+    status: "idle",
+    data: null,
+  });
+
+  // ------------------------------------------
+  // Initialize sizesInfo (default or selected)
+  // ------------------------------------------
+  useEffect(() => {
+    const hasSizes = sizes.length > 0;
+
+    if (!hasSizes) {
+      setSizesInfo({
         size,
         quantity,
-        price: price.toFixed(2).replace(".", ","),
+        price: format(price),
         ...(priceBeforeDiscount && {
-          priceBeforeDiscount: priceBeforeDiscount.toFixed(2).replace(".", ","),
+          priceBeforeDiscount: format(priceBeforeDiscount),
         }),
         discountPercent,
       });
-    } else {
-      const found = sizes.find((item) => item.size === size);
-      if (found) {
-        setsIzesInfo({
-          ...found,
-          price: found.price.toFixed(2).replace(".", ","),
-          ...(found.priceBeforeDiscount && {
-            priceBeforeDiscount: found.priceBeforeDiscount
-              .toFixed(2)
-              .replace(".", ","),
-          }),
-        });
-      }
+      return;
     }
-  }, []);
+
+    const found = sizes.find((item) => item.size === size);
+    if (!found) return;
+
+    setSizesInfo({
+      ...found,
+      price: format(found.price),
+      ...(found.priceBeforeDiscount && {
+        priceBeforeDiscount: format(found.priceBeforeDiscount),
+      }),
+    });
+  }, [discountPercent, price, priceBeforeDiscount, quantity, size, sizes]);
+
+  const format = (num) => num.toFixed(2).replace(".", ",");
+
+  // ------------------------------------------
+  // Qty Handlers
+  // ------------------------------------------
+  const handleDecrease = () => {
+    if (qty > 1) setQty(qty - 1);
+  };
+
+  const handleIncrease = () => {
+    if (qty < sizesInfo.quantity) setQty(qty + 1);
+  };
+
+  // ------------------------------------------
+  // Add to cart
+  // ------------------------------------------
+  const addProductToCart = async (data) => {
+    setShoppinCart((prev) => ({ ...prev, status: "loading" }));
+
+    try {
+      const res = await apiClient.post("/customer/shopping-cart", data);
+
+      setShoppinCart({ status: "succeeded", data: res.data });
+
+      const deductedQty = data.quantity;
+
+      setSizesInfo((prev) => ({
+        ...prev,
+        quantity: prev.quantity - deductedQty,
+      }));
+
+      const updatedList = sizesList.map((item) => {
+        const active = item._id === sizesInfo._id;
+        return {
+          ...item,
+          quantity: active ? item.quantity - deductedQty : item.quantity,
+        };
+      });
+
+      setSizesList(updatedList);
+
+      setQty(1);
+
+      dispatch(setCartItems(res.data?.data?.cartItems || []));
+    } catch (err) {
+      setShoppinCart({
+        status: "failed",
+        data: err?.response?.data || {
+          status: "failed",
+          message: "Something went wrong. Please try again.",
+        },
+      });
+    }
+  };
 
   return (
-    <section className="h-fit py-2 px-2 md:px-4 flex flex-col gap-2 bg-background shadow-md border border-border rounded-md">
+    <section className="relative h-fit py-2 px-2 md:px-4 flex flex-col gap-2 bg-background shadow-md border border-border rounded-md overflow-hidden">
+      {shoppingCart.status === "loading" && (
+        <div className="absolute z-20 top-0 left-0 w-full h-full cursor-wait" />
+      )}
+
       {category?.name && (
         <section>
           <p>
@@ -300,20 +398,7 @@ function Informations({ informations }) {
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold">{title}</h1>
 
-        <div>
-          <p className="text-muted-foreground">
-            {isExpanded ? description : getShortDescription()}
-          </p>
-
-          {description.split(" ").length > 40 && (
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="text-primary font-medium cursor-pointer hover:underline self-start"
-            >
-              {isExpanded ? "Show Less" : "Learn More"}
-            </button>
-          )}
-        </div>
+        <ProductDescription description={description} />
       </div>
 
       <div className="flex items-center gap-1">
@@ -441,24 +526,24 @@ function Informations({ informations }) {
         </div>
       )}
 
-      {sizes.length > 0 && (
+      {sizesList.length > 0 && (
         <div>
           <h1 className="font-semibold">Sizes:</h1>
           <div className="flex flex-wrap gap-3 py-2">
-            {sizes.map((item, i) => {
+            {sizesList.map((item, i) => {
               const active = item.size === sizesInfo.size;
 
               return (
                 <div
                   key={i}
                   onClick={() => {
-                    setsIzesInfo({
+                    setQty(1);
+
+                    setSizesInfo({
                       ...item,
-                      price: item.price.toFixed(2).replace(".", ","),
+                      price: format(item.price),
                       ...(item.priceBeforeDiscount && {
-                        priceBeforeDiscount: item.priceBeforeDiscount
-                          .toFixed(2)
-                          .replace(".", ","),
+                        priceBeforeDiscount: format(item.priceBeforeDiscount)
                       }),
                     });
                   }}
@@ -478,19 +563,39 @@ function Informations({ informations }) {
         <h1 className="font-semibold">Quantity</h1>
         <div className="flex gap-1 py-2">
           <div className="flex items-center gap-1 w-fit p-1 border border-border rounded-sm shadow-md">
-            <button className="py-2 px-3 flex items-center rounded-sm cursor-pointer hover:bg-background-secondary active:bg-background-tertiary">
+            <button
+              onClick={handleDecrease}
+              className="py-2 px-3 flex items-center rounded-sm cursor-pointer hover:bg-background-secondary active:bg-background-tertiary"
+            >
               <RemoveIcon fontSize="small" />
             </button>
+
             <div className="text-sm py-2 px-4 flex items-center border border-border rounded-sm select-none">
-              1
+              {qty}
             </div>
-            <button className="py-2 px-3 flex items-center rounded-sm cursor-pointer hover:bg-background-secondary active:bg-background-tertiary">
+
+            <button
+              onClick={handleIncrease}
+              className="py-2 px-3 flex items-center rounded-sm cursor-pointer hover:bg-background-secondary active:bg-background-tertiary"
+            >
               <AddIcon fontSize="small" />
             </button>
           </div>
 
-          <Button disabled={sizesInfo.quantity === 0} className="flex-grow">
-            Add to cart
+          <Button
+            disabled={sizesInfo.quantity === 0}
+            onClick={() => {
+              const { size } = sizesInfo;
+
+              addProductToCart({
+                productId: _id,
+                quantity: qty,
+                size,
+              });
+            }}
+            className="flex-grow"
+          >
+            {shoppingCart.status === "loading" ? "Adding..." : "Add to cart"}
           </Button>
         </div>
       </div>
