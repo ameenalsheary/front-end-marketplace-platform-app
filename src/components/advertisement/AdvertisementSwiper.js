@@ -48,7 +48,7 @@ export default function AdvertisementSwiper() {
                 fallback="/images/advertisement-placeholder.svg"
                 width={1440}
                 height={250}
-                alt="Advertisement"
+                alt="Advertisement image"
                 priority
                 className="bg-background-secondary w-full"
               />

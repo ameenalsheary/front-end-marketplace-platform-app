@@ -65,7 +65,7 @@ export default function CartItemsSidebar() {
                         fallback="/images/product-placeholder.png"
                         width={500}
                         height={690}
-                        alt={title}
+                        alt={"Product image"}
                         priority
                         className="bg-background-secondary"
                       />

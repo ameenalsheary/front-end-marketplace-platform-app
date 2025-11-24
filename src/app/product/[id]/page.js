@@ -142,7 +142,7 @@ function Slider({ images, productId, isFavorite }) {
                   fallback="/images/product-placeholder.png"
                   width={500}
                   height={690}
-                  alt=""
+                  alt="Product image"
                   className={`bg-background rounded-md shadow-md ${
                     active ? "border-2 border-primary" : "border border-border"
                   }`}
@@ -173,7 +173,7 @@ function Slider({ images, productId, isFavorite }) {
                   fallback="/images/product-placeholder.png"
                   width={500}
                   height={690}
-                  alt=""
+                  alt="Product image"
                   className="w-full"
                 />
               </SwiperSlide>
@@ -515,7 +515,7 @@ function Informations({ informations }) {
                     fallback="/images/product-placeholder.png"
                     width={500}
                     height={690}
-                    alt=""
+                    alt="Product image"
                     priority
                     className="w-full bg-background-secondary"
                   />

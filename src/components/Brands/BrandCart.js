@@ -12,7 +12,7 @@ export default function BrandCart(props) {
           fallback="/images/brand-placeholder.png"
           width={400}
           height={200}
-          alt={name}
+          alt={"Brand image"}
           className="rounded-t-lg w-full mb-2.5 bg-background-tertiary"
         />
         <h1 className="text-center font-medium text-lg capitalize line-clamp-1 group-hover:text-primary">

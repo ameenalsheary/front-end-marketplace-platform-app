@@ -84,7 +84,7 @@ function ItemCard({ item, updateItemQuantity, removeItem }) {
             fallback="/images/product-placeholder.png"
             width={500}
             height={690}
-            alt={title}
+            alt={"Product image"}
             priority
             className="w-full bg-background-secondary"
           />

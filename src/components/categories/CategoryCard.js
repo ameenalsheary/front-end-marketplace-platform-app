@@ -14,7 +14,7 @@ export default function CategoryCard({ category }) {
             fallback="/images/category-placeholder.png"
             width={600}
             height={600}
-            alt={name}
+            alt={"Category image"}
             priority
             className="rounded-full w-full bg-background-tertiary"
           />
