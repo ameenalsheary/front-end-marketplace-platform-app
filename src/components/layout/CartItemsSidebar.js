@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 
 import { closeCartItemsModal } from "@/redux/slices/cartItemsModalSlice";
-import Button from "./Button";
-import CustomImage from "./CustomImage";
+import Button from "../ui/Button";
+import CustomImage from "../ui/CustomImage";
 import { currency } from "@/lib/constants";
 
 export default function CartItemsSidebar() {

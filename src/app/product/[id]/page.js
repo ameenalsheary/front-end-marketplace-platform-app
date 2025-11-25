@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
@@ -24,6 +24,7 @@ import { productSpecificFields } from "@/lib/constants";
 import Button from "@/components/ui/Button";
 import { currency } from "@/lib/constants";
 import { setCartItems } from "@/redux/slices/cartItemsModalSlice";
+import { openAuthModal } from "@/redux/slices/authModalSlice";
 
 function Skeleton() {
   return (
@@ -285,6 +286,7 @@ function Informations({ informations }) {
   } = informations;
 
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.authModal);
 
   const [sizesList, setSizesList] = useState(sizes || []);
   const [sizesInfo, setSizesInfo] = useState({});
@@ -585,13 +587,15 @@ function Informations({ informations }) {
           <Button
             disabled={sizesInfo.quantity === 0}
             onClick={() => {
-              const { size } = sizesInfo;
+              if (isAuthenticated) {
+                const { size } = sizesInfo;
 
-              addProductToCart({
-                productId: _id,
-                quantity: qty,
-                size,
-              });
+                addProductToCart({
+                  productId: _id,
+                  quantity: qty,
+                  size,
+                });
+              } else dispatch(openAuthModal());
             }}
             className="flex-grow"
           >

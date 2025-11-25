@@ -14,7 +14,7 @@ import Button from "@/components/ui/Button";
 import { currency } from "@/lib/constants";
 import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
-import SuccessConfetti from "@/components/ui/successConfetti";
+import SuccessConfetti from "@/components/ui/SuccessConfetti";
 
 function ItemCard({ item, updateItemQuantity, removeItem }) {
   const {

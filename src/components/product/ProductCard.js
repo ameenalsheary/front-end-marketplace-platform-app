@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import CustomImage from "../ui/CustomImage";
 import FavoriteButton from "../ui/FavoriteButton/FavoriteButton";
-import Button from "../ui/Button";
 import { currency } from "@/lib/constants";
+import AddProductToCartButton from "../ui/AddProductToCartButton";
 
 export default function ProductCard(props) {
   let {
@@ -97,9 +97,7 @@ export default function ProductCard(props) {
       </Link>
 
       <div className="w-full pt-0 pr-2 pl-2 pb-2">
-        <Button disabled={quantity === 0} size="small" className="w-full">
-          Add to cart
-        </Button>
+        <AddProductToCartButton quantity={quantity} />
       </div>
     </div>
   );
