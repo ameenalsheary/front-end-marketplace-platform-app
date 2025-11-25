@@ -14,7 +14,7 @@ import Button from "@/components/ui/Button";
 import { currency } from "@/lib/constants";
 import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
-import SuccessConfetti from "@/components/ui/SuccessConfetti";
+import SuccessReactConfetti from "@/components/ui/SuccessReactConfetti";
 
 function ItemCard({ item, updateItemQuantity, removeItem }) {
   const {
@@ -517,7 +517,7 @@ export default function ShoppingCartPage() {
       <>
         {`${shoppingCart.data?.message}`.startsWith(
           "Price discount applied"
-        ) && <SuccessConfetti />}
+        ) && <SuccessReactConfetti />}
 
         <div className="min-h-screen-minus-header bg-background-secondary">
           <div className="container">
