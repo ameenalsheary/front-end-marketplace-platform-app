@@ -2,7 +2,6 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import Image from "next/image";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -11,6 +10,7 @@ import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
 import Button from "../ui/Button";
 import { closeAuthModal } from "@/redux/slices/authModalSlice";
 import authService from "@/services/auth.service";
+import CustomImage from "../ui/CustomImage";
 
 // Validation
 const emailSchema = Yup.object({
@@ -81,11 +81,11 @@ export default function Auth() {
               className="gap-1.5"
               onClick={handleGoogleAuth}
             >
-              <Image
+              <CustomImage
                 src="/images/google-icon.png"
-                alt="Google Icon"
                 width={32}
                 height={32}
+                alt="Google Icon"
                 className="size-5"
               />
               <span className="mr-2">Continue with Google</span>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import Image from "next/image";
 import { useState, useRef, Suspense } from "react";
 import clsx from "clsx";
 import { Formik, Form } from "formik";
@@ -84,14 +83,14 @@ export default function NavBar() {
           <div className="flex items-center gap-2 py-3">
             <Link href={"/"}>
               <div className="flex-none flex items-center gap-2 cursor-pointer">
-                <Image
+                <CustomImage
                   src={"/logos/logo192.png"}
                   width={192}
                   height={192}
-                  className="size-12 min-w-12"
+                  priority
                   alt="logo"
+                  className="size-12 min-w-12"
                 />
-
                 <h1 className="text-3xl font-bold text-primary hidden md:block">
                   E-shop
                 </h1>
