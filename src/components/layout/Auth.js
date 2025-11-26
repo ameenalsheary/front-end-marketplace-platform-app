@@ -2,6 +2,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import Image from "next/image";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -52,6 +53,10 @@ export default function Auth() {
     setStep("email");
   };
 
+  const handleGoogleAuth = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+  }
+
   if (!isOpen) return null;
 
   return (
@@ -64,49 +69,69 @@ export default function Auth() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between">
-          <h1 className="text-xl font-semibold">
-            Welcome back
-          </h1>
+          <h1 className="text-xl font-semibold">Welcome back</h1>
           <CloseButton onClick={() => dispatch(closeAuthModal())} />
         </div>
 
         {/* Email Step */}
         {step === "email" && (
-          <Formik
-            initialValues={{ email: "" }}
-            validationSchema={emailSchema}
-            onSubmit={async ({ email }) => {
-              const res = await authService.signIn(email);
-              setSignInRes(res);
-              if (res.status === "Success") setStep("verify");
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form className="w-full flex flex-col gap-3">
-                {isSubmitting && <LoadingOverlay />}
+          <>
+            <Button
+              variant="secondary"
+              className="gap-1.5"
+              onClick={handleGoogleAuth}
+            >
+              <Image
+                src="/images/google-icon.png"
+                alt="Google Icon"
+                width={32}
+                height={32}
+                className="size-5"
+              />
+              <span className="mr-2">Continue with Google</span>
+            </Button>
 
-                <Message type={signInRes.status} text={signInRes.message} />
+            <div className="flex items-center gap-1.5">
+              <hr className="flex-grow border-t border-border" />
+              <span>or continue with email</span>
+              <hr className="flex-grow border-t border-border" />
+            </div>
+            <Formik
+              initialValues={{ email: "" }}
+              validationSchema={emailSchema}
+              onSubmit={async ({ email }) => {
+                const res = await authService.signIn(email);
+                setSignInRes(res);
+                if (res.status === "Success") setStep("verify");
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form className="w-full flex flex-col gap-3">
+                  {isSubmitting && <LoadingOverlay />}
 
-                <div>
-                  <Field
-                    name="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full font-medium rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary p-1.5"
-                  />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="text-red-500 text-sm pt-0.5"
-                  />
-                </div>
+                  <Message type={signInRes.status} text={signInRes.message} />
 
-                <Button variant="primary" type="submit">
-                  {isSubmitting ? "Signing in..." : "Sign In / Sign Up"}
-                </Button>
-              </Form>
-            )}
-          </Formik>
+                  <div>
+                    <Field
+                      name="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      className="w-full font-medium rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary p-1.5"
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="text-red-500 text-sm pt-0.5"
+                    />
+                  </div>
+
+                  <Button variant="primary" type="submit">
+                    {isSubmitting ? "Signing in..." : "Sign In / Sign Up"}
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </>
         )}
 
         {/* Verify Step */}
