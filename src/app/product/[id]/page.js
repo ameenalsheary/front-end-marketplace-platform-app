@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "next/navigation";
 
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
@@ -285,6 +286,11 @@ function Informations({ informations }) {
     group,
   } = informations;
 
+  const searchParams = useSearchParams();
+  const urlSize = searchParams.get("size");
+
+  const format = (num) => num.toFixed(2).replace(".", ",");
+
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.authModal);
 
@@ -316,8 +322,11 @@ function Informations({ informations }) {
       return;
     }
 
-    const found = sizes.find((item) => item.size === size);
-    if (!found) return;
+    let found;
+
+    if (urlSize) found = sizes.find((item) => item.size === urlSize);
+    if (!found) found = sizes.find((item) => item.size === size);
+    if (!found) found = sizes[0];
 
     setSizesInfo({
       ...found,
@@ -326,9 +335,7 @@ function Informations({ informations }) {
         priceBeforeDiscount: format(found.priceBeforeDiscount),
       }),
     });
-  }, [discountPercent, price, priceBeforeDiscount, quantity, size, sizes]);
-
-  const format = (num) => num.toFixed(2).replace(".", ",");
+  }, [discountPercent, price, priceBeforeDiscount, quantity, size, sizes, urlSize]);
 
   // ------------------------------------------
   // Qty Handlers
