@@ -296,6 +296,8 @@ function Informations({ informations }) {
 
   const [sizesList, setSizesList] = useState(sizes || []);
   const [sizesInfo, setSizesInfo] = useState({});
+  const [checkedSize, setCheckedSize] = useState(false);
+  const [sizeError, setSizeError] = useState(false);
   const [qty, setQty] = useState(1);
 
   const [shoppingCart, setShoppinCart] = useState({
@@ -319,14 +321,15 @@ function Informations({ informations }) {
         }),
         discountPercent,
       });
+
+      setCheckedSize(true);
       return;
     }
 
-    let found;
-
-    if (urlSize) found = sizes.find((item) => item.size === urlSize);
-    if (!found) found = sizes.find((item) => item.size === size);
-    if (!found) found = sizes[0];
+    const matchUrlSize = sizes.find((i) => i.size === urlSize);
+    const matchDefault = sizes.find((i) => i.size === size);
+    let found = matchUrlSize || matchDefault || sizes[0];
+    setCheckedSize(Boolean(matchUrlSize));
 
     setSizesInfo({
       ...found,
@@ -537,28 +540,41 @@ function Informations({ informations }) {
 
       {sizesList.length > 0 && (
         <div>
-          <h1 className="font-semibold">Sizes:</h1>
+          <div>
+            <h1 className="font-semibold">Sizes:</h1>
+            {sizeError && (
+              <p className="text-sm text-red-500">Please select a size.</p>
+            )}
+          </div>
           <div className="flex flex-wrap gap-3 py-2">
             {sizesList.map((item, i) => {
-              const active = item.size === sizesInfo.size;
+              const active = item.size === sizesInfo.size && checkedSize;
 
               return (
                 <div
                   key={i}
                   onClick={() => {
-                    setQty(1);
-
                     setSizesInfo({
                       ...item,
                       price: format(item.price),
                       ...(item.priceBeforeDiscount && {
-                        priceBeforeDiscount: format(item.priceBeforeDiscount)
+                        priceBeforeDiscount: format(item.priceBeforeDiscount),
                       }),
                     });
+
+                    setCheckedSize(true);
+
+                    setQty(1);
+
+                    setSizeError(false);
                   }}
-                  className={`px-4 py-2 font-semibold bg-background-secondary rounded-sm shadow cursor-pointer hover:bg-background-tertiary hover-scale ${
-                    active ? "border border-primary" : "border border-border"
-                  }`}
+                  className={`px-4 py-2 font-semibold bg-background-secondary rounded-sm shadow cursor-pointer hover:bg-background-tertiary hover-scale border ${
+                    active
+                      ? "border-primary"
+                      : sizeError
+                      ? "border-red-500"
+                      : "border-border"
+                  } `}
                 >
                   {item.size}
                 </div>
@@ -595,6 +611,11 @@ function Informations({ informations }) {
             disabled={sizesInfo.quantity === 0}
             onClick={() => {
               if (isAuthenticated) {
+                if (!checkedSize) {
+                  setSizeError(true);
+                  return;
+                }
+
                 const { size } = sizesInfo;
 
                 addProductToCart({
