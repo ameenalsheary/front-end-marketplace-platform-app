@@ -14,7 +14,7 @@ export default function ProductCard(props) {
     discountPercent,
     imageCover,
     quantity,
-    // size,
+    size,
     sold,
     ratingsAverage,
     ratingsQuantity,
@@ -60,7 +60,9 @@ export default function ProductCard(props) {
           <div>
             {priceBeforeDiscount && (
               <div className="text-red-500 text-sm flex gap-1.5">
-                <del>{priceBeforeDiscount} {currency}</del>
+                <del>
+                  {priceBeforeDiscount} {currency}
+                </del>
                 <span className="font-semibold text-green-600">
                   {discountPercent}% off
                 </span>
@@ -97,7 +99,7 @@ export default function ProductCard(props) {
       </Link>
 
       <div className="w-full pt-0 pr-2 pl-2 pb-2">
-        <AddProductToCartButton quantity={quantity} />
+        <AddProductToCartButton _id={_id} size={size} quantity={quantity} />
       </div>
     </div>
   );

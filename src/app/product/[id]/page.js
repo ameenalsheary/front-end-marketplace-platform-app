@@ -690,19 +690,24 @@ export default function ProductPage() {
       _id: product.data._id,
       title: product.data.title,
       description: product.data.description,
+
       price: product.data.price,
       priceBeforeDiscount: product.data.priceBeforeDiscount,
       discountPercent: product.data.discountPercent,
+
       color: product.data.color,
       quantity: product.data.quantity,
+      size: product.data.size,
       sizes: product.data.sizes || [],
+      group: product.data.group,
+
       category: product.data.category,
       brand: product.data.brand,
+
       sold: product.data.sold,
+
       ratingsAverage: product.data.ratingsAverage,
       ratingsQuantity: product.data.ratingsQuantity,
-      size: product.data.size,
-      group: product.data.group,
     };
 
     const relations = {
