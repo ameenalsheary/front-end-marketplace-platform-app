@@ -40,7 +40,7 @@ const Input = ({
 
   const variants = {
     default: disabled
-      ? "bg-button-disabled text-text border border-button-disabled cursor-not-allowed"
+      ? "bg-button-disabled border border-button-disabled cursor-not-allowed"
       : error
       ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
       : success

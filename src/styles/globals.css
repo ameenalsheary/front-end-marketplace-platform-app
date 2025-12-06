@@ -70,7 +70,7 @@ html.dark {
     @apply ml-auto mr-auto px-3;
   }
   .transition-all {
-    transition: all 0.3s;
+    @apply transition-all duration-300;
   }
   .skeleton {
     @apply bg-background-tertiary text-transparent select-none animate-pulse;
@@ -80,6 +80,12 @@ html.dark {
   }
   .min-h-screen-minus-header {
     @apply min-h-[calc(100vh-73.63px)];
+  }
+  .input-small {
+    @apply p-1.5 w-full font-medium text-sm rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
+  }
+  .input-medium {
+    @apply p-1.5 w-full font-medium text-base rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
   }
 }
 

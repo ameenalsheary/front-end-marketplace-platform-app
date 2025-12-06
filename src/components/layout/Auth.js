@@ -116,7 +116,7 @@ export default function Auth() {
                       name="email"
                       type="email"
                       placeholder="Enter your email"
-                      className="w-full font-medium rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary p-1.5"
+                      className="input-small"
                     />
                     <ErrorMessage
                       name="email"
@@ -181,7 +181,7 @@ export default function Auth() {
                     name="verificationCode"
                     type="text"
                     placeholder="Enter your verification code"
-                    className="w-full font-medium rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary p-1.5"
+                    className="input-small"
                   />
                   <ErrorMessage
                     name="verificationCode"

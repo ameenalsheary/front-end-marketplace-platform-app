@@ -173,7 +173,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                     name="couponCode"
                     type="text"
                     placeholder="Coupon code"
-                    className="p-1.5 text-sm w-full rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary"
+                    className="input-small"
                   />
 
                   <Button size="small" type="submit" className="px-2">
