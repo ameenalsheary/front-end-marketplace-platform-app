@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import Link from "next/link";
 
 import { openAuthModal } from "@/redux/slices/authModalSlice";
@@ -15,18 +16,27 @@ export default function AddProductToCartButton({ _id, quantity, size }) {
 
   const [status, setStatus] = useState("idle");
 
-  const addProductToCart = async (data) => {
-    setStatus("loading");
-    try {
-      const res = await apiClient.post("/customer/shopping-cart", data);
-      setStatus("succeeded");
-      dispatch(setCartItems(res.data?.data?.cartItems || []));
-    } catch {
-      setStatus("failed");
-    }
-  };
+  const addProductToCart = useCallback(
+    async () => {
+      setStatus("loading");
 
-  // If product has sizes → redirect to product page
+      try {
+        const res = await apiClient.post("/customer/shopping-cart", {
+          productId: _id,
+          quantity: 1,
+        });
+
+        dispatch(setCartItems(res.data?.data?.cartItems || []));
+        setStatus("succeeded");
+      } catch (err) {
+        setStatus("failed");
+        toast.error("Something went wrong!");
+      }
+    },
+    [_id, dispatch]
+  );
+
+  // If sizes exist → no direct add-to-cart
   if (size) {
     return (
       <Link href={`/product/${_id}`}>
@@ -37,20 +47,31 @@ export default function AddProductToCartButton({ _id, quantity, size }) {
     );
   }
 
+  const handleClick = () => {
+    if (!isAuthenticated) {
+      dispatch(openAuthModal());
+      return;
+    }
+
+    addProductToCart();
+  };
+
+  const label =
+    status === "loading"
+      ? "Adding..."
+      : status === "failed"
+      ? "Failed! Retry"
+      : "Add to cart";
+
   return (
     <Button
       size="small"
       className="w-full"
-      disabled={quantity === 0}
-      onClick={() => {
-        if (isAuthenticated) {
-          addProductToCart({ productId: _id, quantity: 1 });
-        } else {
-          dispatch(openAuthModal());
-        }
-      }}
+      disabled={quantity === 0 || status === "loading"}
+      variant={status === "failed" ? "error" : "primary"}
+      onClick={handleClick}
     >
-      {status === "loading" ? "Adding..." : "Add to cart"}
+      {label}
     </Button>
   );
 }

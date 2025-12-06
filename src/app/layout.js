@@ -1,8 +1,10 @@
 import { Inter, Poppins } from "next/font/google";
 import "@/styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import Providers from "@/app/providers";
 import AuthChecker from "@/components/layout/AuthChecker";
+import { ToastContainer } from "react-toastify";
 import NavBar from "@/components/layout/Navbar";
 import Auth from "@/components/layout/Auth";
 import CartItemsSidebar from "@/components/layout/CartItemsSidebar";
@@ -28,12 +30,38 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${poppins.variable} antialiased`}>
+        {/* Global Providers */}
         <Providers>
+          {/* Auth Checker */}
           <AuthChecker />
+
+          {/* Toast Container */}
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
+
+          {/* Navbar */}
           <NavBar />
+
+          {/* Auth Modal */}
           <Auth />
+
+          {/* Cart Items Sidebar */}
           <CartItemsSidebar />
+
+          {/* Page Content */}
           {children}
+
+          {/* Footer */}
           <Footer />
         </Providers>
       </body>
