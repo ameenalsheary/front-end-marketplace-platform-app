@@ -7,6 +7,7 @@ import { Navigation } from "swiper/modules";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
@@ -390,6 +391,7 @@ function Informations({ informations }) {
           message: "Something went wrong. Please try again.",
         },
       });
+      toast.error("Something went wrong!");
     }
   };
 
@@ -608,7 +610,8 @@ function Informations({ informations }) {
           </div>
 
           <Button
-            disabled={sizesInfo.quantity === 0}
+            variant={shoppingCart.status === "failed" ? "error" : "primary"}
+            disabled={sizesInfo.quantity === 0 || shoppingCart.status === "loading"}
             onClick={() => {
               if (isAuthenticated) {
                 if (!checkedSize) {
@@ -627,7 +630,7 @@ function Informations({ informations }) {
             }}
             className="flex-grow"
           >
-            {shoppingCart.status === "loading" ? "Adding..." : "Add to cart"}
+            {shoppingCart.status === "loading" ? "Adding..." : shoppingCart.status === "failed" ? "Failed! Retry" : "Add to cart"}
           </Button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import clsx from "clsx";
 
 import { openAuthModal } from "@/redux/slices/authModalSlice";
 import { setCartItems } from "@/redux/slices/cartItemsModalSlice";
@@ -16,25 +17,22 @@ export default function AddProductToCartButton({ _id, quantity, size }) {
 
   const [status, setStatus] = useState("idle");
 
-  const addProductToCart = useCallback(
-    async () => {
-      setStatus("loading");
+  const addProductToCart = useCallback(async () => {
+    setStatus("loading");
 
-      try {
-        const res = await apiClient.post("/customer/shopping-cart", {
-          productId: _id,
-          quantity: 1,
-        });
+    try {
+      const res = await apiClient.post("/customer/shopping-cart", {
+        productId: _id,
+        quantity: 1,
+      });
 
-        dispatch(setCartItems(res.data?.data?.cartItems || []));
-        setStatus("succeeded");
-      } catch (err) {
-        setStatus("failed");
-        toast.error("Something went wrong!");
-      }
-    },
-    [_id, dispatch]
-  );
+      dispatch(setCartItems(res.data?.data?.cartItems || []));
+      setStatus("succeeded");
+    } catch (err) {
+      setStatus("failed");
+      toast.error("Something went wrong!");
+    }
+  }, [_id, dispatch]);
 
   // If sizes exist → no direct add-to-cart
   if (size) {
@@ -66,9 +64,11 @@ export default function AddProductToCartButton({ _id, quantity, size }) {
   return (
     <Button
       size="small"
-      className="w-full"
-      disabled={quantity === 0 || status === "loading"}
+      className={clsx("w-full", {
+        "cursor-wait": status === "loading",
+      })}
       variant={status === "failed" ? "error" : "primary"}
+      disabled={quantity === 0 || status === "loading"}
       onClick={handleClick}
     >
       {label}
