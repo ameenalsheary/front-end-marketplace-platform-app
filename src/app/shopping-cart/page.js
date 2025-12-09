@@ -557,6 +557,6 @@ export default function ShoppingCartPage() {
   // Error
   // ---------------------------
   if (shoppingCart.status === "failed") {
-    throw shoppingCart; 
+    throw new Error("Failed to load shopping cart data");
   }
 }

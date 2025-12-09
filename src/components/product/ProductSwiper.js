@@ -143,6 +143,6 @@ export default function ProductSwiper({ title, params }) {
   }
 
   if (products.status === "failed") {
-    throw products;
+    throw new Error("Failed to load products.");
   }
 }

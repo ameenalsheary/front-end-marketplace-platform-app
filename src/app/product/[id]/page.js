@@ -747,6 +747,6 @@ export default function ProductPage() {
   }
 
   if (product.status === "failed") {
-    throw product;
+    throw new Error("Failed to load product data");
   }
 }

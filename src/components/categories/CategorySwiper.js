@@ -156,6 +156,6 @@ export default function CategorySwiper({
   }
 
   if (categories.status === "failed") {
-    throw categories;
+    throw new Error("Failed to load categories.");
   }
 }
