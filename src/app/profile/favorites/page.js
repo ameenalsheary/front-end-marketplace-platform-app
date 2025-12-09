@@ -20,17 +20,17 @@ export default async function FavoritesPage(props) {
   if (products.length > 0) {
     return (
       <div className="flex flex-col">
-        <h1 className="text-2xl pb-3 font-medium capitalize">
-          My Favorites
-        </h1>
+        <h1 className="text-2xl pb-3 font-medium capitalize">My Favorites</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4">
-          {products.map((item) => {
-            return <ProductCard key={item._id} product={item} />;
-          })}
+        <div className="flex flex-col gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4">
+            {products.map((item) => {
+              return <ProductCard key={item._id} product={item} />;
+            })}
+          </div>
+
+          {numberOfPages > 1 && <PaginationSection count={numberOfPages} />}
         </div>
-
-        {numberOfPages > 1 && <PaginationSection count={numberOfPages} />}
       </div>
     );
   }
