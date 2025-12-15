@@ -82,10 +82,10 @@ html.dark {
     @apply min-h-[calc(100vh-73.63px)];
   }
   .input-small {
-    @apply p-1.5 w-full font-medium text-sm rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
+    @apply p-1.5 w-full font-medium text-sm bg-background rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
   }
   .input-medium {
-    @apply p-1.5 w-full font-medium text-base rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
+    @apply p-1.5 w-full font-medium text-base bg-background rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
   }
 }
 

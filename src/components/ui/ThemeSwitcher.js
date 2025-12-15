@@ -23,7 +23,7 @@ export default function ThemeSwitcher() {
         <label
           key={value}
           className={clsx(
-            "flex-grow bg-background p-3 flex items-center gap-1 rounded-md shadow-sm hover:bg-background-tertiary transition-all cursor-pointer",
+            "grow bg-background p-3 flex items-center gap-1 rounded-md shadow-sm hover:bg-background-tertiary transition-all cursor-pointer",
             theme === value && "bg-background-tertiary"
           )}
           onClick={() => setTheme(value)}

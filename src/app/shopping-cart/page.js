@@ -15,6 +15,7 @@ import { currency } from "@/lib/constants";
 import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
 import SuccessReactConfetti from "@/components/ui/SuccessReactConfetti";
+import CheckOutSidebar from "@/components/ui/CheckOutSidebar";
 
 function ItemCard({ item, updateItemQuantity, removeItem }) {
   const {
@@ -28,7 +29,7 @@ function ItemCard({ item, updateItemQuantity, removeItem }) {
     price,
     totalPrice
   } = item;
-  
+
   const href = size ? `/product/${_id}?size=${size}` : `/product/${_id}`;
 
   const des = [
@@ -270,9 +271,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
           )
         }
 
-        <Button>
-          Checkout
-        </Button>
+        <CheckOutSidebar />
       </div>
     </div >
   )
@@ -327,7 +326,7 @@ export default function ShoppingCartPage() {
 
   useEffect(() => {
     getShoppingCart();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------
@@ -542,7 +541,7 @@ export default function ShoppingCartPage() {
                   }
                 </div>
 
-                <div className={`sticky top-0 lg:top-[calc(75.63px+12px)] h-fit`}>
+                <div className={`h-fit`}>
                   <OrderSummary pricing={pricing} coupon={coupon} applyCoupon={applyCoupon} />
                 </div>
               </div>
