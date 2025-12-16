@@ -65,7 +65,7 @@ export default function Auth() {
       onClick={() => dispatch(closeAuthModal())}
     >
       <div
-        className="bg-background w-full md:w-[450px] rounded-md p-3 flex flex-col gap-3 shadow-md relative overflow-hidden"
+        className="bg-background w-full md:w-112.5 rounded-md p-3 flex flex-col gap-3 shadow-md relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between">
@@ -92,9 +92,9 @@ export default function Auth() {
             </Button>
 
             <div className="flex items-center gap-1.5">
-              <hr className="flex-grow border-t border-border" />
+              <hr className="grow border-t border-border" />
               <span>or continue with email</span>
-              <hr className="flex-grow border-t border-border" />
+              <hr className="grow border-t border-border" />
             </div>
             <Formik
               initialValues={{ email: "" }}
