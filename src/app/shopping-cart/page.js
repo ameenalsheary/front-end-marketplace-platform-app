@@ -388,7 +388,7 @@ export default function ShoppingCartPage() {
                   Array(3).fill(0).map((_, i) => {
                     return (
                       <div key={i} className="grid grid-cols-[auto_1fr] bg-background rounded-md">
-                        <div className="w-[104px] h-[137.78px] md:w-[120px] md:h-[159.66px] skeleton" />
+                        <div className="w-26 h-[137.78px] md:w-30 md:h-[159.66px] skeleton" />
 
                         <div className="p-1.5 flex flex-col gap-1.5">
                           <h1 className="w-[calc(100%-24px)] skeleton">

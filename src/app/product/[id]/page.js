@@ -628,7 +628,7 @@ function Informations({ informations }) {
                 });
               } else dispatch(openAuthModal());
             }}
-            className="flex-grow"
+            className="grow"
           >
             {shoppingCart.status === "loading" ? "Adding..." : shoppingCart.status === "failed" ? "Failed! Retry" : "Add to cart"}
           </Button>
