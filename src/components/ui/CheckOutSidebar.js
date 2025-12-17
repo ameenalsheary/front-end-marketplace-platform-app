@@ -16,26 +16,26 @@ import apiClient from "@/services/apiClient";
 
 const checkoutValidationSchema = Yup.object().shape({
   phoneNumber: Yup.string()
-    .required("Select phone number."),
+    .required("Select phone number"),
   country: Yup.string()
-    .required("Country is required.")
-    .min(2, "Country name must be at least 2 characters.")
-    .max(50, "Country name cannot exceed 50 characters."),
+    .required("Country is required")
+    .min(2, "Country name must be at least 2 characters")
+    .max(50, "Country name cannot exceed 50 characters"),
   state: Yup.string()
-    .required("State is required.")
-    .min(2, "State name must be at least 2 characters.")
-    .max(50, "State name cannot exceed 50 characters."),
+    .required("State is required")
+    .min(2, "State name must be at least 2 characters")
+    .max(50, "State name cannot exceed 50 characters"),
   city: Yup.string()
-    .required("City is required.")
-    .min(2, "City name must be at least 2 characters.")
-    .max(50, "City name cannot exceed 50 characters."),
+    .required("City is required")
+    .min(2, "City name must be at least 2 characters")
+    .max(50, "City name cannot exceed 50 characters"),
   street: Yup.string()
-    .required("Street address is required.")
-    .min(5, "Street address must be at least 5 characters.")
-    .max(100, "Street address cannot exceed 100 characters."),
+    .required("Street address is required")
+    .min(5, "Street address must be at least 5 characters")
+    .max(100, "Street address cannot exceed 100 characters"),
   postalCode: Yup.string()
-    .required("Postal code is required.")
-    .matches(/^\d{4,10}$/, "Postal code must be between 4 and 10 digits."),
+    .required("Postal code is required")
+    .matches(/^\d{4,10}$/, "Postal code must be between 4 and 10 digits"),
 });
 
 const LoadingOverlay = () => (
@@ -79,6 +79,7 @@ export default function CheckOutSidebar() {
     data: [],
   });
   const [error, setError] = useState(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const router = useRouter();
 
@@ -152,13 +153,15 @@ export default function CheckOutSidebar() {
 
       if (res?.data?.status !== "Success") return;
 
+      setIsRedirecting(true);
+
       if (res.data.sessionURL) {
         router.push(res.data.sessionURL);
       } else {
         router.push("/profile/orders");
       }
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again");
     }
   };
 
@@ -213,7 +216,7 @@ export default function CheckOutSidebar() {
               className="relative p-3 grid gap-3 border border-border rounded-sm shadow-sm"
               aria-busy={isSubmitting}
             >
-              {isSubmitting && <LoadingOverlay />}
+              {(isSubmitting || isRedirecting) && <LoadingOverlay />}
 
               {error && (
                 <Message type="fail" text={error} />

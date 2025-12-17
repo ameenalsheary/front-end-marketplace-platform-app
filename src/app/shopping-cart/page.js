@@ -144,7 +144,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
   const couponApplied = Boolean(couponCode);
 
   return (
-    <div className="grid gap-3 p-1.5 bg-background rounded-md shadow-md">
+    <div className="relative grid gap-3 p-1.5 bg-background rounded-md shadow-md">
       <h1 className="font-semibold text-lg">
         ORDER SUMMARY
       </h1>
@@ -169,24 +169,31 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                   </div>
                 )}
 
-                <div className="grid grid-cols-[1fr_auto] gap-1.5">
-                  <Field
-                    name="couponCode"
-                    type="text"
-                    placeholder="Coupon code"
-                    className="input-small"
-                  />
+                <div className="grid gap-1.5">
+                  <div>
+                    <Field
+                      name="couponCode"
+                      type="text"
+                      placeholder="Coupon code"
+                      className="input-small"
+                    />
 
-                  <Button size="small" type="submit" className="px-2">
+                    <ErrorMessage
+                      name="couponCode"
+                      component="div"
+                      className="text-red-500 text-sm pt-0.5"
+                    />
+                  </div>
+
+                  <Button
+                    size="small"
+                    type="submit"
+                    className="px-2"
+                    disabled={isSubmitting}
+                  >
                     {isSubmitting ? "Applying..." : "Apply"}
                   </Button>
                 </div>
-
-                <ErrorMessage
-                  name="couponCode"
-                  component="div"
-                  className="text-red-500 text-sm pt-0.5"
-                />
               </Form>
             )}
           </Formik>
