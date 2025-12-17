@@ -38,7 +38,7 @@ function SearchBar() {
 
   return (
     <form
-      className="flex-grow flex rounded-full overflow-hidden"
+      className="grow flex rounded-full overflow-hidden"
       onSubmit={(e) => {
         e.preventDefault();
         handleSearch();
@@ -48,7 +48,7 @@ function SearchBar() {
         ref={inputRef}
         type="text"
         placeholder="Search products..."
-        className="outline-0 min-w-0 text-text flex-grow bg-background-secondary rounded-md px-3"
+        className="outline-0 min-w-0 text-text grow bg-background-secondary rounded-md px-3"
         defaultValue={searchParams.get("query") || ""}
       />
       <button
@@ -103,7 +103,7 @@ export default function NavBar() {
               cannot be executed during server-side rendering. 
               <Suspense> delays rendering until the client is ready, preventing build errors.
             */}
-            <Suspense fallback={<div className="flex-grow" />}>
+            <Suspense fallback={<div className="grow" />}>
               <SearchBar />
             </Suspense>
 
@@ -134,7 +134,7 @@ export default function NavBar() {
                     </button>
                   </>
                 ) : (
-                  <div className="flex items-center min-w-12">
+                  <div className="flex items-center gap-2 min-w-12">
                     <div className="hidden md:flex items-center gap-2">
                       <Link
                         href={"/shopping-cart"}
@@ -181,7 +181,7 @@ export default function NavBar() {
           "bg-overlay fixed z-2 left-0 w-full h-screen-minus-header",
           {
             "top-[73.63px] opacity-100": openMenu === true,
-            "top-[-100%] opacity-0": openMenu === false,
+            "-top-full opacity-0": openMenu === false,
           }
         )}
         onClick={() => setOpenMenu(false)}
