@@ -24,7 +24,7 @@ importers:
         specifier: ^2.9.0
         version: 2.11.1(react-redux@9.2.0(@types/react@19.2.7)(react@19.1.0)(redux@5.0.1))(react@19.1.0)
       axios:
-        specifier: ^1.12.2
+        specifier: ^1.13.2
         version: 1.13.2
       clsx:
         specifier: ^2.1.1

@@ -214,7 +214,7 @@ export default function CheckOutSidebar() {
           {({ isSubmitting, values, setValues }) => (
             <Form
               className="relative p-3 grid gap-3 border border-border rounded-sm shadow-sm"
-              aria-busy={isSubmitting}
+              aria-busy={(isSubmitting || isRedirecting)}
             >
               {(isSubmitting || isRedirecting) && <LoadingOverlay />}
 
@@ -364,9 +364,9 @@ export default function CheckOutSidebar() {
                 className="w-full"
                 variant="primary"
                 type="submit"
-                disabled={isSubmitting ? true : false}
+                disabled={(isSubmitting || isRedirecting) ? true : false}
               >
-                {isSubmitting ? "Processing..." : "Checkout"}
+                {(isSubmitting || isRedirecting) ? "Processing..." : "Checkout"}
               </Button>
             </Form>
           )}
