@@ -116,6 +116,15 @@ html.dark {
   .input-medium {
     @apply p-1.5 w-full font-medium text-base bg-background rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
   }
+  .phone-input {
+    @apply p-1.5 flex items-center gap-1.5 rounded-md border border-primary;
+  }
+  .phone-input input {
+    @apply outline-none bg-transparent;
+  }
+  .PhoneInputCountrySelect {
+    @apply bg-background;
+  }
 }
 
 /* start pagination */
