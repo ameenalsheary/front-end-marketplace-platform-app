@@ -1,13 +1,13 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCaCT2T7c9K3wHr5ssusFR-s_R9zDvj9kc",
-  authDomain: "e-shop-app-2eff7.firebaseapp.com",
-  projectId: "e-shop-app-2eff7",
-  storageBucket: "e-shop-app-2eff7.firebasestorage.app",
-  messagingSenderId: "931872818262",
-  appId: "1:931872818262:web:da7764b3c8fc30d9ba27f7",
-  measurementId: "G-XCQNYKGJ5B"
+  apiKey: "AIzaSyA9UvAILG6IZ5h-OVw2tEyAXIFC0rnsx7w",
+  authDomain: "e-shop-app-168db.firebaseapp.com",
+  projectId: "e-shop-app-168db",
+  storageBucket: "e-shop-app-168db.firebasestorage.app",
+  messagingSenderId: "368350755998",
+  appId: "1:368350755998:web:ef1ca41d4d533c98f18f8f",
+  measurementId: "G-5BJPSDZT0D"
 };
 
 export const app = initializeApp(firebaseConfig);
