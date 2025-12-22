@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import clsx from "clsx";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 
+import Input from "./Input";
 import Button from "./Button";
 import LoadingIcon from "./loadingIcon/LoadingIcon";
 import CloseButton from "./CloseButton";
@@ -39,7 +40,7 @@ const checkoutValidationSchema = Yup.object().shape({
 });
 
 const LoadingOverlay = () => (
-  <div className="absolute inset-0 bg-background/50 cursor-wait flex justify-center items-center">
+  <div className="absolute z-10 inset-0 bg-background/50 cursor-wait flex justify-center items-center">
     <LoadingIcon />
   </div>
 );
@@ -47,26 +48,8 @@ const LoadingOverlay = () => (
 const Message = ({ type, text }) => {
   if (!text) return null;
   const color = type === "fail" ? "text-red-500" : "text-green-500";
-  return <p className={`${color} text-center`}>{text}</p>;
+  return <p className={`${color} text-sm text-center`}>{text}</p>;
 };
-
-const InputField = ({ name, placeholder, autoComplete }) => (
-  <div>
-    <Field
-      name={name}
-      type="text"
-      placeholder={placeholder}
-      autoComplete={autoComplete}
-      className="input-small"
-    />
-
-    <ErrorMessage
-      name={name}
-      component="div"
-      className="text-red-500 text-sm pt-0.5"
-    />
-  </div>
-);
 
 export default function CheckOutSidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -211,16 +194,14 @@ export default function CheckOutSidebar() {
           validationSchema={checkoutValidationSchema}
           onSubmit={handleCheckoutSubmit}
         >
-          {({ isSubmitting, values, setValues }) => (
+          {({ isSubmitting, values, handleChange, setValues, errors, touched }) => (
             <Form
               className="relative p-3 grid gap-3 border border-border rounded-sm shadow-sm"
               aria-busy={(isSubmitting || isRedirecting)}
             >
               {(isSubmitting || isRedirecting) && <LoadingOverlay />}
 
-              {error && (
-                <Message type="fail" text={error} />
-              )}
+              {error && <Message type="fail" text={error} />}
 
               <div className="flex flex-col gap-3 md:flex-row">
                 <Button
@@ -262,12 +243,14 @@ export default function CheckOutSidebar() {
                 </Button>
               </div>
 
+              {/* Phone number */}
               <div>
-                <Field
-                  as="select"
+                <select
                   name="phoneNumber"
-                  className="input-small"
+                  value={values.phoneNumber}
+                  onChange={handleChange}
                   disabled={phoneNumbers.data.length === 0}
+                  className={`input-base input-sm ${touched.phoneNumber && errors.phoneNumber ? "input-error" : "input-default"}`}
                 >
                   <option value="">-- Select phone number --</option>
                   {phoneNumbers.data.map((p) => (
@@ -275,21 +258,21 @@ export default function CheckOutSidebar() {
                       {p.phoneNumber}
                     </option>
                   ))}
-                </Field>
+                </select>
 
-                <ErrorMessage
-                  name="phoneNumber"
-                  component="div"
-                  className="text-red-500 text-sm pt-0.5"
-                />
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <div className="text-red-500 text-sm pt-0.5">
+                    {errors.phoneNumber}
+                  </div>
+                )}
               </div>
 
-              <div>
-                <Field
-                  as="select"
+              {/* Address selector */}
+              {addresses.data.length > 0 && (
+                <select
                   name="selectedAddressId"
-                  className="input-small"
-                  disabled={addresses.data.length === 0}
+                  value={values.selectedAddressId}
+                  className="input-base input-default input-sm"
                   onChange={(e) => {
                     const addressId = e.target.value;
 
@@ -327,36 +310,62 @@ export default function CheckOutSidebar() {
                       {address.city} – {address.street}
                     </option>
                   ))}
-                </Field>
-              </div>
+                </select>
+              )}
 
-              <InputField
+              {/* Address fields */}
+              <Input
                 name="country"
                 placeholder="Country"
+                size="small"
+                value={values.country}
+                onChange={handleChange}
+                error={touched.country && !!errors.country}
+                errorText={touched.country && errors.country}
                 autoComplete="country-name"
               />
 
-              <InputField
+              <Input
                 name="city"
                 placeholder="City"
+                size="small"
+                value={values.city}
+                onChange={handleChange}
+                error={touched.city && !!errors.city}
+                errorText={touched.city && errors.city}
                 autoComplete="address-level2"
               />
 
-              <InputField
+              <Input
                 name="state"
                 placeholder="State"
+                size="small"
+                value={values.state}
+                onChange={handleChange}
+                error={touched.state && !!errors.state}
+                errorText={touched.state && errors.state}
                 autoComplete="address-level1"
               />
 
-              <InputField
+              <Input
                 name="street"
                 placeholder="Street"
+                size="small"
+                value={values.street}
+                onChange={handleChange}
+                error={touched.street && !!errors.street}
+                errorText={touched.street && errors.street}
                 autoComplete="street-address"
               />
 
-              <InputField
+              <Input
                 name="postalCode"
                 placeholder="Postal Code"
+                size="small"
+                value={values.postalCode}
+                onChange={handleChange}
+                error={touched.postalCode && !!errors.postalCode}
+                errorText={touched.postalCode && errors.postalCode}
                 autoComplete="postal-code"
               />
 
@@ -364,7 +373,7 @@ export default function CheckOutSidebar() {
                 className="w-full"
                 variant="primary"
                 type="submit"
-                disabled={(isSubmitting || isRedirecting) ? true : false}
+                disabled={isSubmitting || isRedirecting}
               >
                 {(isSubmitting || isRedirecting) ? "Processing..." : "Checkout"}
               </Button>

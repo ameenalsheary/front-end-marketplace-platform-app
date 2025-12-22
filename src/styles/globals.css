@@ -81,15 +81,6 @@ html.dark {
   --shadow-lg: 0 30px 40px rgba(0, 0, 0, 0.6);
 }
 
-@layer components {
-  .hover-lift {
-    @apply hover:-translate-y-1 hover:shadow-md transition-all duration-300;
-  }
-  .hover-scale {
-    @apply hover:scale-110 transition-transform duration-300;
-  }
-}
-
 @layer base {
   body {
     @apply bg-background text-text;
@@ -98,24 +89,68 @@ html.dark {
   .container {
     @apply ml-auto mr-auto px-3;
   }
+}
+
+@layer hOver {
+  .hover-lift {
+    @apply hover:-translate-y-1 hover:shadow-md transition-all duration-300;
+  }
+  .hover-scale {
+    @apply hover:scale-110 transition-transform duration-300;
+  }
+}
+
+@layer transition {
   .transition-all {
     @apply transition-all duration-300;
   }
+}
+
+@layer skeleton {
   .skeleton {
     @apply bg-background-tertiary text-transparent select-none animate-pulse;
   }
+}
+
+@layer hScreenMinusHeader {
   .h-screen-minus-header {
     @apply h-[calc(100vh-73.63px)];
   }
   .min-h-screen-minus-header {
     @apply min-h-[calc(100vh-73.63px)];
   }
-  .input-small {
-    @apply p-1.5 w-full font-medium text-sm bg-background rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
+}
+
+@layer input {
+  /* Base */
+  .input-base {
+    @apply w-full font-medium rounded-md transition-all focus:outline-none border;
   }
-  .input-medium {
-    @apply p-1.5 w-full font-medium text-base bg-background rounded-md transition-all transform focus:outline-none border border-primary focus:border-primary focus:ring-1 focus:ring-primary;
+
+  /* States */
+  .input-disabled {
+    @apply bg-button-disabled border-button-disabled cursor-not-allowed opacity-60;
   }
+  .input-error {
+    @apply border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500;
+  }
+  .input-success {
+    @apply border-green-500 focus:border-green-500 focus:ring-1 focus:ring-green-500;
+  }
+  .input-default {
+    @apply border-primary focus:border-primary focus:ring-1 focus:ring-primary;
+  }
+
+  /* Sizes */
+  .input-sm {
+    @apply p-1.5 text-sm;
+  }
+  .input-md {
+    @apply p-2 text-base;
+  }
+}
+
+@layer phoneInput {
   .phone-input {
     @apply p-1.5 flex items-center gap-1.5 rounded-md border border-primary;
   }

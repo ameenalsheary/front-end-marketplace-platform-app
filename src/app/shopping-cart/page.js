@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -16,6 +16,7 @@ import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
 import SuccessReactConfetti from "@/components/ui/SuccessReactConfetti";
 import CheckOutSidebar from "@/components/ui/CheckOutSidebar";
+import Input from "@/components/ui/Input";
 
 function ItemCard({ item, updateItemQuantity, removeItem }) {
   const {
@@ -161,34 +162,28 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
             })}
             onSubmit={({ couponCode }) => applyCoupon({ couponCode })}
           >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, values, handleChange, errors, touched }) => (
               <Form>
                 {isSubmitting && (
-                  <div className="absolute inset-0 bg-background opacity-50 cursor-wait flex justify-center items-center">
+                  <div className="absolute z-10 inset-0 bg-background/50 cursor-wait flex justify-center items-center">
                     <LoadingIcon />
                   </div>
                 )}
 
                 <div className="grid gap-1.5">
-                  <div>
-                    <Field
-                      name="couponCode"
-                      type="text"
-                      placeholder="Coupon code"
-                      className="input-small"
-                    />
-
-                    <ErrorMessage
-                      name="couponCode"
-                      component="div"
-                      className="text-red-500 text-sm pt-0.5"
-                    />
-                  </div>
+                  <Input
+                    name="couponCode"
+                    placeholder="Coupon code"
+                    size="small"
+                    value={values.couponCode}
+                    onChange={handleChange}
+                    error={touched.couponCode && !!errors.couponCode}
+                    errorText={touched.couponCode && errors.couponCode}
+                  />
 
                   <Button
                     size="small"
                     type="submit"
-                    className="px-2"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Applying..." : "Apply"}

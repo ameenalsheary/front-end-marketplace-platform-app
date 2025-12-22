@@ -2,11 +2,12 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import CloseButton from "../ui/CloseButton";
 import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
+import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { closeAuthModal } from "@/redux/slices/authModalSlice";
 import authService from "@/services/auth.service";
@@ -21,13 +22,13 @@ const emailSchema = Yup.object({
 
 const verifySchema = Yup.object({
   verificationCode: Yup.string()
-    .matches(/^[0-9]{4,6}$/, "Verification code must be 4–6 digits")
-    .required("Verification code is required"),
+    .required("Verification code is required")
+    .matches(/^[0-9]{4,6}$/, "Verification code must be 4–6 digits"),
 });
 
 // Small reusable overlay
 const LoadingOverlay = () => (
-  <div className="absolute inset-0 bg-background opacity-50 cursor-wait flex justify-center items-center">
+  <div className="absolute z-10 inset-0 bg-background/50 cursor-wait flex justify-center items-center">
     <LoadingIcon />
   </div>
 );
@@ -105,27 +106,28 @@ export default function Auth() {
                 if (res.status === "Success") setStep("verify");
               }}
             >
-              {({ isSubmitting }) => (
+              {({ isSubmitting, values, handleChange, errors, touched }) => (
                 <Form className="w-full flex flex-col gap-3">
                   {isSubmitting && <LoadingOverlay />}
 
-                  <Message type={signInRes.status} text={signInRes.message} />
+                  {!isSubmitting && <Message type={signInRes.status} text={signInRes.message} />}
 
-                  <div>
-                    <Field
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      className="input-small"
-                    />
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="text-red-500 text-sm pt-0.5"
-                    />
-                  </div>
+                  <Input
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    size="small"
+                    value={values.email}
+                    onChange={handleChange}
+                    error={touched.email && !!errors.email}
+                    errorText={touched.email && errors.email}
+                  />
 
-                  <Button variant="primary" type="submit">
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
                     {isSubmitting ? "Signing in..." : "Sign In / Sign Up"}
                   </Button>
                 </Form>
@@ -152,7 +154,7 @@ export default function Auth() {
               }
             }}
           >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, values, handleChange, errors, touched }) => (
               <Form className="w-full flex flex-col gap-3">
                 {isSubmitting && <LoadingOverlay />}
 
@@ -171,26 +173,23 @@ export default function Auth() {
                   </div>
                 )}
 
-                <Message
-                  type={verifySignInRes.status}
-                  text={verifySignInRes.message}
+                {!isSubmitting && <Message type={verifySignInRes.status} text={verifySignInRes.message} />}
+
+                <Input
+                  name="verificationCode"
+                  placeholder="Enter your verification code"
+                  size="small"
+                  value={values.verificationCode}
+                  onChange={handleChange}
+                  error={touched.verificationCode && !!errors.verificationCode}
+                  errorText={touched.verificationCode && errors.verificationCode}
                 />
 
-                <div>
-                  <Field
-                    name="verificationCode"
-                    type="text"
-                    placeholder="Enter your verification code"
-                    className="input-small"
-                  />
-                  <ErrorMessage
-                    name="verificationCode"
-                    component="div"
-                    className="text-red-500 text-sm pt-0.5"
-                  />
-                </div>
-
-                <Button variant="primary" type="submit">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
                   {isSubmitting ? "Verifying..." : "Verify & Sign In"}
                 </Button>
               </Form>

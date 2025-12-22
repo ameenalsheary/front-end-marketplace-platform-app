@@ -10,10 +10,10 @@ const Input = ({
   onBlur,
 
   // Styling & variants
-  variant = "default",
   size = "medium",
   disabled = false,
   className = "",
+  containerClassName = "",
 
   // Validation & states
   error = false,
@@ -35,84 +35,72 @@ const Input = ({
   autoComplete = "off",
   ...props
 }) => {
-  const baseClasses =
-    "w-full font-medium rounded-md transition-all transform focus:outline-none border";
-
-  const variants = {
-    default: disabled
-      ? "bg-button-disabled border border-button-disabled cursor-not-allowed"
-      : error
-      ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-      : success
-      ? "border-green-500 focus:border-green-500 focus:ring-1 focus:ring-green-500"
-      : "border-primary focus:border-primary focus:ring-1 focus:ring-primary",
-  };
-
+  const baseClasses = "input-base";
+  const stateClasses = disabled ? "input-disabled" : error ? "input-error" : success ? "input-success" : "input-default";
   const sizes = {
-    small: "p-1.5 text-sm",
-    medium: "p-1.5 text-base",
+    small: "input-sm",
+    medium: "input-md",
   };
 
-  const inputClasses = `${baseClasses} ${variants[variant]} ${sizes[size]} ${
-    disabled ? "cursor-not-allowed opacity-60" : ""
-  } ${className}`;
-
-  const containerClasses = `flex flex-col gap-1 ${
-    props.containerClassName || ""
-  }`;
-
-  const renderInput = () => (
-    <div
-      className={`relative ${startIcon || endIcon ? "flex items-center" : ""}`}
-    >
-      {startIcon && (
-        <div className="absolute left-3 text-text">{startIcon}</div>
-      )}
-      <input
-        type={type}
-        className={`
-          ${inputClasses}
-          ${startIcon ? "pl-10" : ""}
-          ${endIcon ? "pr-10" : ""}
-          ${disabled ? "cursor-not-allowed" : ""}
-        `}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        disabled={disabled}
-        required={required}
-        id={id}
-        name={name}
-        autoComplete={autoComplete}
-        {...props}
-      />
-      {endIcon && <div className="absolute right-3 text-text">{endIcon}</div>}
-    </div>
-  );
+  const inputClasses = [
+    baseClasses,
+    stateClasses,
+    sizes[size],
+    startIcon && "pl-10",
+    endIcon && "pr-10",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <div className={containerClasses}>
+    <div className={`flex flex-col gap-0.5 ${containerClassName}`}>
       {/* Label */}
       {label && (
         <label
           htmlFor={id}
-          className={`text-sm font-medium ${
-            error ? "text-error" : "text-text"
-          }`}
+          className={`text-sm font-medium ${error ? "text-red-500" : "text-text"}`}
         >
           {label}
-          {required && <span className="text-error ml-1">*</span>}
+          {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
 
       {/* Input */}
-      {renderInput()}
+      <div className="relative flex items-center">
+        {startIcon && (
+          <div className="absolute left-3 pointer-events-none text-text">
+            {startIcon}
+          </div>
+        )}
 
-      {/* Helper/Error Text */}
+        <input
+          type={type}
+          id={id}
+          name={name}
+          value={value}
+          placeholder={placeholder}
+          onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          disabled={disabled}
+          required={required}
+          autoComplete={autoComplete}
+          aria-invalid={error}
+          className={inputClasses}
+          {...props}
+        />
+
+        {endIcon && (
+          <div className="absolute right-3 pointer-events-none text-text">
+            {endIcon}
+          </div>
+        )}
+      </div>
+
+      {/* Helper / Error text */}
       {(helperText || errorText) && (
-        <p className={`text-xs ${error ? "text-red-500" : "text-green-500"}`}>
+        <p className={`text-xs ${error ? "text-red-500" : success ? "text-green-500" : "text-muted"}`}>
           {error ? errorText : helperText}
         </p>
       )}
@@ -121,55 +109,3 @@ const Input = ({
 };
 
 export default Input;
-
-// And here's how you would use it:
-<>
-  {/* Basic usage */}
-  <Input
-    placeholder="Enter your name"
-    value={"name"}
-    onChange={(e) => setName(e.target.value)}
-  />
-
-  {/* With label and helper text */}
-  <Input
-    label="Email"
-    type="email"
-    placeholder="your@email.com"
-    helperText="We'll never share your email"
-  />
-
-  {/* With error state */}
-  <Input
-    label="Password"
-    type="password"
-    error={true}
-    errorText="Password must be at least 8 characters"
-  />
-
-  {/* With icons */}
-  <Input
-    startIcon={
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fillRule="evenodd"
-          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-          clipRule="evenodd"
-        />
-      </svg>
-    }
-    placeholder="Search..."
-  />
-
-  {/* Disabled state */}
-  <Input label="Disabled Field" value="Can't edit this" disabled={true} />
-
-  {/* Different sizes */}
-  <Input size="small" placeholder="Small input" />
-  <Input size="medium" placeholder="Large input" />
-</>;
