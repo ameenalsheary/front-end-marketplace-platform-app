@@ -11,7 +11,8 @@ import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 
 import Input from "./Input";
 import Button from "./Button";
-import LoadingIcon from "./loadingIcon/LoadingIcon";
+import LoadingOverlay from "./LoadingIcon";
+import FormErrorMessage from "./FormErrorMessage";
 import CloseButton from "./CloseButton";
 import apiClient from "@/services/apiClient";
 
@@ -39,12 +40,6 @@ const checkoutValidationSchema = Yup.object().shape({
     .matches(/^\d{4,10}$/, "Postal code must be between 4 and 10 digits"),
 });
 
-const LoadingOverlay = () => (
-  <div className="absolute z-10 inset-0 bg-background/50 cursor-wait flex justify-center items-center">
-    <LoadingIcon />
-  </div>
-);
-
 const Message = ({ type, text }) => {
   if (!text) return null;
   const color = type === "fail" ? "text-red-500" : "text-green-500";
@@ -61,7 +56,7 @@ export default function CheckOutSidebar() {
     status: "idle",
     data: [],
   });
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const router = useRouter();
@@ -119,7 +114,7 @@ export default function CheckOutSidebar() {
     street,
     postalCode,
   }) => {
-    setError(null);
+    setErrorMessage(null);
 
     const data = { phone, country, city, state, street, postalCode };
 
@@ -144,7 +139,7 @@ export default function CheckOutSidebar() {
         router.push("/profile/orders");
       }
     } catch {
-      setError("Something went wrong. Please try again");
+      setErrorMessage("Something went wrong. Please try again");
     }
   };
 
@@ -199,9 +194,9 @@ export default function CheckOutSidebar() {
               className="relative p-3 grid gap-3 border border-border rounded-sm shadow-sm"
               aria-busy={(isSubmitting || isRedirecting)}
             >
-              {(isSubmitting || isRedirecting) && <LoadingOverlay />}
+              <LoadingOverlay show={isSubmitting || isRedirecting} />
 
-              {error && <Message type="fail" text={error} />}
+              <FormErrorMessage type={"fail"} text={errorMessage} />
 
               <div className="flex flex-col gap-3 md:flex-row">
                 <Button

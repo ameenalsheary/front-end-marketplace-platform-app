@@ -6,9 +6,10 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import CloseButton from "../ui/CloseButton";
-import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import LoadingOverlay from "../ui/LoadingIcon";
+import FormErrorMessage from "../ui/FormErrorMessage";
 import { closeAuthModal } from "@/redux/slices/authModalSlice";
 import authService from "@/services/auth.service";
 import CustomImage from "../ui/CustomImage";
@@ -25,20 +26,6 @@ const verifySchema = Yup.object({
     .required("Verification code is required")
     .matches(/^[0-9]{4,6}$/, "Verification code must be 4–6 digits"),
 });
-
-// Small reusable overlay
-const LoadingOverlay = () => (
-  <div className="absolute z-10 inset-0 bg-background/50 cursor-wait flex justify-center items-center">
-    <LoadingIcon />
-  </div>
-);
-
-// Small reusable message
-const Message = ({ type, text }) => {
-  if (!text) return null;
-  const color = type === "fail" ? "text-red-500" : "text-green-500";
-  return <p className={`${color} text-sm text-center`}>{text}</p>;
-};
 
 export default function Auth() {
   const dispatch = useDispatch();
@@ -108,9 +95,9 @@ export default function Auth() {
             >
               {({ isSubmitting, values, handleChange, errors, touched }) => (
                 <Form className="w-full flex flex-col gap-3">
-                  {isSubmitting && <LoadingOverlay />}
+                  <LoadingOverlay show={isSubmitting} />
 
-                  {!isSubmitting && <Message type={signInRes.status} text={signInRes.message} />}
+                  {!isSubmitting && <FormErrorMessage type={signInRes.status} text={signInRes.message} />}
 
                   <Input
                     name="email"
@@ -156,7 +143,7 @@ export default function Auth() {
           >
             {({ isSubmitting, values, handleChange, errors, touched }) => (
               <Form className="w-full flex flex-col gap-3">
-                {isSubmitting && <LoadingOverlay />}
+                <LoadingOverlay show={isSubmitting} />
 
                 {signInRes?.status === "Success" && (
                   <div className="flex flex-col">
@@ -173,7 +160,7 @@ export default function Auth() {
                   </div>
                 )}
 
-                {!isSubmitting && <Message type={verifySignInRes.status} text={verifySignInRes.message} />}
+                {!isSubmitting && <FormErrorMessage type={verifySignInRes.status} text={verifySignInRes.message} />}
 
                 <Input
                   name="verificationCode"

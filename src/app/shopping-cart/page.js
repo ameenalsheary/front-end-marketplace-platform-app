@@ -10,13 +10,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import apiClient from "@/services/apiClient";
 import CustomImage from "@/components/ui/CustomImage";
+import Input from "@/components/ui/Input";
+import LoadingOverlay from "@/components/ui/LoadingIcon";
 import Button from "@/components/ui/Button";
 import { currency } from "@/lib/constants";
-import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
 import SuccessReactConfetti from "@/components/ui/SuccessReactConfetti";
 import CheckOutSidebar from "@/components/ui/CheckOutSidebar";
-import Input from "@/components/ui/Input";
 
 function ItemCard({ item, updateItemQuantity, removeItem }) {
   const {
@@ -164,11 +164,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
           >
             {({ isSubmitting, values, handleChange, errors, touched }) => (
               <Form>
-                {isSubmitting && (
-                  <div className="absolute z-10 inset-0 bg-background/50 cursor-wait flex justify-center items-center">
-                    <LoadingIcon />
-                  </div>
-                )}
+                <LoadingOverlay show={isSubmitting} />
 
                 <div className="grid gap-1.5">
                   <Input
