@@ -1,5 +1,5 @@
 import apiClientServer from "@/services/apiClientServer";
-import SearchSidebar from "@/components/ui/SearchSidebar";
+import SearchSidebar from "@/components/sidebars/SearchSidebar";
 import CategorySwiper from "@/components/categories/CategorySwiper";
 import ProductCard from "@/components/product/ProductCard";
 import PaginationSection from "@/components/ui/Pagination";

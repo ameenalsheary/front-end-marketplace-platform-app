@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import CloseButton from "./CloseButton";
-import Input from "./Input";
-import Button from "./Button";
+import CloseButton from "../ui/CloseButton";
+import Input from "../ui/Input";
+import Button from "../ui/Button";
 
 function PriceFilter() {
   const router = useRouter();

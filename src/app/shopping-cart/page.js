@@ -16,7 +16,7 @@ import Button from "@/components/ui/Button";
 import { currency } from "@/lib/constants";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
 import SuccessReactConfetti from "@/components/ui/SuccessReactConfetti";
-import CheckOutSidebar from "@/components/ui/CheckOutSidebar";
+import CheckOutSidebar from "@/components/sidebars/CheckOutSidebar";
 
 function ItemCard({ item, updateItemQuantity, removeItem }) {
   const {

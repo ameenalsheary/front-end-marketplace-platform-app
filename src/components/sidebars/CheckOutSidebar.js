@@ -9,11 +9,11 @@ import { useRouter } from "next/navigation";
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 
-import Input from "./Input";
-import Button from "./Button";
-import LoadingOverlay from "./LoadingIcon";
-import FormErrorMessage from "./FormErrorMessage";
-import CloseButton from "./CloseButton";
+import Input from "../ui/Input";
+import Button from "../ui/Button";
+import LoadingOverlay from "../ui/LoadingIcon";
+import FormErrorMessage from "../ui/FormErrorMessage";
+import CloseButton from "../ui/CloseButton";
 import apiClient from "@/services/apiClient";
 
 const checkoutValidationSchema = Yup.object().shape({

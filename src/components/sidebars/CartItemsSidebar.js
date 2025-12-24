@@ -31,7 +31,7 @@ export default function CartItemsSidebar() {
       {/* Sidebar */}
       <div
         className={clsx(
-          "fixed top-0 left-0 w-full md:w-[420px] h-screen bg-background-secondary p-3 shadow-md z-20 transition-transform duration-300",
+          "fixed top-0 left-0 w-full md:w-105 h-screen bg-background-secondary p-3 shadow-md z-20 transition-transform duration-300",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

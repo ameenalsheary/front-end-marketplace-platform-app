@@ -7,7 +7,7 @@ import AuthChecker from "@/components/layout/AuthChecker";
 import { ToastContainer } from "react-toastify";
 import NavBar from "@/components/layout/Navbar";
 import Auth from "@/components/layout/Auth";
-import CartItemsSidebar from "@/components/layout/CartItemsSidebar";
+import CartItemsSidebar from "@/components/sidebars/CartItemsSidebar";
 import Footer from "@/components/layout/Footer";
 
 const inter = Inter({
