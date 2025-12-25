@@ -1,15 +1,15 @@
 "use client";
 
-import { useDispatch } from "react-redux";
-import { useState, useEffect } from 'react';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import DeleteIcon from '@mui/icons-material/Delete';
-import apiClient from '@/services/apiClient';
+
+import { fetchPhoneNumbers, openPhoneNumberModal } from "@/redux/slices/phoneNumberModalSlice";
 import ErrorDisplay from '@/components/ui/ErrorDisplay';
 import Button from '@/components/ui/Button';
-import { openPhoneNumberModal } from "@/redux/slices/phoneNumberModalSlice";
 
 function securePhoneNumber(phone) {
   if (!phone) return "";
@@ -30,35 +30,31 @@ function securePhoneNumber(phone) {
 export default function phoneNumbersPage() {
   const dispatch = useDispatch();
 
-  const [phoneNumbers, setPhoneNumbers] = useState({
-    status: "idle",
-    data: [],
-  });
+  const { status, phoneNumbers, error } = useSelector(
+    (state) => state.phoneNumberModal
+  );
 
   useEffect(() => {
-    async function fetchPhoneNumbers() {
-      setPhoneNumbers({ status: "loading", data: [] });
+    dispatch(fetchPhoneNumbers());
+  }, [dispatch]);
 
-      try {
-        const res = await apiClient.get("/customer/phone-numbers");
-        setPhoneNumbers({
-          status: "succeeded",
-          data: res.data.data,
-        });
-
-      } catch {
-        setPhoneNumbers({ status: "failed", data: [] });
-      }
-    }
-
-    fetchPhoneNumbers();
-  }, []);
-
-  if (phoneNumbers.status === "idle" || phoneNumbers.status === "loading") {
-    return <>Loading...</>
+  if (status === "idle" || status === "loading") {
+    return (
+      <ul className="grid gap-1.5">
+        {Array(3).fill(0).map((_, i) => {
+          return (
+            <li key={i} className="bg-background p-3">
+              <span className="skeleton">
+                Loading... Loading...
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    )
   }
 
-  if (phoneNumbers.status === "succeeded" && phoneNumbers.data.length === 0) {
+  if (status === "succeeded" && phoneNumbers.length === 0) {
     return (
       <div className="bg-background w-full h-full px-2 rounded-lg shadow-sm flex flex-col justify-center items-center gap-2">
         <ErrorDisplay
@@ -70,14 +66,14 @@ export default function phoneNumbersPage() {
           onClick={() => dispatch(openPhoneNumberModal())}
         />
       </div>
-    )
+    );
   }
 
-  return (
-    <div className="grid gap-1.5">
-      <ul className="grid gap-1.5">
-        {
-          phoneNumbers.data.map((item) => {
+  if (status === "succeeded" && phoneNumbers.length > 0) {
+    return (
+      <div className="grid gap-1.5">
+        <ul className="grid gap-1.5">
+          {phoneNumbers.map((item) => {
             const isVerified = item.isVerified;
 
             return (
@@ -88,28 +84,34 @@ export default function phoneNumbersPage() {
                 <div className="bg-background p-3 border-r border-border">
                   {securePhoneNumber(item.phoneNumber)}
                 </div>
+
                 <div className="bg-background p-3 border-r border-border">
-                  {
-                    isVerified
-                      ? (<CheckCircleIcon className="text-green-500" />)
-                      : (<DoNotDisturbIcon className="text-red-500" />)
-                  }
+                  {isVerified ? (
+                    <CheckCircleIcon className="text-green-500" />
+                  ) : (
+                    <DoNotDisturbIcon className="text-red-500" />
+                  )}
                 </div>
+
                 <div className="bg-background p-3">
                   <DeleteIcon className="text-red-500 cursor-pointer" />
                 </div>
               </li>
-            )
-          })
-        }
-      </ul>
+            );
+          })}
+        </ul>
 
-      <Button
-        variant="primary"
-        onClick={() => dispatch(openPhoneNumberModal())}
-      >
-        Add phone number
-      </Button>
-    </div>
-  )
+        <Button
+          variant="primary"
+          onClick={() => dispatch(openPhoneNumberModal())}
+        >
+          Add phone number
+        </Button>
+      </div>
+    );
+  }
+
+  if (status === "failed") {
+    throw error
+  }
 }

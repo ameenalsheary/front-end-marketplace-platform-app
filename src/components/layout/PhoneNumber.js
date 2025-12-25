@@ -17,7 +17,7 @@ import apiClient from "@/services/apiClient";
 import { getFirebaseErrorMessage } from "@/lib/utilities/getFirebaseErrorMessage";
 import FormErrorMessage from "../ui/FormErrorMessage";
 import CloseButton from "../ui/CloseButton";
-import { closePhoneNumberModal } from "@/redux/slices/phoneNumberModalSlice";
+import { setPhoneNumbers, closePhoneNumberModal } from "@/redux/slices/phoneNumberModalSlice";
 
 const phoneValidationSchema = Yup.object({
   phoneNumber: Yup.string()
@@ -40,6 +40,8 @@ function AddPhoneNumber() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const [idToken, setIdToken] = useState(null);
+
+  const dispatch = useDispatch();
 
   const auth = getAuth(app);
 
@@ -108,12 +110,13 @@ function AddPhoneNumber() {
       }
 
       // Step 2: Submit the verified phone number to your backend
-      await apiClient.post(`/customer/phone-numbers`, {
+      const { data } = await apiClient.post(`/customer/phone-numbers`, {
         idToken: finalToken,
       });
 
-      // Step 3: Reload page
-      window.location.reload();
+      // Step 3: set Phone numbers and close phone number modal
+      dispatch(setPhoneNumbers(data.data));
+      dispatch(closePhoneNumberModal());
     } catch (err) {
       handleError(err);
     }
