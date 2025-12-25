@@ -151,12 +151,22 @@ html.dark {
 }
 
 @layer phoneInput {
-  .phone-input {
-    @apply p-1.5 flex items-center gap-1.5 rounded-md border border-primary;
+    /* Base */
+  .phone-input-base {
+    @apply w-full font-medium rounded-md transition-all focus:outline-none border;
   }
-  .phone-input input {
+  .phone-input-base input {
     @apply outline-none bg-transparent;
   }
+
+  /* States */
+  .phone-input-default {
+    @apply border-primary;
+  }
+  .phone-input-error {
+    @apply border-red-500;
+  }
+
   .PhoneInputCountrySelect {
     @apply bg-background;
   }

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
+import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
@@ -15,6 +16,7 @@ const listButtons = [
   { icon: AccountBoxIcon, name: "Profile", href: "/profile" },
   { icon: ShoppingBagIcon, name: "Orders", href: "/profile/orders" },
   { icon: AddLocationIcon, name: "Addresses", href: "/profile/addresses" },
+  { icon: PhoneAndroidIcon, name: "Phone numbers", href: "/profile/phone-numbers" },
   { icon: FavoriteIcon, name: "Favorites", href: "/profile/favorites" },
   { icon: ShoppingCartIcon, name: "Shopping Cart", href: "/shopping-cart" },
 ];
@@ -32,11 +34,10 @@ export default function ProfileSidebar() {
         return (
           <Link key={i} href={href}>
             <li
-              className={`p-3 flex items-center gap-2 cursor-pointer transition-all ${
-                isActive
+              className={`p-3 flex items-center gap-2 cursor-pointer transition-all ${isActive
                   ? "bg-background-tertiary"
                   : "bg-background hover:bg-background-tertiary"
-              }`}
+                }`}
             >
               <Icon className="text-primary" />
               <span className="hidden xl:flex pr-20">{name}</span>
@@ -47,11 +48,10 @@ export default function ProfileSidebar() {
       {status === "succeeded" && isAuthenticated && user?.rule === "admin" && (
         <Link href="/admin/dashboard">
           <li
-            className={`p-3 flex items-center gap-2 cursor-pointer transition-all ${
-              pathname === "/admin/dashboard"
+            className={`p-3 flex items-center gap-2 cursor-pointer transition-all ${pathname === "/admin/dashboard"
                 ? "bg-background-tertiary"
                 : "bg-background hover:bg-background-tertiary"
-            }`}
+              }`}
           >
             <DashboardCustomizeIcon className="text-primary" />
             <span className="hidden xl:flex pr-20">Admin Dashboard</span>

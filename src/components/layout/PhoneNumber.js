@@ -1,18 +1,23 @@
 "use client";
 
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import PhoneInput from "react-phone-number-input";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
-import LoadingIcon from "../ui/loadingIcon/LoadingIcon";
+import LoadingOverlay from "../ui/LoadingIcon";
+import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { app } from "@/lib/firebase";
 import apiClient from "@/services/apiClient";
 import { getFirebaseErrorMessage } from "@/lib/utilities/getFirebaseErrorMessage";
+import FormErrorMessage from "../ui/FormErrorMessage";
+import CloseButton from "../ui/CloseButton";
+import { closePhoneNumberModal } from "@/redux/slices/phoneNumberModalSlice";
 
 const phoneValidationSchema = Yup.object({
   phoneNumber: Yup.string()
@@ -27,23 +32,11 @@ const phoneValidationSchema = Yup.object({
 const verificationValidationSchema = Yup.object().shape({
   verificationCode: Yup.string()
     .required("Verification Code is required")
-    .length(6, "Verification code must be 4–6 digits"),
+    .matches(/^[0-9]{4,6}$/, "Verification code must be 4–6 digits"),
 });
 
-const LoadingOverlay = () => (
-  <div className="absolute inset-0 bg-background/50 cursor-wait flex justify-center items-center">
-    <LoadingIcon />
-  </div>
-);
-
-const Message = ({ type, text }) => {
-  if (!text) return null;
-  const color = type === "fail" ? "text-red-500" : "text-green-500";
-  return <p className={`${color} text-center`}>{text}</p>;
-};
-
-export default function AddPhoneNumber() {
-  const [confirmationResult, setConfirmationResult] = useState(null);
+function AddPhoneNumber() {
+  const [confirmationResult, setConfirmationResult] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const [idToken, setIdToken] = useState(null);
@@ -118,29 +111,30 @@ export default function AddPhoneNumber() {
       await apiClient.post(`/customer/phone-numbers`, {
         idToken: finalToken,
       });
+
+      // Step 3: Reload page
+      window.location.reload();
     } catch (err) {
       handleError(err);
     }
   };
 
-  return (
-    <>
-      {/* reCAPTCHA container (invisible) */}
-      <div id="recaptcha-container"></div>
+  if (!confirmationResult) {
+    return (
+      <div>
+        {/* reCAPTCHA container (invisible) */}
+        <div id="recaptcha-container"></div>
 
-      {!confirmationResult ? (
         <Formik
           initialValues={{ phoneNumber: "" }}
           validationSchema={phoneValidationSchema}
           onSubmit={handlePhoneSubmit}
         >
-          {({ isSubmitting, values, setFieldValue }) => (
-            <Form className="relative p-3 grid gap-3 bg-background rounded-sm shadow-sm">
-              {isSubmitting && <LoadingOverlay />}
+          {({ isSubmitting, values, setFieldValue, errors, touched }) => (
+            <Form className="grid gap-3">
+              <LoadingOverlay show={isSubmitting} />
 
-              {errorMessage && (
-                <Message type="fail" text={errorMessage} />
-              )}
+              <FormErrorMessage type={"fail"} text={errorMessage} />
 
               <div>
                 <PhoneInput
@@ -150,14 +144,14 @@ export default function AddPhoneNumber() {
                   onChange={(value) =>
                     setFieldValue("phoneNumber", value)
                   }
-                  className="phone-input"
+                  className={`phone-input-base input-md ${touched.phoneNumber && errors.phoneNumber ? "phone-input-error" : "phone-input-default"}`}
                 />
 
-                <ErrorMessage
-                  name="phoneNumber"
-                  component="div"
-                  className="text-red-500 text-sm pt-1"
-                />
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <div className="text-red-500 text-sm pt-0.5">
+                    {errors.phoneNumber}
+                  </div>
+                )}
               </div>
 
               <Button
@@ -171,45 +165,68 @@ export default function AddPhoneNumber() {
             </Form>
           )}
         </Formik>
-      ) : (
-        <Formik
-          initialValues={{ verificationCode: "" }}
-          validationSchema={verificationValidationSchema}
-          onSubmit={handleVerificationSubmit}
-        >
-          {({ isSubmitting }) => (
-            <Form className="relative p-3 grid gap-3 bg-background rounded-sm shadow-sm">
-              {isSubmitting && <LoadingOverlay />}
+      </div>
+    )
+  }
 
-              {errorMessage && <Message type="fail" text={errorMessage} />}
+  return (
+    <Formik
+      initialValues={{ verificationCode: "" }}
+      validationSchema={verificationValidationSchema}
+      onSubmit={handleVerificationSubmit}
+    >
+      {({ isSubmitting, values, handleChange, errors, touched }) => (
+        <Form className="grid gap-3">
+          <LoadingOverlay show={isSubmitting} />
 
-              <div>
-                <Field
-                  name="verificationCode"
-                  type="text"
-                  placeholder="Verification code"
-                  className="input-small"
-                />
+          <FormErrorMessage type={"fail"} text={errorMessage} />
 
-                <ErrorMessage
-                  name="verificationCode"
-                  component="div"
-                  className="text-red-500 text-sm pt-0.5"
-                />
-              </div>
+          <Input
+            name="verificationCode"
+            placeholder="Verification code"
+            size="medium"
+            value={values.verificationCode}
+            onChange={handleChange}
+            error={touched.verificationCode && !!errors.verificationCode}
+            errorText={touched.verificationCode && errors.verificationCode}
+          />
 
-              <Button
-                className="w-full"
-                variant="primary"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Verifying..." : "Verify"}
-              </Button>
-            </Form>
-          )}
-        </Formik>
+          <Button
+            className="w-full"
+            variant="primary"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Verifying..." : "Verify"}
+          </Button>
+        </Form>
       )}
-    </>
+    </Formik>
+  )
+}
+
+export default function PhoneNumber() {
+  const dispatch = useDispatch();
+  const { isOpen } = useSelector((state) => state.phoneNumberModal);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="bg-overlay fixed inset-0 z-10 flex justify-center items-center px-3"
+      onClick={() => dispatch(closePhoneNumberModal())}
+    >
+      <div
+        className="bg-background w-full md:w-112.5 rounded-md p-3 flex flex-col gap-3 shadow-md relative overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-between">
+          <h1 className="text-xl font-semibold">Add your phone number</h1>
+          <CloseButton onClick={() => dispatch(closePhoneNumberModal())} />
+        </div>
+
+        <AddPhoneNumber />
+      </div>
+    </div>
   );
 }
