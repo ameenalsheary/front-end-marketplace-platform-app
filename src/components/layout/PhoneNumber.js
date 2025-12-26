@@ -41,6 +41,7 @@ export default function PhoneNumber() {
   const { isOpen } = useSelector((state) => state.phoneNumberModal);
 
   const [confirmationResult, setConfirmationResult] = useState(null);
+  const [pendingPhoneNumber, setPendingPhoneNumber] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const [idToken, setIdToken] = useState(null);
@@ -65,14 +66,17 @@ export default function PhoneNumber() {
     };
   }, [auth, isOpen]);
 
+  // Reset all
+  const resetAll = () => {
+    setConfirmationResult(null);
+    setErrorMessage(null);
+    setIsCodeConfirmed(false);
+    setIdToken(null);
+  }
+
   // Reset local state when modal closes
   useEffect(() => {
-    if (!isOpen) {
-      setConfirmationResult(null);
-      setErrorMessage(null);
-      setIsCodeConfirmed(false);
-      setIdToken(null);
-    }
+    if (!isOpen) resetAll();
   }, [isOpen]);
 
   // Error handler
@@ -112,7 +116,8 @@ export default function PhoneNumber() {
         appVerifier
       );
 
-      console.log(confirmation);
+      // Save pending phone number for next step
+      setPendingPhoneNumber(phoneNumber);
 
       // Save confirmation result for next step
       setConfirmationResult(confirmation);
@@ -258,11 +263,13 @@ export default function PhoneNumber() {
                     <p className="text-center">We sent a verification code to</p>
                     <div className="flex justify-center gap-0.5">
                       {/* Display phone number that received the code */}
-                      <p className="font-semibold">{"+212......539"}</p>
+                      <p className="font-semibold">
+                        {pendingPhoneNumber}
+                      </p>
                       {/* Option to change phone number */}
                       <span
                         className="text-primary font-semibold cursor-pointer"
-                      // onClick={resetAll}
+                        onClick={resetAll}
                       >
                         change
                       </span>
