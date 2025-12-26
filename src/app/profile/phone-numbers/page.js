@@ -105,7 +105,7 @@ export default function phoneNumbersPage() {
           variant="primary"
           onClick={() => dispatch(openPhoneNumberModal())}
         >
-          Add phone number
+          Add new phone
         </Button>
       </div>
     );

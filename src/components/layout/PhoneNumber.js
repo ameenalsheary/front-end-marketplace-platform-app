@@ -112,6 +112,8 @@ export default function PhoneNumber() {
         appVerifier
       );
 
+      console.log(confirmation);
+
       // Save confirmation result for next step
       setConfirmationResult(confirmation);
     } catch (err) {
@@ -198,6 +200,7 @@ export default function PhoneNumber() {
                   <Form className="grid gap-3">
                     {/* Loading overlay during submission */}
                     <LoadingOverlay show={isSubmitting} />
+
                     {/* Error message display */}
                     <FormErrorMessage type="fail" text={errorMessage} />
 
@@ -249,6 +252,23 @@ export default function PhoneNumber() {
                 <Form className="grid gap-3">
                   {/* Loading overlay during verification */}
                   <LoadingOverlay show={isSubmitting} />
+
+                  {/* Verification info message - shows where code was sent */}
+                  <div className="flex flex-col">
+                    <p className="text-center">We sent a verification code to</p>
+                    <div className="flex justify-center gap-0.5">
+                      {/* Display phone number that received the code */}
+                      <p className="font-semibold">{"+212......539"}</p>
+                      {/* Option to change phone number */}
+                      <span
+                        className="text-primary font-semibold cursor-pointer"
+                      // onClick={resetAll}
+                      >
+                        change
+                      </span>
+                    </div>
+                  </div>
+
                   {/* Error message display */}
                   <FormErrorMessage type="fail" text={errorMessage} />
 
