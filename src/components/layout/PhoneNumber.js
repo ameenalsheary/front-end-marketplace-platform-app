@@ -64,7 +64,7 @@ export default function PhoneNumber() {
       window.recaptchaVerifier?.clear();
       window.recaptchaVerifier = null;
     };
-  }, [auth, isOpen, confirmationResult]);
+  }, [auth, isOpen]);
 
   // Reset all
   const resetAll = () => {
@@ -164,6 +164,17 @@ export default function PhoneNumber() {
       handleError(err);
     }
   };
+
+  const changePhoneNumber = () => {
+    resetAll();
+
+    window.recaptchaVerifier?.clear();
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      auth,
+      "recaptcha-container",
+      { size: "invisible" }
+    );
+  }
 
   return (
     <div
@@ -271,7 +282,7 @@ export default function PhoneNumber() {
                     {/* Option to change phone number */}
                     <span
                       className="text-primary font-semibold cursor-pointer"
-                      onClick={resetAll}
+                      onClick={changePhoneNumber}
                     >
                       change
                     </span>
