@@ -64,11 +64,12 @@ export default function PhoneNumber() {
       window.recaptchaVerifier?.clear();
       window.recaptchaVerifier = null;
     };
-  }, [auth, isOpen]);
+  }, [auth, isOpen, confirmationResult]);
 
   // Reset all
   const resetAll = () => {
     setConfirmationResult(null);
+    setPendingPhoneNumber();
     setErrorMessage(null);
     setIsCodeConfirmed(false);
     setIdToken(null);
