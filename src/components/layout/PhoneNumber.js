@@ -60,10 +60,10 @@ export default function PhoneNumber() {
       );
     }
 
-    return () => {
-      window.recaptchaVerifier?.clear();
-      window.recaptchaVerifier = null;
-    };
+    // return () => {
+    //   window.recaptchaVerifier?.clear();
+    //   window.recaptchaVerifier = null;
+    // };
   }, [auth, isOpen]);
 
   // Reset all
