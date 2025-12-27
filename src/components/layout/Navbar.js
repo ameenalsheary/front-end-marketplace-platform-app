@@ -178,11 +178,10 @@ export default function NavBar() {
 
       <div
         className={clsx(
-          "bg-overlay fixed z-2 left-0 w-full h-screen-minus-header",
-          {
-            "top-[73.63px] opacity-100": openMenu === true,
-            "-top-full opacity-0": openMenu === false,
-          }
+          "bg-overlay fixed z-2 left-0 w-full h-screen-minus-header transition-all",
+          openMenu
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         )}
         onClick={() => setOpenMenu(false)}
       >

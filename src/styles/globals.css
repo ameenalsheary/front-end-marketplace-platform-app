@@ -102,7 +102,7 @@ html.dark {
 
 @layer transition {
   .transition-all {
-    @apply transition-all duration-300;
+    @apply transition-all duration-150;
   }
 }
 

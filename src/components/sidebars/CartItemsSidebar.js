@@ -22,7 +22,7 @@ export default function CartItemsSidebar() {
       {/* Overlay */}
       <div
         className={clsx(
-          "fixed top-0 left-0 w-full h-full bg-overlay z-10 transition-all duration-300",
+          "fixed top-0 left-0 w-full h-full bg-overlay z-10 transition-all",
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
         onClick={handleClose}
@@ -31,7 +31,7 @@ export default function CartItemsSidebar() {
       {/* Sidebar */}
       <div
         className={clsx(
-          "fixed top-0 left-0 w-full md:w-105 h-screen bg-background-secondary p-3 shadow-md z-20 transition-transform duration-300",
+          "fixed top-0 left-0 w-full md:w-105 h-screen bg-background-secondary p-3 shadow-md z-20 transition-all",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

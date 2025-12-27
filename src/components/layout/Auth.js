@@ -1,7 +1,8 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import clsx from "clsx";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -41,29 +42,43 @@ export default function Auth() {
     setStep("email");
   };
 
+  useEffect(() => {
+    if (!isOpen) resetAll();
+  }, [isOpen]);
+
   const handleGoogleAuth = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   }
 
-  if (!isOpen) return null;
-
   return (
+    // Main modal container - covers entire screen
     <div
-      className="bg-overlay fixed inset-0 z-10 flex justify-center items-center px-3"
+      className={clsx(
+        "bg-overlay fixed inset-0 z-10 flex items-center justify-center px-3 transition-all",
+        // Show/hide logic based on modal state
+        isOpen
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
+      )}
+      // Close modal when clicking backdrop
       onClick={() => dispatch(closeAuthModal())}
     >
+      {/* Modal content card */}
       <div
         className="bg-background w-full md:w-112.5 rounded-md p-3 flex flex-col gap-3 shadow-md relative overflow-hidden"
+        // Prevent clicks inside modal from closing it
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Modal header with title and close button */}
         <div className="flex justify-between">
           <h1 className="text-xl font-semibold">Welcome back</h1>
           <CloseButton onClick={() => dispatch(closeAuthModal())} />
         </div>
 
-        {/* Email Step */}
+        {/* STEP 1: Email input for authentication */}
         {step === "email" && (
           <>
+            {/* Google OAuth button */}
             <Button
               variant="secondary"
               className="gap-1.5"
@@ -79,26 +94,34 @@ export default function Auth() {
               <span className="mr-2">Continue with Google</span>
             </Button>
 
+            {/* Separator between Google and email options */}
             <div className="flex items-center gap-1.5">
               <hr className="grow border-t border-border" />
               <span>or continue with email</span>
               <hr className="grow border-t border-border" />
             </div>
+
+            {/* Email form using Formik for validation and submission */}
             <Formik
               initialValues={{ email: "" }}
               validationSchema={emailSchema}
               onSubmit={async ({ email }) => {
+                // Send email for authentication
                 const res = await authService.signIn(email);
                 setSignInRes(res);
+                // If email sent successfully, move to verification step
                 if (res.status === "Success") setStep("verify");
               }}
             >
               {({ isSubmitting, values, handleChange, errors, touched }) => (
                 <Form className="w-full flex flex-col gap-3">
+                  {/* Loading overlay during submission */}
                   <LoadingOverlay show={isSubmitting} />
 
+                  {/* Show error messages if not loading */}
                   {!isSubmitting && <FormErrorMessage type={signInRes.status} text={signInRes.message} />}
 
+                  {/* Email input field */}
                   <Input
                     name="email"
                     type="email"
@@ -110,6 +133,7 @@ export default function Auth() {
                     errorText={touched.email && errors.email}
                   />
 
+                  {/* Submit button */}
                   <Button
                     variant="primary"
                     type="submit"
@@ -123,17 +147,19 @@ export default function Auth() {
           </>
         )}
 
-        {/* Verify Step */}
+        {/* STEP 2: Verification code input */}
         {step === "verify" && (
           <Formik
             initialValues={{ verificationCode: "" }}
             validationSchema={verifySchema}
             onSubmit={async ({ verificationCode }) => {
+              // Verify the code sent to email
               const res = await authService.verifySignIn(
                 signInRes.email,
                 verificationCode
               );
               setVerifySignInRes(res);
+              // If verification successful, close modal and refresh page
               if (res.status === "Success") {
                 dispatch(closeAuthModal());
                 resetAll();
@@ -143,8 +169,10 @@ export default function Auth() {
           >
             {({ isSubmitting, values, handleChange, errors, touched }) => (
               <Form className="w-full flex flex-col gap-3">
+                {/* Loading overlay during verification */}
                 <LoadingOverlay show={isSubmitting} />
 
+                {/* Show the email being verified with option to change */}
                 {signInRes?.status === "Success" && (
                   <div className="flex flex-col">
                     <p className="text-center">{signInRes.message}</p>
@@ -160,18 +188,23 @@ export default function Auth() {
                   </div>
                 )}
 
+                {/* Show verification errors if not loading */}
                 {!isSubmitting && <FormErrorMessage type={verifySignInRes.status} text={verifySignInRes.message} />}
 
+                {/* Verification code input field */}
                 <Input
                   name="verificationCode"
                   placeholder="Enter your verification code"
                   size="small"
+                  inputMode="numeric" // Shows numeric keyboard on mobile
+                  autoFocus // Automatically focuses on this input
                   value={values.verificationCode}
                   onChange={handleChange}
                   error={touched.verificationCode && !!errors.verificationCode}
                   errorText={touched.verificationCode && errors.verificationCode}
                 />
 
+                {/* Verify button */}
                 <Button
                   variant="primary"
                   type="submit"

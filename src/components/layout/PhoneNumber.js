@@ -165,155 +165,153 @@ export default function PhoneNumber() {
   };
 
   return (
-    (
+    <div
+      className={clsx(
+        "bg-overlay fixed inset-0 z-10 flex items-center justify-center px-3 transition-all",
+        isOpen
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
+      )}
+      onClick={() => dispatch(closePhoneNumberModal())} // Close modal when clicking background
+    >
+      {/* Modal content container - stops click propagation to prevent closing when clicking inside */}
       <div
-        className={clsx(
-          "bg-overlay fixed inset-0 z-10 flex items-center justify-center px-3 transition-opacity",
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        )}
-        onClick={() => dispatch(closePhoneNumberModal())} // Close modal when clicking background
+        className="relative bg-background w-full md:w-112.5 rounded-md p-3 flex flex-col gap-3 shadow-md"
+        onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
       >
-        {/* Modal content container - stops click propagation to prevent closing when clicking inside */}
-        <div
-          className="relative bg-background w-full md:w-112.5 rounded-md p-3 flex flex-col gap-3 shadow-md"
-          onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
-        >
-          {/* Modal header with title and close button */}
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl font-semibold">
-              {/* Conditional title based on verification stage */}
-              {!confirmationResult
-                ? "Add your phone number"
-                : "Verify your phone number"}
-            </h1>
-            <CloseButton onClick={() => dispatch(closePhoneNumberModal())} />
-          </div>
+        {/* Modal header with title and close button */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl font-semibold">
+            {/* Conditional title based on verification stage */}
+            {!confirmationResult
+              ? "Add your phone number"
+              : "Verify your phone number"}
+          </h1>
+          <CloseButton onClick={() => dispatch(closePhoneNumberModal())} />
+        </div>
 
-          {/* First step: Phone number input form */}
-          {!confirmationResult ? (
-            <div>
-              {/* reCAPTCHA container for phone verification */}
-              <div id="recaptcha-container" />
+        {/* First step: Phone number input form */}
+        {!confirmationResult ? (
+          <div>
+            {/* reCAPTCHA container for phone verification */}
+            <div id="recaptcha-container" />
 
-              {/* Formik form for phone number input */}
-              <Formik
-                initialValues={{ phoneNumber: "" }}
-                validationSchema={phoneValidationSchema}
-                onSubmit={handlePhoneSubmit}
-              >
-                {({ isSubmitting, values, setFieldValue, errors, touched }) => (
-                  <Form className="grid gap-3">
-                    {/* Loading overlay during submission */}
-                    <LoadingOverlay show={isSubmitting} />
-
-                    {/* Error message display */}
-                    <FormErrorMessage type="fail" text={errorMessage} />
-
-                    {/* Phone input field */}
-                    <div>
-                      <PhoneInput
-                        international
-                        defaultCountry="MA" // Default country Morocco
-                        value={values.phoneNumber}
-                        onChange={(value) =>
-                          setFieldValue("phoneNumber", value)
-                        }
-                        className={clsx(
-                          "phone-input-base input-md",
-                          touched.phoneNumber && errors.phoneNumber
-                            ? "phone-input-error"
-                            : "phone-input-default"
-                        )}
-                      />
-                      {/* Phone number validation error */}
-                      {touched.phoneNumber && errors.phoneNumber && (
-                        <div className="text-red-500 text-sm pt-0.5">
-                          {errors.phoneNumber}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Submit button for phone number */}
-                    <Button
-                      className="w-full"
-                      variant="primary"
-                      type="submit"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? "Adding..." : "Add"}
-                    </Button>
-                  </Form>
-                )}
-              </Formik>
-            </div>
-          ) : (
-            /* Second step: Verification code input form */
+            {/* Formik form for phone number input */}
             <Formik
-              initialValues={{ verificationCode: "" }}
-              validationSchema={verificationValidationSchema}
-              onSubmit={handleVerificationSubmit}
+              initialValues={{ phoneNumber: "" }}
+              validationSchema={phoneValidationSchema}
+              onSubmit={handlePhoneSubmit}
             >
-              {({ isSubmitting, values, handleChange, errors, touched }) => (
+              {({ isSubmitting, values, setFieldValue, errors, touched }) => (
                 <Form className="grid gap-3">
-                  {/* Loading overlay during verification */}
+                  {/* Loading overlay during submission */}
                   <LoadingOverlay show={isSubmitting} />
-
-                  {/* Verification info message - shows where code was sent */}
-                  <div className="flex flex-col">
-                    <p className="text-center">We sent a verification code to</p>
-                    <div className="flex justify-center gap-0.5">
-                      {/* Display phone number that received the code */}
-                      <p className="font-semibold">
-                        {pendingPhoneNumber}
-                      </p>
-                      {/* Option to change phone number */}
-                      <span
-                        className="text-primary font-semibold cursor-pointer"
-                        onClick={resetAll}
-                      >
-                        change
-                      </span>
-                    </div>
-                  </div>
 
                   {/* Error message display */}
                   <FormErrorMessage type="fail" text={errorMessage} />
 
-                  {/* Verification code input field */}
-                  <Input
-                    name="verificationCode"
-                    placeholder="Verification code"
-                    inputMode="numeric" // Shows numeric keyboard on mobile
-                    autoFocus // Automatically focuses on this input
-                    value={values.verificationCode}
-                    onChange={handleChange}
-                    error={
-                      touched.verificationCode &&
-                      !!errors.verificationCode
-                    }
-                    errorText={
-                      touched.verificationCode &&
-                      errors.verificationCode
-                    }
-                  />
+                  {/* Phone input field */}
+                  <div>
+                    <PhoneInput
+                      international
+                      defaultCountry="MA" // Default country Morocco
+                      value={values.phoneNumber}
+                      onChange={(value) =>
+                        setFieldValue("phoneNumber", value)
+                      }
+                      className={clsx(
+                        "phone-input-base input-md",
+                        touched.phoneNumber && errors.phoneNumber
+                          ? "phone-input-error"
+                          : "phone-input-default"
+                      )}
+                    />
+                    {/* Phone number validation error */}
+                    {touched.phoneNumber && errors.phoneNumber && (
+                      <div className="text-red-500 text-sm pt-0.5">
+                        {errors.phoneNumber}
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Verify button */}
+                  {/* Submit button for phone number */}
                   <Button
                     className="w-full"
                     variant="primary"
                     type="submit"
-                    disabled={isSubmitting || isCodeConfirmed}
+                    disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Verifying..." : "Verify"}
+                    {isSubmitting ? "Adding..." : "Add"}
                   </Button>
                 </Form>
               )}
             </Formik>
-          )}
-        </div>
+          </div>
+        ) : (
+          /* Second step: Verification code input form */
+          <Formik
+            initialValues={{ verificationCode: "" }}
+            validationSchema={verificationValidationSchema}
+            onSubmit={handleVerificationSubmit}
+          >
+            {({ isSubmitting, values, handleChange, errors, touched }) => (
+              <Form className="grid gap-3">
+                {/* Loading overlay during verification */}
+                <LoadingOverlay show={isSubmitting} />
+
+                {/* Verification info message - shows where code was sent */}
+                <div className="flex flex-col">
+                  <p className="text-center">We sent a verification code to</p>
+                  <div className="flex justify-center gap-0.5">
+                    {/* Display phone number that received the code */}
+                    <p className="font-semibold">
+                      {pendingPhoneNumber}
+                    </p>
+                    {/* Option to change phone number */}
+                    <span
+                      className="text-primary font-semibold cursor-pointer"
+                      onClick={resetAll}
+                    >
+                      change
+                    </span>
+                  </div>
+                </div>
+
+                {/* Error message display */}
+                <FormErrorMessage type="fail" text={errorMessage} />
+
+                {/* Verification code input field */}
+                <Input
+                  name="verificationCode"
+                  placeholder="Verification code"
+                  inputMode="numeric" // Shows numeric keyboard on mobile
+                  autoFocus // Automatically focuses on this input
+                  value={values.verificationCode}
+                  onChange={handleChange}
+                  error={
+                    touched.verificationCode &&
+                    !!errors.verificationCode
+                  }
+                  errorText={
+                    touched.verificationCode &&
+                    errors.verificationCode
+                  }
+                />
+
+                {/* Verify button */}
+                <Button
+                  className="w-full"
+                  variant="primary"
+                  type="submit"
+                  disabled={isSubmitting || isCodeConfirmed}
+                >
+                  {isSubmitting ? "Verifying..." : "Verify"}
+                </Button>
+              </Form>
+            )}
+          </Formik>
+        )}
       </div>
-    )
+    </div>
   );
 }
