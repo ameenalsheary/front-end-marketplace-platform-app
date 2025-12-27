@@ -81,6 +81,8 @@ export default function PhoneNumber() {
 
   // Error handler
   const handleError = (err) => {
+    console.log(err);
+
     const isFirebaseError = err?.code?.startsWith("auth/");
     setErrorMessage(
       isFirebaseError
