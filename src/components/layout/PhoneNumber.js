@@ -228,7 +228,7 @@ export default function PhoneNumber() {
                     />
                     {/* Phone number validation error */}
                     {touched.phoneNumber && errors.phoneNumber && (
-                      <div className="text-red-500 text-sm pt-0.5">
+                      <div className="text-error text-sm pt-0.5">
                         {errors.phoneNumber}
                       </div>
                     )}

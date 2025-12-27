@@ -87,14 +87,14 @@ export default function phoneNumbersPage() {
 
                 <div className="bg-background p-3 border-r border-border">
                   {isVerified ? (
-                    <CheckCircleIcon className="text-green-500" />
+                    <CheckCircleIcon className="text-success" />
                   ) : (
-                    <DoNotDisturbIcon className="text-red-500" />
+                    <DoNotDisturbIcon className="text-error" />
                   )}
                 </div>
 
                 <div className="bg-background p-3">
-                  <DeleteIcon className="text-red-500 cursor-pointer" />
+                  <DeleteIcon className="text-error cursor-pointer" />
                 </div>
               </li>
             );

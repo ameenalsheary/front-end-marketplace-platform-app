@@ -132,7 +132,7 @@ function ItemCard({ item, updateItemQuantity, removeItem }) {
           className="absolute top-1.5 right-1.5 bg-background cursor-pointer hover-scale"
           onClick={() => removeItem({ productId: _id, size })}
         >
-          <DeleteIcon className="text-red-500" />
+          <DeleteIcon className="text-error" />
         </button>
       </div>
     </div>
@@ -216,7 +216,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
           </span>
           {
             couponApplied ? (
-              <del className="font-semibold text-red-500 text-under">
+              <del className="font-semibold text-error text-under">
                 {totalPrice} {currency}
               </del>) : (
               <span className="font-semibold text-primary">
@@ -232,7 +232,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                 <span>
                   Price After Discount:
                 </span>
-                <span className="font-semibold text-green-500">
+                <span className="font-semibold text-success">
                   {totalPriceAfterDiscount} {currency}
                 </span>
               </div>

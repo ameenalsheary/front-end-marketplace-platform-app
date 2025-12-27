@@ -11,7 +11,7 @@ const CloseIcon = dynamic(() => import("@mui/icons-material/Close"), {
 export default function CloseButton({ onClick, className }) {
   return (
     <button
-      className={`text-red-500 cursor-pointer ${className || ""}`}
+      className={`text-error cursor-pointer ${className || ""}`}
       onClick={onClick}
     >
       <CloseIcon />

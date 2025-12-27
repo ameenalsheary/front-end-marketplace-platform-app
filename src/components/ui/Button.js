@@ -22,7 +22,7 @@ const Button = ({
       : "bg-background-tertiary text-text border border-border hover:bg-background active:scale-95 cursor-pointer",
     error: disabled
       ? "bg-button-disabled text-text border border-button-disabled cursor-not-allowed"
-      : "bg-red-500 text-white border border-red-500 hover:bg-red-500/90 active:scale-95 cursor-pointer",
+      : "bg-error text-white border border-error hover:bg-error/90 active:scale-95 cursor-pointer",
   };
 
   const sizes = {

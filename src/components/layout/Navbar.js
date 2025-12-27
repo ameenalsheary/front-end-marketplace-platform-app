@@ -243,7 +243,7 @@ export default function NavBar() {
                     ) : (
                       <button
                         type="submit"
-                        className="bg-background-secondary w-full py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-red-500"
+                        className="bg-background-secondary w-full py-3 px-1 flex items-center gap-2 cursor-pointer hover:bg-background-tertiary transition-all text-error"
                       >
                         <LockIcon />
                         <span className="font-medium">Log out</span>

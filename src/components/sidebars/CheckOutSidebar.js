@@ -42,7 +42,7 @@ const checkoutValidationSchema = Yup.object().shape({
 
 const Message = ({ type, text }) => {
   if (!text) return null;
-  const color = type === "fail" ? "text-red-500" : "text-green-500";
+  const color = type === "fail" ? "text-error" : "text-success";
   return <p className={`${color} text-sm text-center`}>{text}</p>;
 };
 
@@ -256,7 +256,7 @@ export default function CheckOutSidebar() {
                 </select>
 
                 {touched.phoneNumber && errors.phoneNumber && (
-                  <div className="text-red-500 text-sm pt-0.5">
+                  <div className="text-error text-sm pt-0.5">
                     {errors.phoneNumber}
                   </div>
                 )}

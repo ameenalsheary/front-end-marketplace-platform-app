@@ -21,6 +21,12 @@
   --color-button-disabled: #e5e7eb;
   --text-button-disabled: #9ca3af;
 
+  /* Semantic */
+  --color-success: #16a34a;        /* green-600 */
+  --color-success-bg: #dcfce7;     /* green-100 */
+  --color-error: #dc2626;          /* red-600 */
+  --color-error-bg: #fee2e2;        /* red-100 */
+
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.08);
@@ -48,6 +54,12 @@
   --color-button-disabled: var(--color-button-disabled);
   --text-button-disabled: var(--text-button-disabled);
 
+  /* Semantic */
+  --color-success: var(--color-success);
+  --color-success-bg: var(--color-success-bg);
+  --color-error: var(--color-error);
+  --color-error-bg: var(--color-error-bg);
+
   /* Shadows */
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
@@ -74,6 +86,12 @@ html.dark {
   --color-overlay: rgba(0, 0, 0, 0.7);
   --color-button-disabled: #374151;
   --text-button-disabled: #6b7280;
+
+  /* Semantic */
+  --color-success: #22c55e;        /* green-500 */
+  --color-success-bg: #052e16;     /* dark green bg */
+  --color-error: #f87171;          /* red-400 */
+  --color-error-bg: #450a0a;       /* dark red bg */
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -132,10 +150,10 @@ html.dark {
     @apply bg-button-disabled border-button-disabled cursor-not-allowed opacity-60;
   }
   .input-error {
-    @apply border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500;
+    @apply border-error focus:border-error focus:ring-1 focus:ring-error;
   }
   .input-success {
-    @apply border-green-500 focus:border-green-500 focus:ring-1 focus:ring-green-500;
+    @apply border-success focus:border-success focus:ring-1 focus:ring-success;
   }
   .input-default {
     @apply border-primary focus:border-primary focus:ring-1 focus:ring-primary;
@@ -164,7 +182,7 @@ html.dark {
     @apply border-primary;
   }
   .phone-input-error {
-    @apply border-red-500;
+    @apply border-error;
   }
 
   .PhoneInputCountrySelect {

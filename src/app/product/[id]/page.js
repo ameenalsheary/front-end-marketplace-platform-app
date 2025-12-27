@@ -446,7 +446,7 @@ function Informations({ informations }) {
       <div className="flex flex-col">
         <div className="flex items-center gap-1">
           {sizesInfo.priceBeforeDiscount && (
-            <del className="text-red-500">
+            <del className="text-error">
               {sizesInfo.priceBeforeDiscount} {currency}
             </del>
           )}
@@ -545,7 +545,7 @@ function Informations({ informations }) {
           <div>
             <h1 className="font-semibold">Sizes:</h1>
             {sizeError && (
-              <p className="text-sm text-red-500">Please select a size.</p>
+              <p className="text-sm text-error">Please select a size.</p>
             )}
           </div>
           <div className="flex flex-wrap gap-3 py-2">
@@ -574,7 +574,7 @@ function Informations({ informations }) {
                     active
                       ? "border-primary"
                       : sizeError
-                      ? "border-red-500"
+                      ? "border-error"
                       : "border-border"
                   } `}
                 >

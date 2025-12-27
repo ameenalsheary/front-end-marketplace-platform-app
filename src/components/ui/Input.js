@@ -59,10 +59,10 @@ const Input = ({
       {label && (
         <label
           htmlFor={id}
-          className={`text-sm font-medium ${error ? "text-red-500" : "text-text"}`}
+          className={`text-sm font-medium ${error ? "text-error" : "text-text"}`}
         >
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-error ml-1">*</span>}
         </label>
       )}
 
@@ -100,7 +100,7 @@ const Input = ({
 
       {/* Helper / Error text */}
       {(helperText || errorText) && (
-        <p className={`text-xs ${error ? "text-red-500" : success ? "text-green-500" : "text-muted"}`}>
+        <p className={`text-xs ${error ? "text-error" : success ? "text-success" : "text-muted"}`}>
           {error ? errorText : helperText}
         </p>
       )}

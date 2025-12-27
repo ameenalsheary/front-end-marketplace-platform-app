@@ -59,7 +59,7 @@ export default function ProductCard(props) {
 
           <div>
             {priceBeforeDiscount && (
-              <div className="text-red-500 text-sm flex gap-1.5">
+              <div className="text-error text-sm flex gap-1.5">
                 <del>
                   {priceBeforeDiscount} {currency}
                 </del>
@@ -78,7 +78,7 @@ export default function ProductCard(props) {
 
           <div className="hidden sm:flex gap-1 text-sm">
             {quantity === 0 ? (
-              <p className="text-red-500 text-semibold bg-red-100 px-1 rounded-sm">
+              <p className="text-error text-semibold bg-red-100 px-1 rounded-sm">
                 Out of stock
               </p>
             ) : quantity >= 1 && quantity <= 12 ? (
