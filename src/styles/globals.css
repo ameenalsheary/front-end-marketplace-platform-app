@@ -22,10 +22,12 @@
   --text-button-disabled: #9ca3af;
 
   /* Semantic */
-  --color-success: #16a34a;        /* green-600 */
-  --color-success-bg: #dcfce7;     /* green-100 */
-  --color-error: #dc2626;          /* red-600 */
-  --color-error-bg: #fee2e2;        /* red-100 */
+  --color-success: #16a34a;
+  --color-success-bg: #dcfce7;
+  --color-error: #dc2626;
+  --color-error-bg: #fee2e2;
+  --color-warning: #d97706;
+  --color-warning-bg: #fef3c7;
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -59,6 +61,8 @@
   --color-success-bg: var(--color-success-bg);
   --color-error: var(--color-error);
   --color-error-bg: var(--color-error-bg);
+  --color-warning: var(--color-warning);
+  --color-warning-bg: var(--color-warning-bg);
 
   /* Shadows */
   --shadow-sm: var(--shadow-sm);
@@ -88,10 +92,12 @@ html.dark {
   --text-button-disabled: #6b7280;
 
   /* Semantic */
-  --color-success: #22c55e;        /* green-500 */
-  --color-success-bg: #052e16;     /* dark green bg */
-  --color-error: #f87171;          /* red-400 */
-  --color-error-bg: #450a0a;       /* dark red bg */
+  --color-success: #22c55e;
+  --color-success-bg: #052e16;
+  --color-error: #f87171;
+  --color-error-bg: #450a0a;
+  --color-warning: #fbbf24;
+  --color-warning-bg: #451a03;
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);

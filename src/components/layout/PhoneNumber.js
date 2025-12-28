@@ -165,17 +165,6 @@ export default function PhoneNumber() {
     }
   };
 
-  const changePhoneNumber = () => {
-    resetAll();
-
-    window.recaptchaVerifier?.clear();
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      auth,
-      "recaptcha-container",
-      { size: "invisible" }
-    );
-  }
-
   return (
     <div
       className={clsx(
@@ -272,21 +261,14 @@ export default function PhoneNumber() {
                 <LoadingOverlay show={isSubmitting} />
 
                 {/* Verification info message - shows where code was sent */}
-                <div className="flex flex-col">
-                  <p className="text-center">We sent a verification code to</p>
-                  <div className="flex justify-center gap-0.5">
-                    {/* Display phone number that received the code */}
-                    <p className="font-semibold">
-                      {pendingPhoneNumber}
-                    </p>
-                    {/* Option to change phone number */}
-                    <span
-                      className="text-primary font-semibold cursor-pointer"
-                      onClick={changePhoneNumber}
-                    >
-                      change
-                    </span>
-                  </div>
+                <div>
+                  <p className="text-center">
+                    We sent a verification code to
+                  </p>
+                  {/* Display phone number that received the code */}
+                  <p className="font-semibold text-center">
+                    {pendingPhoneNumber}
+                  </p>
                 </div>
 
                 {/* Error message display */}
