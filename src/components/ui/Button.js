@@ -10,27 +10,20 @@ const Button = ({
   type = "button",
   ...props
 }) => {
-  const baseClasses =
-    "flex items-center justify-center font-medium rounded-md transition-all transform focus:outline-none";
+  const variantClass = disabled
+    ? "btn-disabled"
+    : {
+      primary: "btn-primary",
+      secondary: "btn-secondary",
+      error: "btn-error",
+    }[variant];
 
-  const variants = {
-    primary: disabled
-      ? "bg-button-disabled text-text border border-button-disabled cursor-not-allowed"
-      : "bg-primary text-white border border-primary hover:bg-primary/90 active:scale-95 cursor-pointer",
-    secondary: disabled
-      ? "bg-button-disabled text-text border border-button-disabled cursor-not-allowed"
-      : "bg-background-tertiary text-text border border-border hover:bg-background active:scale-95 cursor-pointer",
-    error: disabled
-      ? "bg-button-disabled text-text border border-button-disabled cursor-not-allowed"
-      : "bg-error text-white border border-error hover:bg-error/90 active:scale-95 cursor-pointer",
-  };
+  const sizeClass = {
+    small: "btn-sm",
+    medium: "btn-md",
+  }[size];
 
-  const sizes = {
-    small: "p-1 text-sm",
-    medium: "py-1 px-3 text-base",
-  };
-
-  const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
+  const classes = `btn ${variantClass} ${sizeClass} ${className}`;
 
   return (
     <button

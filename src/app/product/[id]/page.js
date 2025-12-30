@@ -451,7 +451,7 @@ function Informations({ informations }) {
             </del>
           )}
           {sizesInfo.discountPercent && (
-            <span className="text-sm font-semibold text-green-600 bg-green-100 p-1 rounded-sm">
+            <span className="text-sm font-semibold text-success bg-success-bg p-1 rounded-sm">
               {sizesInfo.discountPercent}% OFF
             </span>
           )}
@@ -467,11 +467,11 @@ function Informations({ informations }) {
       <div className=" flex flex-col md:flex-row gap-2 p-2 bg-background-secondary rounded-md">
         <div className="text-sm flex items-center gap-1">
           {sizesInfo.quantity === 0 ? (
-            <p className="text-sm font-semibold text-red-600 bg-red-100 p-1 rounded-sm">
+            <p className="text-sm font-semibold text-error bg-error-bg p-1 rounded-sm">
               Out of stock
             </p>
           ) : sizesInfo.quantity >= 1 && sizesInfo.quantity <= 12 ? (
-            <p className="text-sm font-semibold text-orange-600 bg-orange-100 p-1 rounded-sm">
+            <p className="text-sm font-semibold text-warning bg-warning-bg p-1 rounded-sm">
               Only <span className="font-medium">{sizesInfo.quantity}</span>{" "}
               left n stock
             </p>
