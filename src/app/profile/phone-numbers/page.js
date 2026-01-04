@@ -53,13 +53,13 @@ function Skeleton() {
 }
 
 function NoPhoneNumbers() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <div className="bg-background w-full h-full px-2 rounded-lg shadow-sm flex flex-col justify-center items-center gap-2">
       <ErrorDisplay
         srcImage="/images/telephone.png"
-        error="Oops! You haven`t added any phone number yet."
+        error="Oops! You haven’t added any phone number yet."
         description="It looks like you haven’t added a phone number yet. Please add a phone number to your account to be able to place an order."
         buttonText="Add phone number"
         ButtonVariant="primary"
@@ -114,7 +114,7 @@ function DeletePhoneNumberModal() {
           <p className="text-center text-warning">
             Are you sure you want to delete this phone number?
           </p>
-          <p className="font-semibold">
+          <p className="font-semibold text-center">
             {phoneNumber && securePhoneNumber(phoneNumber)}
           </p>
         </div>
