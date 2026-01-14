@@ -40,12 +40,6 @@ const checkoutValidationSchema = Yup.object().shape({
     .matches(/^\d{4,10}$/, "Postal code must be between 4 and 10 digits"),
 });
 
-const Message = ({ type, text }) => {
-  if (!text) return null;
-  const color = type === "fail" ? "text-error" : "text-success";
-  return <p className={`${color} text-sm text-center`}>{text}</p>;
-};
-
 export default function CheckOutSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [addresses, setAddresses] = useState({

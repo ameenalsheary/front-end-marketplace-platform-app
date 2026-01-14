@@ -3,19 +3,28 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clsx } from "clsx";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import {
+  openAddAddressModal,
+  closeAddAddressModal,
+
   openDeleteAddressModal,
   closeDeleteAddressModal,
   setCurrentAddressDetails,
+
   fetchAddresses,
-  deleteAddress
+  addAddress,
+  deleteAddress,
 } from "@/redux/slices/addressModalSlice";
+import LoadingOverlay from "@/components/ui/LoadingIcon";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
 import CloseButton from "@/components/ui/CloseButton";
-import Button from "@/components/ui/Button";
 
 function Skeleton() {
   return (
@@ -64,8 +73,154 @@ function Skeleton() {
   )
 }
 
+const addAddressValidationSchema = Yup.object().shape({
+  country: Yup.string()
+    .required("Country is required")
+    .min(2, "Country name must be at least 2 characters")
+    .max(50, "Country name cannot exceed 50 characters"),
+  state: Yup.string()
+    .required("State is required")
+    .min(2, "State name must be at least 2 characters")
+    .max(50, "State name cannot exceed 50 characters"),
+  city: Yup.string()
+    .required("City is required")
+    .min(2, "City name must be at least 2 characters")
+    .max(50, "City name cannot exceed 50 characters"),
+  street: Yup.string()
+    .required("Street address is required")
+    .min(5, "Street address must be at least 5 characters")
+    .max(100, "Street address cannot exceed 100 characters"),
+  postalCode: Yup.string()
+    .required("Postal code is required")
+    .matches(/^\d{4,10}$/, "Postal code must be between 4 and 10 digits"),
+});
+
+function AddAddressModal() {
+  const dispatch = useDispatch();
+
+  const { addAddressModalIsOpen } = useSelector((state) => state.addressModal);
+
+  const close = useCallback(
+    () => dispatch(closeAddAddressModal()),
+    [dispatch]
+  );
+
+  return (
+    <div
+      className={clsx(
+        "bg-overlay fixed inset-0 z-10 flex items-center justify-center px-3 transition-all",
+        addAddressModalIsOpen
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
+      )}
+      onClick={close}
+    >
+      <div
+        className="relative bg-background w-full md:w-130 rounded-md p-3 flex flex-col gap-3 shadow-md"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl font-semibold">
+            Add address
+          </h1>
+          <CloseButton onClick={close} />
+        </div>
+
+        <Formik
+          key={addAddressModalIsOpen} // This forces a reset when the boolean changes
+          initialValues={{
+            country: "",
+            city: "",
+            state: "",
+            street: "",
+            postalCode: "",
+          }}
+          validationSchema={addAddressValidationSchema}
+          onSubmit={(data) => {
+            dispatch(addAddress(data));
+            dispatch(closeAddAddressModal());
+          }}
+        >
+          {({ isSubmitting, values, handleChange, errors, touched }) => (
+            <Form
+              className="grid gap-3"
+              aria-busy={(isSubmitting)}
+            >
+              <LoadingOverlay show={isSubmitting} />
+
+              <Input
+                name="country"
+                placeholder="Country"
+                size="small"
+                value={values.country}
+                onChange={handleChange}
+                error={touched.country && !!errors.country}
+                errorText={touched.country && errors.country}
+                autoComplete="country-name"
+              />
+
+              <Input
+                name="city"
+                placeholder="City"
+                size="small"
+                value={values.city}
+                onChange={handleChange}
+                error={touched.city && !!errors.city}
+                errorText={touched.city && errors.city}
+                autoComplete="address-level2"
+              />
+
+              <Input
+                name="state"
+                placeholder="State"
+                size="small"
+                value={values.state}
+                onChange={handleChange}
+                error={touched.state && !!errors.state}
+                errorText={touched.state && errors.state}
+                autoComplete="address-level1"
+              />
+
+              <Input
+                name="street"
+                placeholder="Street"
+                size="small"
+                value={values.street}
+                onChange={handleChange}
+                error={touched.street && !!errors.street}
+                errorText={touched.street && errors.street}
+                autoComplete="street-address"
+              />
+
+              <Input
+                name="postalCode"
+                placeholder="Postal Code"
+                size="small"
+                value={values.postalCode}
+                onChange={handleChange}
+                error={touched.postalCode && !!errors.postalCode}
+                errorText={touched.postalCode && errors.postalCode}
+                autoComplete="postal-code"
+              />
+
+              <Button
+                className="w-full"
+                variant="primary"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {(isSubmitting) ? "Adding..." : "Add"}
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </div>
+  )
+}
+
 function NoAddresses() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   return (
     <div className="bg-background w-full h-full px-2 rounded-lg shadow-sm flex flex-col justify-center items-center gap-2">
@@ -75,7 +230,7 @@ function NoAddresses() {
         description="It looks like you haven’t added an address yet. Please add an address to your account to place an order more easily."
         buttonText="Add address"
         ButtonVariant="primary"
-      // onClick={() => dispatch(openAddressModal())}
+        onClick={() => dispatch(openAddAddressModal())}
       />
     </div>
   )
@@ -160,17 +315,10 @@ function AddressesList() {
     dispatch(openDeleteAddressModal());
   }
 
-  function camelCaseToWords(text) {
-    return text
-      .replace(/([a-z])([A-Z])/g, "$1 $2")
-      .toLowerCase();
-  }
-
   return (
     <div className="grid gap-3">
       {addresses.map((address) => {
-        const { country, city, street, postalCode } = address;
-        const addressEntries = Object.entries(address);
+        const { country, state, city, street, postalCode } = address;
 
         return (
           <div
@@ -192,30 +340,55 @@ function AddressesList() {
                   </td>
                 </tr>
 
-                {addressEntries.map((item, i) => {
-                  const key = item[0];
-                  const value = item[1];
+                <tr className={"grid grid-cols-2 border-b border-border"}>
+                  <td className="p-3 font-medium border-r border-border">
+                    Country:
+                  </td>
 
-                  if (key === "_id") return null;
+                  <td className="p-3">
+                    {country}
+                  </td>
+                </tr>
 
-                  return (
-                    <tr
-                      key={i}
-                      className={clsx("grid grid-cols-2",
-                        i <= addressEntries.length - 3
-                          ? "border-b border-border"
-                          : ""
-                      )}>
-                      <td className="p-3 font-medium capitalize border-r border-border">
-                        {camelCaseToWords(key)}:
-                      </td>
+                <tr className={"grid grid-cols-2 border-b border-border"}>
+                  <td className="p-3 font-medium border-r border-border">
+                    State:
+                  </td>
 
-                      <td className="p-3">
-                        {value}
-                      </td>
-                    </tr>
-                  );
-                })}
+                  <td className="p-3">
+                    {state}
+                  </td>
+                </tr>
+
+                <tr className={"grid grid-cols-2 border-b border-border"}>
+                  <td className="p-3 font-medium border-r border-border">
+                    City:
+                  </td>
+
+                  <td className="p-3">
+                    {city}
+                  </td>
+                </tr>
+
+                <tr className={"grid grid-cols-2 border-b border-border"}>
+                  <td className="p-3 font-medium border-r border-border">
+                    Street:
+                  </td>
+
+                  <td className="p-3">
+                    {street}
+                  </td>
+                </tr>
+
+                <tr className={"grid grid-cols-2"}>
+                  <td className="p-3 font-medium border-r border-border">
+                    Postal Code:
+                  </td>
+
+                  <td className="p-3">
+                    {postalCode}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -238,13 +411,32 @@ export default function AddressesPage() {
 
   if (status === "idle" || status === "loading") return <Skeleton />;
 
-  if (status === "succeeded" && addresses.length === 0) return <NoAddresses />;
+  if (status === "succeeded" && addresses.length === 0) {
+    return (
+      <>
+        <AddAddressModal />
+        <NoAddresses />
+      </>
+    )
+  };
 
   if (status === "succeeded" && addresses.length > 0) {
     return (
       <>
+        <AddAddressModal />
+
         <DeleteAddressModal />
-        <AddressesList />
+
+        <div className="grid gap-3">
+          <Button
+            variant="primary"
+            onClick={() => dispatch(openAddAddressModal())}
+          >
+            Add new address
+          </Button>
+
+          <AddressesList />
+        </div>
       </>
     )
   }

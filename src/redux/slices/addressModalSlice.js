@@ -16,6 +16,21 @@ export const fetchAddresses = createAsyncThunk(
   }
 );
 
+// Add address
+export const addAddress = createAsyncThunk(
+  "addressModal/addAddress",
+  async (address, { rejectWithValue }) => {
+    try {
+      const { data } = await apiClient.post(`/customer/addresses`, address);
+      return data.data; // updated array of addresses
+    } catch (error) {
+      return rejectWithValue(
+        error?.response?.data || "Failed to add address"
+      );
+    }
+  }
+);
+
 // Delete address
 export const deleteAddress = createAsyncThunk(
   "addressModal/deleteAddress",
@@ -35,7 +50,7 @@ export const deleteAddress = createAsyncThunk(
 );
 
 const initialState = {
-  isOpen: false,
+  addAddressModalIsOpen: false,
   deleteAddressModalIsOpen: false,
   currentAddressDetails: {},
   status: "idle", // idle | loading | succeeded | failed
@@ -47,15 +62,11 @@ const addressModalSlice = createSlice({
   name: "addressModal",
   initialState,
   reducers: {
-    openAddressModal: (state) => {
-      state.isOpen = true;
+    openAddAddressModal: (state) => {
+      state.addAddressModalIsOpen = true;
     },
-    closeAddressModal: (state) => {
-      state.isOpen = false;
-    },
-
-    setAddresses: (state, action) => {
-      state.addresses = action.payload;
+    closeAddAddressModal: (state) => {
+      state.addAddressModalIsOpen = false;
     },
 
     openDeleteAddressModal: (state) => {
@@ -85,6 +96,20 @@ const addressModalSlice = createSlice({
         state.error = action.payload;
       })
 
+      // Add address
+      .addCase(addAddress.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(addAddress.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.addresses = action.payload;
+      })
+      .addCase(addAddress.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+
       // Delete address
       .addCase(deleteAddress.pending, (state) => {
         state.status = "loading";
@@ -102,10 +127,8 @@ const addressModalSlice = createSlice({
 });
 
 export const {
-  openAddressModal,
-  closeAddressModal,
-
-  setAddresses,
+  openAddAddressModal,
+  closeAddAddressModal,
 
   openDeleteAddressModal,
   closeDeleteAddressModal,
