@@ -3,7 +3,6 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import clsx from "clsx";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,8 +15,8 @@ import {
   fetchPhoneNumbers,
   deletePhoneNumber
 } from "@/redux/slices/phoneNumberModalSlice";
+import OverlayContainer from "@/components/ui/OverlayContainer";
 import ErrorDisplay from '@/components/ui/ErrorDisplay';
-import CloseButton from "@/components/ui/CloseButton";
 import Button from '@/components/ui/Button';
 
 function securePhoneNumber(phone) {
@@ -90,50 +89,38 @@ function DeletePhoneNumberModal() {
   }
 
   return (
-    <div
-      className={clsx(
-        "bg-overlay fixed inset-0 z-10 flex items-center justify-center px-3 transition-all",
-        deletePhoneNumberModalIsOpen
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
-      )}
-      onClick={close}
+    <OverlayContainer
+      isOpen={deletePhoneNumberModalIsOpen}
+      title="Delete phone number"
+      onClose={close}
+      transition="fade"
+      align="center"
+      width="md"
     >
-      <div
-        className="relative bg-background w-full md:w-112.5 rounded-md p-3 flex flex-col gap-3 shadow-md"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-semibold">
-            Delete phone number
-          </h1>
-          <CloseButton onClick={close} />
-        </div>
+      <div className="flex flex-col items-center">
+        <p className="text-center text-warning">
+          Are you sure you want to delete this phone number?
+        </p>
 
-        <div className="flex flex-col items-center">
-          <p className="text-center text-warning">
-            Are you sure you want to delete this phone number?
-          </p>
-          <p className="font-semibold text-center">
-            {phoneNumber && securePhoneNumber(phoneNumber)}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-1.5">
-          <Button
-            variant="secondary"
-            onClick={close}>
-            Cancel
-          </Button>
-          <Button
-            variant="error"
-            onClick={deletePhone}
-          >
-            Delete
-          </Button>
-        </div>
+        <p className="font-semibold text-center">
+          {phoneNumber && securePhoneNumber(phoneNumber)}
+        </p>
       </div>
-    </div>
+
+      <div className="grid grid-cols-2 gap-1.5">
+        <Button
+          variant="secondary"
+          onClick={close}>
+          Cancel
+        </Button>
+        <Button
+          variant="error"
+          onClick={deletePhone}
+        >
+          Delete
+        </Button>
+      </div>
+    </OverlayContainer>
   )
 }
 

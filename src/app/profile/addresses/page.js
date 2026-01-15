@@ -20,11 +20,11 @@ import {
   addAddress,
   deleteAddress,
 } from "@/redux/slices/addressModalSlice";
+import OverlayContainer from "@/components/ui/OverlayContainer";
 import LoadingOverlay from "@/components/ui/LoadingIcon";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
-import CloseButton from "@/components/ui/CloseButton";
 
 function Skeleton() {
   return (
@@ -106,116 +106,103 @@ function AddAddressModal() {
   );
 
   return (
-    <div
-      className={clsx(
-        "bg-overlay fixed inset-0 z-10 flex items-center justify-center px-3 transition-all",
-        addAddressModalIsOpen
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
-      )}
-      onClick={close}
+    <OverlayContainer
+      isOpen={addAddressModalIsOpen}
+      title="Add address"
+      onClose={close}
+      transition="fade"
+      align="center"
+      width="md"
     >
-      <div
-        className="relative bg-background w-full md:w-130 rounded-md p-3 flex flex-col gap-3 shadow-md"
-        onClick={(e) => e.stopPropagation()}
+      <Formik
+        key={addAddressModalIsOpen} // This forces a reset when the boolean changes
+        initialValues={{
+          country: "",
+          city: "",
+          state: "",
+          street: "",
+          postalCode: "",
+        }}
+        validationSchema={addAddressValidationSchema}
+        onSubmit={(data) => {
+          dispatch(addAddress(data));
+          dispatch(closeAddAddressModal());
+        }}
       >
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-semibold">
-            Add address
-          </h1>
-          <CloseButton onClick={close} />
-        </div>
+        {({ isSubmitting, values, handleChange, errors, touched }) => (
+          <Form
+            className="grid gap-3"
+            aria-busy={(isSubmitting)}
+          >
+            <LoadingOverlay show={isSubmitting} />
 
-        <Formik
-          key={addAddressModalIsOpen} // This forces a reset when the boolean changes
-          initialValues={{
-            country: "",
-            city: "",
-            state: "",
-            street: "",
-            postalCode: "",
-          }}
-          validationSchema={addAddressValidationSchema}
-          onSubmit={(data) => {
-            dispatch(addAddress(data));
-            dispatch(closeAddAddressModal());
-          }}
-        >
-          {({ isSubmitting, values, handleChange, errors, touched }) => (
-            <Form
-              className="grid gap-3"
-              aria-busy={(isSubmitting)}
+            <Input
+              name="country"
+              placeholder="Country"
+              size="small"
+              value={values.country}
+              onChange={handleChange}
+              error={touched.country && !!errors.country}
+              errorText={touched.country && errors.country}
+              autoComplete="country-name"
+            />
+
+            <Input
+              name="city"
+              placeholder="City"
+              size="small"
+              value={values.city}
+              onChange={handleChange}
+              error={touched.city && !!errors.city}
+              errorText={touched.city && errors.city}
+              autoComplete="address-level2"
+            />
+
+            <Input
+              name="state"
+              placeholder="State"
+              size="small"
+              value={values.state}
+              onChange={handleChange}
+              error={touched.state && !!errors.state}
+              errorText={touched.state && errors.state}
+              autoComplete="address-level1"
+            />
+
+            <Input
+              name="street"
+              placeholder="Street"
+              size="small"
+              value={values.street}
+              onChange={handleChange}
+              error={touched.street && !!errors.street}
+              errorText={touched.street && errors.street}
+              autoComplete="street-address"
+            />
+
+            <Input
+              name="postalCode"
+              placeholder="Postal Code"
+              size="small"
+              value={values.postalCode}
+              onChange={handleChange}
+              error={touched.postalCode && !!errors.postalCode}
+              errorText={touched.postalCode && errors.postalCode}
+              autoComplete="postal-code"
+            />
+
+            <Button
+              className="w-full"
+              variant="primary"
+              type="submit"
+              disabled={isSubmitting}
             >
-              <LoadingOverlay show={isSubmitting} />
-
-              <Input
-                name="country"
-                placeholder="Country"
-                size="small"
-                value={values.country}
-                onChange={handleChange}
-                error={touched.country && !!errors.country}
-                errorText={touched.country && errors.country}
-                autoComplete="country-name"
-              />
-
-              <Input
-                name="city"
-                placeholder="City"
-                size="small"
-                value={values.city}
-                onChange={handleChange}
-                error={touched.city && !!errors.city}
-                errorText={touched.city && errors.city}
-                autoComplete="address-level2"
-              />
-
-              <Input
-                name="state"
-                placeholder="State"
-                size="small"
-                value={values.state}
-                onChange={handleChange}
-                error={touched.state && !!errors.state}
-                errorText={touched.state && errors.state}
-                autoComplete="address-level1"
-              />
-
-              <Input
-                name="street"
-                placeholder="Street"
-                size="small"
-                value={values.street}
-                onChange={handleChange}
-                error={touched.street && !!errors.street}
-                errorText={touched.street && errors.street}
-                autoComplete="street-address"
-              />
-
-              <Input
-                name="postalCode"
-                placeholder="Postal Code"
-                size="small"
-                value={values.postalCode}
-                onChange={handleChange}
-                error={touched.postalCode && !!errors.postalCode}
-                errorText={touched.postalCode && errors.postalCode}
-                autoComplete="postal-code"
-              />
-
-              <Button
-                className="w-full"
-                variant="primary"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {(isSubmitting) ? "Adding..." : "Add"}
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </div>
-    </div>
+              {(isSubmitting) ? "Adding..." : "Add"}
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </OverlayContainer>
   )
 }
 
@@ -257,51 +244,38 @@ function DeleteAddressModal() {
   }
 
   return (
-    <div
-      className={clsx(
-        "bg-overlay fixed inset-0 z-10 flex items-center justify-center px-3 transition-all",
-        deleteAddressModalIsOpen
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
-      )}
-      onClick={close}
+    <OverlayContainer
+      isOpen={deleteAddressModalIsOpen}
+      title="Delete address"
+      onClose={close}
+      transition="fade"
+      align="center"
+      width="md"
     >
-      <div
-        className="relative bg-background w-full md:w-112.5 rounded-md p-3 flex flex-col gap-3 shadow-md"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-semibold">
-            Delete address
-          </h1>
-          <CloseButton onClick={close} />
-        </div>
-
-        <div className="flex flex-col items-center">
-          <p className="text-warning text-center">
-            Are you sure you want to delete this address?
-          </p>
-          <p className="font-semibold text-center line-clamp-1">
-            {country}, {city}, {street}.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-1.5">
-          <Button
-            variant="secondary"
-            onClick={close}>
-            Cancel
-          </Button>
-
-          <Button
-            variant="error"
-            onClick={deleteAdrs}
-          >
-            Delete
-          </Button>
-        </div>
+      <div className="flex flex-col items-center">
+        <p className="text-warning text-center">
+          Are you sure you want to delete this address?
+        </p>
+        <p className="font-semibold text-center line-clamp-1">
+          {country}, {city}, {street}.
+        </p>
       </div>
-    </div>
+
+      <div className="grid grid-cols-2 gap-1.5">
+        <Button
+          variant="secondary"
+          onClick={close}>
+          Cancel
+        </Button>
+
+        <Button
+          variant="error"
+          onClick={deleteAdrs}
+        >
+          Delete
+        </Button>
+      </div>
+    </OverlayContainer>
   )
 }
 
