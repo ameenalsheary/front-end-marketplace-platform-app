@@ -55,7 +55,6 @@ export default function Auth() {
       title={step === "email" ? "Welcome back" : "Verify your email"}
       onClose={() => dispatch(closeAuthModal())}
       transition="fade"
-      align="center"
       width="md"
     >
       {/* STEP 1: Email input for authentication */}

@@ -1,81 +1,73 @@
 "use client";
 
 import clsx from "clsx";
-
 import CloseButton from "./CloseButton";
 
-const transitionMap = {
-  left: {
-    open: "translate-x-0",
-    closed: "-translate-x-full",
-  },
-  right: {
-    open: "translate-x-0",
-    closed: "translate-x-full",
-  },
-  top: {
-    open: "translate-y-0",
-    closed: "-translate-y-full",
-  },
-  bottom: {
-    open: "translate-y-0",
-    closed: "translate-y-full",
-  },
-  fade: {
-    open: "scale-100 opacity-100",
-    closed: "scale-95 opacity-0",
-  },
-}
+const TRANSITIONS = {
+  left: { open: "translate-x-0", closed: "-translate-x-full" },
+  right: { open: "translate-x-0", closed: "translate-x-full" },
+  fade: { open: "scale-100 opacity-100", closed: "scale-95 opacity-0" },
+};
 
-const alignMap = {
-  left: "items-center justify-start",
-  center: "items-center justify-center",
-  right: "items-center justify-end",
-}
-
-const widthMap = {
+const WIDTHS = {
   sm: "md:w-96",
   md: "md:w-130",
   lg: "md:w-[48rem]",
-}
+};
 
 export default function OverlayContainer({
   isOpen,
   title,
   onClose,
   children,
-  transition = "fade",     // left | right | top | bottom | fade
-  align = "center",        // left | center | right
-  width = "md",            // sm | md | lg
+  transition = "fade", // left | right | fade
+  width = "md",        // sm | md | lg
 }) {
-  const t = transitionMap[transition]
+  const isLeft = transition === "left";
+  const isRight = transition === "right";
+  const isSidebar = isLeft || isRight;
+
+  const { open, closed } = TRANSITIONS[transition] ?? TRANSITIONS.fade;
+
+  const overlayLayout = isSidebar
+    ? isLeft
+      ? "items-stretch justify-start"
+      : "items-stretch justify-end"
+    : "px-3 items-center justify-center";
+
+  const panelRadius = isSidebar
+    ? isLeft
+      ? "rounded-tr-md rounded-br-md"
+      : "rounded-tl-md rounded-bl-md"
+    : "rounded-md";
 
   return (
     <div
-      className={clsx(
-        "px-3 fixed flex inset-0 z-10 bg-overlay backdrop-blur-sm transition-all",
-        alignMap[align],
-        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-      )}
       onClick={onClose}
+      className={clsx(
+        "fixed inset-0 z-10 flex bg-overlay backdrop-blur-sm transition-all",
+        isOpen
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none",
+        overlayLayout
+      )}
     >
       <div
-        className={clsx(
-          "w-full p-3 bg-background rounded-md shadow-md flex flex-col gap-3",
-          widthMap[width],
-          isOpen ? t.open : t.closed
-        )}
         onClick={(e) => e.stopPropagation()}
+        className={clsx(
+          "w-full p-3 flex flex-col gap-3 bg-background shadow-md transition-all",
+          panelRadius,
+          WIDTHS[width],
+          isOpen ? open : closed
+        )}
       >
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-semibold">
-            {title}
-          </h1>
+        <header className="flex items-center justify-between">
+          <h1 className="text-xl font-semibold">{title}</h1>
           <CloseButton onClick={onClose} />
-        </div>
+        </header>
 
         {children}
       </div>
     </div>
-  )
+  );
 }

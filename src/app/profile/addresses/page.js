@@ -111,7 +111,6 @@ function AddAddressModal() {
       title="Add address"
       onClose={close}
       transition="fade"
-      align="center"
       width="md"
     >
       <Formik
@@ -249,7 +248,6 @@ function DeleteAddressModal() {
       title="Delete address"
       onClose={close}
       transition="fade"
-      align="center"
       width="md"
     >
       <div className="flex flex-col items-center">

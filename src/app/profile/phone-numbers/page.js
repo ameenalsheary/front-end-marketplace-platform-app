@@ -94,7 +94,6 @@ function DeletePhoneNumberModal() {
       title="Delete phone number"
       onClose={close}
       transition="fade"
-      align="center"
       width="md"
     >
       <div className="flex flex-col items-center">

@@ -171,7 +171,6 @@ export default function PhoneNumber() {
       title={!confirmationResult ? "Add phone number" : "Verify phone number"}
       onClose={() => dispatch(closePhoneNumberModal())}
       transition="fade"
-      align="center"
       width="md"
     >
       {/* First step: Phone number input form */}
