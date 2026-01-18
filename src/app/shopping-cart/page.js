@@ -146,50 +146,56 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
 
   return (
     <div className="relative grid gap-3 p-1.5 bg-background rounded-md shadow-md">
+      {
+        !couponApplied && (
+          <>
+            <h1 className="font-semibold text-lg">
+              APPLY COUPON
+            </h1>
+
+            <Formik
+              initialValues={{ couponCode: "" }}
+              validationSchema={Yup.object({
+                couponCode: Yup.string()
+                  .required("Coupon code is required")
+                  .min(3, "Coupon code must be at least 3 characters")
+                  .max(32, "Coupon code cannot exceed 32 characters"),
+              })}
+              onSubmit={({ couponCode }) => applyCoupon({ couponCode })}
+            >
+              {({ isSubmitting, values, handleChange, errors, touched }) => (
+                <Form>
+                  <LoadingOverlay show={isSubmitting} />
+
+                  <div className="grid gap-1.5">
+                    <Input
+                      name="couponCode"
+                      placeholder="Coupon code"
+                      size="small"
+                      value={values.couponCode}
+                      onChange={handleChange}
+                      error={touched.couponCode && !!errors.couponCode}
+                      errorText={touched.couponCode && errors.couponCode}
+                    />
+
+                    <Button
+                      size="small"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Applying..." : "Apply"}
+                    </Button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </>
+        )
+      }
+
       <h1 className="font-semibold text-lg">
         ORDER SUMMARY
       </h1>
-
-      {
-        !couponApplied && (
-          <Formik
-            initialValues={{ couponCode: "" }}
-            validationSchema={Yup.object({
-              couponCode: Yup.string()
-                .required("Coupon code is required")
-                .min(3, "Coupon code must be at least 3 characters")
-                .max(32, "Coupon code cannot exceed 32 characters"),
-            })}
-            onSubmit={({ couponCode }) => applyCoupon({ couponCode })}
-          >
-            {({ isSubmitting, values, handleChange, errors, touched }) => (
-              <Form>
-                <LoadingOverlay show={isSubmitting} />
-
-                <div className="grid gap-1.5">
-                  <Input
-                    name="couponCode"
-                    placeholder="Coupon code"
-                    size="small"
-                    value={values.couponCode}
-                    onChange={handleChange}
-                    error={touched.couponCode && !!errors.couponCode}
-                    errorText={touched.couponCode && errors.couponCode}
-                  />
-
-                  <Button
-                    size="small"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Applying..." : "Apply"}
-                  </Button>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        )
-      }
 
       <div className="grid gap-1.5">
         <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">

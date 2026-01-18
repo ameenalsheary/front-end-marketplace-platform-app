@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import clsx from "clsx";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
@@ -9,11 +8,11 @@ import { useRouter } from "next/navigation";
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 
+import OverlayContainer from "../ui/OverlayContainer";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import LoadingOverlay from "../ui/LoadingIcon";
 import FormErrorMessage from "../ui/FormErrorMessage";
-import CloseButton from "../ui/CloseButton";
 import apiClient from "@/services/apiClient";
 
 const checkoutValidationSchema = Yup.object().shape({
@@ -146,30 +145,15 @@ export default function CheckOutSidebar() {
         </Button>
       </div>
 
-      {/* Overlay */}
-      <div
-        className={clsx(
-          "fixed top-0 left-0 z-20 w-full h-full bg-overlay transition-all",
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        )}
-        onClick={() => setIsOpen(false)}
-      />
-
-      <div
-        className={clsx(
-          "fixed top-0 left-0 z-20 w-full overflow-auto md:w-[70%] lg:w-[50%] h-full p-3 flex flex-col gap-3 bg-background shadow-md transform transition-all",
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        )}
+      <OverlayContainer
+        isOpen={isOpen}
+        title="Checkout"
+        onClose={() => setIsOpen(false)}
+        transition="center"
+        width="lg"
       >
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Checkout</h2>
-          <CloseButton onClick={() => setIsOpen(false)} />
-        </div>
-
         <Formik
+          key={isOpen} // This forces a reset when the boolean changes
           initialValues={{
             paymentMethod: "stripeCheckoutSession",
             selectedAddressId: "",
@@ -185,7 +169,7 @@ export default function CheckOutSidebar() {
         >
           {({ isSubmitting, values, handleChange, setValues, errors, touched }) => (
             <Form
-              className="relative p-3 grid gap-3 border border-border rounded-sm shadow-sm"
+              className="relative grid gap-3"
               aria-busy={(isSubmitting || isRedirecting)}
             >
               <LoadingOverlay show={isSubmitting || isRedirecting} />
@@ -369,7 +353,7 @@ export default function CheckOutSidebar() {
             </Form>
           )}
         </Formik>
-      </div>
+      </OverlayContainer>
     </>
   )
 }

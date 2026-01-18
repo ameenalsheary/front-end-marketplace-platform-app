@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import CloseButton from "../ui/CloseButton";
+import OverlayContainer from "../ui/OverlayContainer";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 
@@ -155,7 +155,7 @@ function RatingsFilter() {
                 className={clsx(
                   "bg-background-secondary p-1 flex items-center gap-1 rounded-md shadow-sm hover:bg-background-tertiary transition-all cursor-pointer",
                   currentRating === rating &&
-                    "bg-background-tertiary border border-border"
+                  "bg-background-tertiary border border-border"
                 )}
               >
                 <input
@@ -174,9 +174,7 @@ function RatingsFilter() {
                       return (
                         <svg
                           key={j}
-                          className={`w-4 h-4 ${
-                            active ? "text-yellow-500" : "text-text"
-                          } ms-1`}
+                          className={`w-4 h-4 ${active ? "text-yellow-500" : "text-text"} ms-1`}
                           aria-hidden="true"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="currentColor"
@@ -202,42 +200,25 @@ export default function SearchSidebar() {
 
   return (
     <>
-      {/* Filter Button */}
       <div>
-        <Button variant="secondary" onClick={() => setIsOpen(true)}>
+        <Button
+          variant="secondary"
+          onClick={() => setIsOpen(true)}
+        >
           Filters
         </Button>
       </div>
 
-      {/* Overlay */}
-      <div
-        className={clsx(
-          "fixed top-0 left-0 w-full h-full bg-overlay z-10 transition-all",
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        )}
-        onClick={() => setIsOpen(false)}
-      />
-
-      {/* Sidebar */}
-      <div
-        className={clsx(
-          "fixed top-0 left-0 w-full overflow-auto md:w-[320px] h-full bg-background p-3 flex flex-col gap-5 shadow-md z-20 transform transition-all",
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        )}
+      <OverlayContainer
+        isOpen={isOpen}
+        title="Filter products"
+        onClose={() => setIsOpen(false)}
+        transition="left"
+        width="sm"
       >
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Filters</h2>
-          <CloseButton onClick={() => setIsOpen(false)} />
-        </div>
-
         <div className="flex flex-col gap-5">
-          {/* Price Filter */}
           <PriceFilter />
 
-          {/* Ratings Filter */}
           <RatingsFilter />
         </div>
 
@@ -247,7 +228,7 @@ export default function SearchSidebar() {
         >
           Go
         </Button>
-      </div>
+      </OverlayContainer>
     </>
   );
 }
