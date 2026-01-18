@@ -178,7 +178,7 @@ export default function NavBar() {
 
       <div
         className={clsx(
-          "bg-overlay fixed z-2 left-0 w-full h-screen-minus-header transition-all",
+          "bg-overlay backdrop-blur-sm fixed z-2 left-0 w-full h-screen-minus-header transition-all",
           openMenu
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
