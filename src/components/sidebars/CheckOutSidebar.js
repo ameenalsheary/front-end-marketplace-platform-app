@@ -50,7 +50,6 @@ export default function CheckOutSidebar() {
     data: [],
   });
   const [errorMessage, setErrorMessage] = useState(null);
-  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const router = useRouter();
 
@@ -124,8 +123,6 @@ export default function CheckOutSidebar() {
 
       if (res?.data?.status !== "Success") return;
 
-      setIsRedirecting(true);
-
       if (res.data.sessionURL) {
         router.push(res.data.sessionURL);
       } else {
@@ -169,10 +166,10 @@ export default function CheckOutSidebar() {
         >
           {({ isSubmitting, values, handleChange, setValues, errors, touched }) => (
             <Form
-              className="relative grid gap-3"
-              aria-busy={(isSubmitting || isRedirecting)}
+              className="grid gap-3"
+              aria-busy={(isSubmitting)}
             >
-              <LoadingOverlay show={isSubmitting || isRedirecting} />
+              <LoadingOverlay show={isSubmitting} />
 
               <FormErrorMessage type={"fail"} text={errorMessage} />
 
@@ -346,9 +343,9 @@ export default function CheckOutSidebar() {
                 className="w-full"
                 variant="primary"
                 type="submit"
-                disabled={isSubmitting || isRedirecting}
+                disabled={isSubmitting}
               >
-                {(isSubmitting || isRedirecting) ? "Processing..." : "Checkout"}
+                {(isSubmitting) ? "Processing..." : "Checkout"}
               </Button>
             </Form>
           )}
