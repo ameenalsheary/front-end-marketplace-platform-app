@@ -8,7 +8,7 @@ import Button from "@/components/ui/Button";
 function OrdersTable({ orders }) {
   return (
     <section
-      className="grid grid-cols-2 gap-3"
+      className="grid grid-cols-1 lg:grid-cols-2 gap-3"
       aria-label="Orders list"
     >
       {orders.map((order) => {
