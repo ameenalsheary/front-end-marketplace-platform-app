@@ -222,7 +222,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
           </span>
           {
             couponApplied ? (
-              <del className="font-semibold text-error text-under">
+              <del className="font-semibold text-error">
                 {totalPrice} {currency}
               </del>) : (
               <span className="font-semibold text-primary">

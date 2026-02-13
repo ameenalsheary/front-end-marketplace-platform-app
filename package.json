@@ -16,6 +16,7 @@
     "@reduxjs/toolkit": "^2.9.0",
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.19",
     "embla-carousel-react": "^8.6.0",
     "firebase": "^12.7.0",
     "formik": "^2.4.6",
