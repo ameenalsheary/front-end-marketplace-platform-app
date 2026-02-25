@@ -13,6 +13,7 @@ import CustomImage from "@/components/ui/CustomImage";
 import Input from "@/components/ui/Input";
 import LoadingOverlay from "@/components/ui/LoadingIcon";
 import Button from "@/components/ui/Button";
+import { formatPrice } from "@/lib/utilities/formatPrice";
 import { currency } from "@/lib/constants";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
 import SuccessReactConfetti from "@/components/ui/SuccessReactConfetti";
@@ -35,7 +36,7 @@ function ItemCard({ item, updateItemQuantity, removeItem }) {
 
   const des = [
     itemQuantity !== undefined && `Quantity: ${itemQuantity}`,
-    price !== undefined && `Price: ${price.toFixed(2).replace(".", ",")}`,
+    price !== undefined && `Price: ${formatPrice(price)}`,
     size !== undefined && `Size: ${String(size).toUpperCase()}`,
     color !== undefined && `Color: ${color}`,
   ].filter(Boolean).join(" / ");
@@ -105,7 +106,7 @@ function ItemCard({ item, updateItemQuantity, removeItem }) {
         </p>
 
         <p className="text-lg font-semibold text-primary">
-          {totalPrice.toFixed(2).replace(".", ",")} {currency}
+          {formatPrice(totalPrice)} {currency}
         </p>
 
         <div className="mt-auto self-end flex items-center gap-0.5 w-fit p-0.5 border border-border rounded-sm">
@@ -259,7 +260,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                   Coupon Discount:
                 </span>
                 <span className="font-semibold text-primary">
-                  {couponDiscount}{"%"}
+                  -{couponDiscount}{"%"}
                 </span>
               </div>
 
@@ -268,7 +269,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                   Discounted Amount:
                 </span>
                 <span className="font-semibold text-primary">
-                  {discountedAmount} {currency}
+                  -{discountedAmount} {currency}
                 </span>
               </div>
             </>
@@ -503,18 +504,21 @@ export default function ShoppingCartPage() {
       };
     });
 
+    const pricingRaw = shoppingCart.data?.data?.pricing;
+    const couponRaw = shoppingCart.data?.data?.coupon;
+
     const pricing = {
-      taxPrice: shoppingCart.data?.data?.pricing?.taxPrice.toFixed(2).replace(".", ","),
-      shippingPrice: shoppingCart.data?.data?.pricing?.shippingPrice.toFixed(2).replace(".", ","),
-      totalPrice: shoppingCart.data?.data?.pricing?.totalPrice.toFixed(2).replace(".", ","),
-      totalPriceAfterDiscount: shoppingCart.data?.data?.pricing?.totalPriceAfterDiscount ? shoppingCart.data?.data?.pricing.totalPriceAfterDiscount.toFixed(2).replace(".", ",") : undefined
-    }
+      taxPrice: formatPrice(pricingRaw?.taxPrice),
+      shippingPrice: formatPrice(pricingRaw?.shippingPrice),
+      totalPrice: formatPrice(pricingRaw?.totalPrice),
+      totalPriceAfterDiscount: formatPrice(pricingRaw?.totalPriceAfterDiscount),
+    };
 
     const coupon = {
-      couponCode: shoppingCart.data?.data?.coupon?.couponCode,
-      couponDiscount: shoppingCart.data?.data?.coupon?.couponDiscount,
-      discountedAmount: shoppingCart.data?.data?.coupon?.discountedAmount.toFixed(2).replace(".", ","),
-    }
+      couponCode: couponRaw?.couponCode,
+      couponDiscount: couponRaw?.couponDiscount,
+      discountedAmount: formatPrice(couponRaw?.discountedAmount),
+    };
 
     return (
       <>

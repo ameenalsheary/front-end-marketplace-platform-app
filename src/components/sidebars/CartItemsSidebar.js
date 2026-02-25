@@ -9,6 +9,7 @@ import { closeCartItemsModal } from "@/redux/slices/cartItemsModalSlice";
 import OverlayContainer from "../ui/OverlayContainer";
 import Button from "../ui/Button";
 import CustomImage from "../ui/CustomImage";
+import { formatPrice } from "@/lib/utilities/formatPrice";
 import { currency } from "@/lib/constants";
 
 export default function CartItemsSidebar() {
@@ -44,7 +45,7 @@ export default function CartItemsSidebar() {
 
             const description = [
               quantity && `Quantity: ${quantity}`,
-              price && `Price: ${price.toFixed(2).replace(".", ",")}`,
+              price && `Price: ${formatPrice(price)}`,
               size && `Size: ${String(size).toUpperCase()}`,
               color && `Color: ${color}`,
             ]
@@ -80,7 +81,7 @@ export default function CartItemsSidebar() {
                     <p className="text-sm line-clamp-1">{description}</p>
 
                     <p className="text-lg font-semibold text-primary">
-                      {totalPrice.toFixed(2).replace(".", ",")} {currency}
+                      {formatPrice(totalPrice)} {currency}
                     </p>
                   </div>
                 </div>

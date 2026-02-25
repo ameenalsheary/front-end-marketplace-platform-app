@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import CustomImage from "../ui/CustomImage";
 import FavoriteButton from "../ui/FavoriteButton/FavoriteButton";
+import { formatPrice } from "@/lib/utilities/formatPrice";
 import { currency } from "@/lib/constants";
 import AddProductToCartButton from "../ui/AddProductToCartButton";
 
@@ -21,9 +22,9 @@ export default function ProductCard(props) {
     isFavorite,
   } = props.product;
 
-  price = price.toFixed(2).replace(".", ",");
+  price = formatPrice(price);
   priceBeforeDiscount
-    ? (priceBeforeDiscount = priceBeforeDiscount.toFixed(2).replace(".", ","))
+    ? (priceBeforeDiscount = formatPrice(priceBeforeDiscount))
     : null;
 
   return (

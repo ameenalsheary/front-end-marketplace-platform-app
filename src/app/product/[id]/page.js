@@ -24,6 +24,7 @@ import apiClient from "@/services/apiClient";
 import ProductSwiper from "@/components/product/ProductSwiper";
 import { productSpecificFields } from "@/lib/constants";
 import Button from "@/components/ui/Button";
+import { formatPrice } from "@/lib/utilities/formatPrice";
 import { currency } from "@/lib/constants";
 import { setCartItems } from "@/redux/slices/cartItemsModalSlice";
 import { openAuthModal } from "@/redux/slices/authModalSlice";
@@ -290,8 +291,6 @@ function Informations({ informations }) {
   const searchParams = useSearchParams();
   const urlSize = searchParams.get("size");
 
-  const format = (num) => num.toFixed(2).replace(".", ",");
-
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.authModal);
 
@@ -316,9 +315,9 @@ function Informations({ informations }) {
       setSizesInfo({
         size,
         quantity,
-        price: format(price),
+        price: formatPrice(price),
         ...(priceBeforeDiscount && {
-          priceBeforeDiscount: format(priceBeforeDiscount),
+          priceBeforeDiscount: formatPrice(priceBeforeDiscount),
         }),
         discountPercent,
       });
@@ -334,9 +333,9 @@ function Informations({ informations }) {
 
     setSizesInfo({
       ...found,
-      price: format(found.price),
+      price: formatPrice(found.price),
       ...(found.priceBeforeDiscount && {
-        priceBeforeDiscount: format(found.priceBeforeDiscount),
+        priceBeforeDiscount: formatPrice(found.priceBeforeDiscount),
       }),
     });
   }, [discountPercent, price, priceBeforeDiscount, quantity, size, sizes, urlSize]);
@@ -558,9 +557,9 @@ function Informations({ informations }) {
                   onClick={() => {
                     setSizesInfo({
                       ...item,
-                      price: format(item.price),
+                      price: formatPrice(item.price),
                       ...(item.priceBeforeDiscount && {
-                        priceBeforeDiscount: format(item.priceBeforeDiscount),
+                        priceBeforeDiscount: formatPrice(item.priceBeforeDiscount),
                       }),
                     });
 
