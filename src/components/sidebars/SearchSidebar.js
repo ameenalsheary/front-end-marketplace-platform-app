@@ -153,9 +153,9 @@ function RatingsFilter() {
                 key={i}
                 onClick={() => handleRatingChange(rating)}
                 className={clsx(
-                  "bg-background-secondary p-1 flex items-center gap-1 rounded-md shadow-sm hover:bg-background-tertiary transition-all cursor-pointer",
+                  "bg-background-secondary p-1 flex items-center gap-1 rounded-md shadow-sm hover:bg-background-tertiary/70 transition-all cursor-pointer",
                   currentRating === rating &&
-                  "bg-background-tertiary border border-border"
+                  "bg-background-tertiary/70 border border-border"
                 )}
               >
                 <input
