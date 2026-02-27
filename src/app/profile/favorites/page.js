@@ -1,51 +1,122 @@
-import apiClientServer from "@/services/apiClientServer";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
+import apiClient from "@/services/apiClient";
 import ProductCard from "@/components/product/ProductCard";
+import ProductCardSkeleton from "@/components/product/ProductCardSkeleton";
 import PaginationSection from "@/components/ui/Pagination";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
 
-export default async function FavoritesPage(props) {
-  const { page } = await props.searchParams;
+function Skeleton() {
+  return (
+    <div className="flex flex-col">
+      <h1 className="text-2xl pb-3 font-medium capitalize">My Favorites</h1>
 
-  const res = await apiClientServer.get("customer/favorites", {
-    params: {
-      page: Number(page) || 1,
-      limit: 8,
-    },
+      <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4">
+          {Array(8)
+            .fill(0)
+            .map((_, i) => {
+              return (
+                <ProductCardSkeleton key={i} />
+              );
+            })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function FavoritesPage() {
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+
+  const [favorites, setFavorites] = useState({
+    status: "idle",
+    products: [],
   });
 
-  const favorites = res.data?.data;
-  const products = favorites.map((item) => item.productId);
-  const { numberOfPages } = res.data?.paginationResults;
+  const [numberOfPages, setNumberOfPages] = useState(1);
 
-  if (products.length > 0) {
+  useEffect(() => {
+    let active = true;
+
+    async function fetchFavorites() {
+      setFavorites((prev) => ({ ...prev, status: "loading" }));
+
+      try {
+        const res = await apiClient.get("customer/favorites", {
+          params: {
+            page,
+            limit: 8,
+          },
+        });
+
+        if (!active) return;
+
+        const favorites = res.data?.data || [];
+        const products = favorites.map((item) => item.productId);
+        const { numberOfPages = 1 } = res.data?.paginationResults || {};
+
+        setFavorites({
+          status: "succeeded",
+          products,
+        });
+
+        setNumberOfPages(numberOfPages);
+      } catch {
+        if (active) {
+          setFavorites((prev) => ({ ...prev, status: "failed" }));
+        }
+      }
+    }
+
+    fetchFavorites();
+
+    return () => {
+      active = false;
+    }
+  }, [page]);
+
+  const { status, products } = favorites;
+
+  if (status === "idle" || status === "loading") return <Skeleton />;
+
+  if (status === "failed") {
+    throw new Error("Failed to load favorites.");
+  }
+
+  if (!products || products.length === 0) {
     return (
-      <div className="flex flex-col">
-        <h1 className="text-2xl pb-3 font-medium capitalize">My Favorites</h1>
-
-        <div className="flex flex-col gap-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4">
-            {products.map((item) => {
-              return <ProductCard key={item._id} product={item} />;
-            })}
-          </div>
-
-          {numberOfPages > 1 && <PaginationSection count={numberOfPages} />}
-        </div>
+      <div className="bg-background w-full h-full px-2 rounded-lg shadow-sm flex flex-col justify-center items-center gap-2">
+        <ErrorDisplay
+          srcImage="/images/heart.png"
+          error="Oops! You haven`t saved any products yet."
+          description="It seems like you haven`t added any products to your favorites. Browse our collection and start saving your favorite items!"
+          buttonText="Back to home page"
+          ButtonVariant="primary"
+          eventHandler="GO_TO"
+          href="/"
+        />
       </div>
     );
   }
 
   return (
-    <div className="bg-background w-full h-full px-2 rounded-lg shadow-sm flex flex-col justify-center items-center gap-2">
-      <ErrorDisplay
-        srcImage="/images/heart.png"
-        error="Oops! You haven`t saved any products yet."
-        description="It seems like you haven`t added any products to your favorites. Browse our collection and start saving your favorite items!"
-        buttonText="Back to home page"
-        ButtonVariant="primary"
-        eventHandler="GO_TO"
-        href="/"
-      />
+    <div className="flex flex-col">
+      <h1 className="text-2xl pb-3 font-medium capitalize">My Favorites</h1>
+
+      <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4">
+          {products.map((item) => {
+            return <ProductCard key={item._id} product={item} />;
+          })}
+        </div>
+
+        {numberOfPages > 1 && <PaginationSection count={numberOfPages} />}
+      </div>
     </div>
   );
 }

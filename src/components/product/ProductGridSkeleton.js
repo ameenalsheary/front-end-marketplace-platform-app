@@ -22,10 +22,9 @@ export default function ProductGridSkeleton(props) {
                     ${i + 1 > 8 ? "lg:hidden xl:block" : ""}
                   `}
                 >
-                  <ProductCardSkeleton key={i} />
+                  <ProductCardSkeleton />
                 </div>
               );
-              return;
             })}
         </div>
       </div>
