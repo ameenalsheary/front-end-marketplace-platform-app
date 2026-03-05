@@ -10,6 +10,9 @@ import apiClient from "@/services/apiClient";
 import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import PaginationSection from "@/components/ui/Pagination";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
+import Button from "@/components/ui/Button";
+import { formatPrice } from "@/lib/utilities/formatPrice";
+import { currency } from "@/lib/constants";
 
 function Skeleton() {
   return (
@@ -38,19 +41,78 @@ const OrderCard = ({ order }) => {
     setTimeout(() => setCopied(false), 1500);
   };
 
-  return (
-    <div className="p-3 bg-background rounded-sm shadow-sm">
-      <div className="flex items-center justify-between gap-1.5">
-        <h1 className="text-lg font-medium line-clamp-1">
-          Order ID: #{orderID.slice(0, 12)}...
-        </h1>
+  const statusConfig = {
+    processing: {
+      label: "Processing",
+      color: "bg-[var(--color-warning)]",
+    },
+    shipped: {
+      label: "Shipped",
+      color: "bg-[var(--color-primary)]",
+    },
+    delivered: {
+      label: "Delivered",
+      color: "bg-[var(--color-success)]",
+    },
+    cancelled: {
+      label: "Cancelled",
+      color: "bg-[var(--color-error)]",
+    },
+    returned: {
+      label: "Returned",
+      color: "bg-[var(--color-text-muted)]",
+    },
+  };
 
-        {copied ? (
-          <DoneIcon fontSize="small" className="text-success" />
-        ) : (
-          <ContentCopyIcon fontSize="small" className="cursor-pointer" onClick={handleCopy} />
-        )}
+  const currentStatus = statusConfig[orderStatus] || statusConfig.processing;
+
+  return (
+    <div className="p-3 bg-background rounded-sm shadow-sm grid gap-3">
+      <div className="grid gap-0.5">
+        {/* Order ID */}
+        <div className="flex items-center justify-between gap-1.5">
+          <h1 className="text-lg font-medium line-clamp-1">
+            Order ID: #{orderID.slice(0, 12)}...
+          </h1>
+
+          {copied ? (
+            <DoneIcon fontSize="small" className="text-success" />
+          ) : (
+            <ContentCopyIcon fontSize="small" className="cursor-pointer" onClick={handleCopy} />
+          )}
+        </div>
+
+        {/* Order status */}
+        <div className="flex items-center gap-1.5">
+          <div className={`w-3 h-3 rounded-full ${currentStatus.color}`} />
+
+          <span className="text-sm text-muted">
+            {currentStatus.label}
+          </span>
+        </div>
       </div>
+
+      {/* Pricing Information */}
+      <div className="bg-background-secondary p-1.5 rounded-sm flex justify-between items-center">
+        <span className="text-sm text-muted">
+          Total Price:
+        </span>
+        <span className="text-lg font-medium text-primary">
+          ${formatPrice(
+            pricing.totalPriceAfterDiscount ??
+            pricing.totalPrice
+          )} {currency}
+        </span>
+      </div>
+
+      {/* View Details Button */}
+      <Button
+        variant="primary"
+        size="small"
+        className="w-full"
+      >
+        View details
+      </Button>
     </div>
   );
 };
@@ -76,7 +138,7 @@ export default function OrdersPage() {
         const res = await apiClient.get("customer/orders", {
           params: {
             page,
-            limit: 8,
+            limit: 6,
           },
         });
 
