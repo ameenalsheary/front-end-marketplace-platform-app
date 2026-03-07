@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
@@ -10,6 +11,7 @@ import apiClient from "@/services/apiClient";
 import LoadingIcon from "@/components/ui/loadingIcon/LoadingIcon";
 import PaginationSection from "@/components/ui/Pagination";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
+import CustomImage from "@/components/ui/CustomImage";
 import Button from "@/components/ui/Button";
 import { formatPrice } from "@/lib/utilities/formatPrice";
 import { currency } from "@/lib/constants";
@@ -68,7 +70,7 @@ const OrderCard = ({ order }) => {
 
   return (
     <div className="p-3 bg-background rounded-sm shadow-sm grid gap-3">
-      <div className="grid gap-0.5">
+      <div className="border-b border-border pb-1.5 grid gap-0.5">
         {/* Order ID */}
         <div className="flex items-center justify-between gap-1.5">
           <h1 className="text-lg font-medium line-clamp-1">
@@ -90,6 +92,26 @@ const OrderCard = ({ order }) => {
             {currentStatus.label}
           </span>
         </div>
+      </div>
+
+      {/* Order Items */}
+      <div className="bg-background-secondary p-1.5 rounded-sm flex flex-wrap gap-1.5">
+        {orderItems.map((item, index) => {
+          const { imageCover } = item.product;
+
+          return (
+            <Link key={`order-item-${index}`} href={`/product/${item.product._id}`}>
+              <CustomImage
+                src={imageCover}
+                fallback="/images/product-placeholder.png"
+                width={500}
+                height={690}
+                alt={"Product image"}
+                className="bg-background-tertiary w-12 rounded-sm border border-border cursor-pointer hover-scale"
+              />
+            </Link>
+          )
+        })}
       </div>
 
       {/* Pricing Information */}
@@ -138,7 +160,7 @@ export default function OrdersPage() {
         const res = await apiClient.get("customer/orders", {
           params: {
             page,
-            limit: 6,
+            limit: 4,
           },
         });
 
@@ -192,7 +214,7 @@ export default function OrdersPage() {
       <h1 className="text-2xl pb-3 font-medium capitalize">My Orders</h1>
 
       <div className="flex flex-col gap-3">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {data.map((order) => (
             <OrderCard key={order._id} order={order} />
           ))}
