@@ -96,7 +96,7 @@ const OrderCard = ({ order }) => {
 
       {/* Order Items */}
       <div className="bg-background-secondary p-1.5 rounded-sm flex flex-wrap gap-1.5">
-        {orderItems.length > 0 && orderItems.map((item, index) => {
+        {orderItems.map((item, index) => {
           const { _id, imageCover } = item.product;
 
           return (
