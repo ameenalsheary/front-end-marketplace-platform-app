@@ -97,10 +97,10 @@ const OrderCard = ({ order }) => {
       {/* Order Items */}
       <div className="bg-background-secondary p-1.5 rounded-sm flex flex-wrap gap-1.5">
         {orderItems.map((item, index) => {
-          const { imageCover } = item.product;
+          const { _id, imageCover } = item.product;
 
           return (
-            <Link key={`order-item-${index}`} href={`/product/${item.product._id}`}>
+            <Link key={`order-item-${index}`} href={`/product/${_id}`}>
               <CustomImage
                 src={imageCover}
                 fallback="/images/product-placeholder.png"
