@@ -29,11 +29,11 @@ const OrderCard = ({ order }) => {
     orderID,
     orderItems,
     pricing,
-    coupon,
-    paymentMethod,
-    paymentStatus,
+    // coupon,
+    // paymentMethod,
+    // paymentStatus,
     orderStatus,
-    paidAt,
+    // paidAt,
   } = order;
   const [copied, setCopied] = useState(false);
 
