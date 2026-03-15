@@ -239,7 +239,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                 <span>
                   Price After Discount:
                 </span>
-                <span className="font-semibold text-success">
+                <span className="font-semibold text-primary">
                   {totalPriceAfterDiscount} {currency}
                 </span>
               </div>
@@ -259,7 +259,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                 <span>
                   Coupon Discount:
                 </span>
-                <span className="font-semibold text-primary">
+                <span className="font-semibold text-success">
                   -{couponDiscount}{"%"}
                 </span>
               </div>
