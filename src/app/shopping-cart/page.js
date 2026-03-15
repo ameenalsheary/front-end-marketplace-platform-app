@@ -250,7 +250,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                 <span>
                   Coupon Code:
                 </span>
-                <span className="font-semibold text-primary">
+                <span className="font-semibold text-success">
                   {couponCode}
                 </span>
               </div>

@@ -29,11 +29,11 @@ const OrderCard = ({ order }) => {
     orderID,
     orderItems,
     pricing,
-    // coupon,
-    // paymentMethod,
-    // paymentStatus,
+    coupon,
+    paymentMethod,
+    paymentStatus,
     orderStatus,
-    // paidAt,
+    paidAt,
   } = order;
   const [copied, setCopied] = useState(false);
 
@@ -68,8 +68,12 @@ const OrderCard = ({ order }) => {
 
   const currentStatus = statusConfig[orderStatus] || statusConfig.processing;
 
+  const { taxPrice, shippingPrice, totalPrice, totalPriceAfterDiscount } = pricing;
+  const { couponCode, couponDiscount, discountedAmount } = coupon || {};
+  const couponApplied = Boolean(couponCode);
+
   return (
-    <div className="p-3 bg-background rounded-sm shadow-sm grid gap-3">
+    <div className="p-3 bg-background rounded-sm shadow-sm flex flex-col gap-3">
       <div className="border-b border-border pb-1.5 grid gap-0.5">
         {/* Order ID */}
         <div className="flex items-center justify-between gap-1.5">
@@ -114,17 +118,68 @@ const OrderCard = ({ order }) => {
         })}
       </div>
 
-      {/* Pricing Information */}
-      <div className="bg-background-secondary p-1.5 rounded-sm flex justify-between items-center">
-        <span className="text-sm text-muted">
-          Total Price:
-        </span>
-        <span className="text-lg font-medium text-primary">
-          ${formatPrice(
-            pricing.totalPriceAfterDiscount ??
-            pricing.totalPrice
-          )} {currency}
-        </span>
+      {/* Pricing Details */}
+      <div className="grid gap-1.5">
+        <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+          <span>
+            Tax & Shipping:
+          </span>
+          <span className="font-semibold text-primary">
+            {formatPrice(taxPrice)} + {formatPrice(shippingPrice)} {currency}
+          </span>
+        </div>
+
+        <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+          <span>
+            Total Price:
+          </span>
+          {
+            couponApplied ? (
+              <del className="font-semibold text-error">
+                {formatPrice(totalPrice)} {currency}
+              </del>) : (
+              <span className="font-semibold text-primary">
+                {formatPrice(totalPrice)} {currency}
+              </span>)
+          }
+        </div>
+
+        {
+          couponApplied && (
+            <>
+              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                <span>
+                  Total After Discount:
+                </span>
+                <span className="font-semibold text-primary">
+                  {formatPrice(totalPriceAfterDiscount)} {currency}
+                </span>
+              </div>
+
+              <div className="w-full h-0.5 my-1.5 bg-primary" />
+
+              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                <span>
+                  Coupon: <span className="font-semibold text-success">
+                    (-{couponDiscount}%)
+                  </span>
+                </span>
+                <span className="font-semibold text-success">
+                  {couponCode}
+                </span>
+              </div>
+
+              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                <span>
+                  Discounted Amount:
+                </span>
+                <span className="font-semibold text-success">
+                  -{formatPrice(discountedAmount)} {currency}
+                </span>
+              </div>
+            </>
+          )
+        }
       </div>
 
       {/* View Details Button */}
@@ -214,7 +269,7 @@ export default function OrdersPage() {
       <h1 className="text-2xl pb-3 font-medium capitalize">My Orders</h1>
 
       <div className="flex flex-col gap-3">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-3">
           {data.map((order) => (
             <OrderCard key={order._id} order={order} />
           ))}
