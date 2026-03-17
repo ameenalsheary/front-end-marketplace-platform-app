@@ -199,7 +199,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
       </h1>
 
       <div className="grid gap-1.5">
-        <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+        <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
           <span>
             Tax Price:
           </span>
@@ -208,7 +208,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
           </span>
         </div>
 
-        <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+        <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
           <span>
             Shipping Price:
           </span>
@@ -217,7 +217,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
           </span>
         </div>
 
-        <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+        <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
           <span>
             Total Price:
           </span>
@@ -235,7 +235,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
         {
           couponApplied && (
             <>
-              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+              <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
                 <span>
                   Price After Discount:
                 </span>
@@ -246,7 +246,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
 
               <div className="w-full h-0.5 my-1.5 bg-primary" />
 
-              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+              <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
                 <span>
                   Coupon Code:
                 </span>
@@ -255,7 +255,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                 </span>
               </div>
 
-              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+              <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
                 <span>
                   Coupon Discount:
                 </span>
@@ -264,7 +264,7 @@ function OrderSummary({ pricing, coupon, applyCoupon }) {
                 </span>
               </div>
 
-              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+              <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
                 <span>
                   Discounted Amount:
                 </span>
@@ -421,7 +421,7 @@ export default function ShoppingCartPage() {
                   </h1>
 
                   <div className="grid gap-1.5">
-                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
                       <span>
                         Tax Price:
                       </span>
@@ -430,7 +430,7 @@ export default function ShoppingCartPage() {
                       </span>
                     </div>
 
-                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
                       <span>
                         Shipping Price:
                       </span>
@@ -439,7 +439,7 @@ export default function ShoppingCartPage() {
                       </span>
                     </div>
 
-                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+                    <div className="p-1.5 text-sm flex justify-between bg-background-secondary shadow-sm">
                       <span>
                         Total Price
                       </span>
