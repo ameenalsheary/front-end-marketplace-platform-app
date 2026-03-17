@@ -77,8 +77,8 @@ const OrderCard = ({ order }) => {
       <div className="border-b border-border pb-1.5 grid gap-0.5">
         {/* Order ID */}
         <div className="flex items-center justify-between gap-1.5">
-          <h1 className="text-lg font-medium line-clamp-1">
-            Order ID: #{orderID.slice(0, 12)}...
+          <h1 className="font-medium line-clamp-1">
+            Order ID: #{orderID.slice(0, 14)}...
           </h1>
 
           {copied ? (
@@ -119,8 +119,8 @@ const OrderCard = ({ order }) => {
       </div>
 
       {/* Pricing Details */}
-      <div className="grid gap-1.5">
-        <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+      <div className="grid gap-1.5 text-xs md:text-sm">
+        <div className="p-1.5 flex justify-between bg-background-secondary rounded-sm">
           <span>
             Tax & Shipping:
           </span>
@@ -129,7 +129,7 @@ const OrderCard = ({ order }) => {
           </span>
         </div>
 
-        <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+        <div className="p-1.5 flex justify-between bg-background-secondary rounded-sm">
           <span>
             Total Price:
           </span>
@@ -147,7 +147,7 @@ const OrderCard = ({ order }) => {
         {
           couponApplied && (
             <>
-              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+              <div className="p-1.5 flex justify-between bg-background-secondary rounded-sm">
                 <span>
                   Total After Discount:
                 </span>
@@ -158,7 +158,7 @@ const OrderCard = ({ order }) => {
 
               <div className="w-full h-0.5 my-1.5 bg-primary" />
 
-              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+              <div className="p-1.5 flex justify-between bg-background-secondary rounded-sm">
                 <span>
                   Coupon: <span className="font-semibold text-success">
                     (-{couponDiscount}%)
@@ -169,7 +169,7 @@ const OrderCard = ({ order }) => {
                 </span>
               </div>
 
-              <div className="p-1.5 text-sm flex justify-between bg-background-secondary rounded-sm shadow-sm border border-border">
+              <div className="p-1.5 flex justify-between bg-background-secondary rounded-sm">
                 <span>
                   Discounted Amount:
                 </span>
