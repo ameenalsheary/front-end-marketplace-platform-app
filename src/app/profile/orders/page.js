@@ -269,7 +269,7 @@ export default function OrdersPage() {
       <h1 className="text-2xl pb-3 font-medium capitalize">My Orders</h1>
 
       <div className="flex flex-col gap-3">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-3">
+        <div className="grid grid-cols-1 gap-3">
           {data.map((order) => (
             <OrderCard key={order._id} order={order} />
           ))}
